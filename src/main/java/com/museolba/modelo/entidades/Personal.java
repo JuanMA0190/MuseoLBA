@@ -5,13 +5,13 @@ public class Personal {
     private long nLegajo;
     private String nombre;
     private String apellido;
-    private long dni;
+    private String dni;
     private String nTelefono;
 
     public Personal() {
     }
 
-    public Personal(long nLegajo, String nombre, String apellido, long dni, String nTelefono) {
+    public Personal(long nLegajo, String nombre, String apellido, String dni, String nTelefono) {
         this.nLegajo = nLegajo;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -43,11 +43,11 @@ public class Personal {
         this.apellido = apellido;
     }
 
-    public long getDni() {
+    public String getDni() {
         return dni;
     }
 
-    public void setDni(long dni) {
+    public void setDni(String dni) {
         this.dni = dni;
     }
     

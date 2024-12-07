@@ -1,29 +1,27 @@
 package com.museolba.modelo.entidades;
 
+public class Usuario extends Personal {
 
-public class Usuario {
-    private long id;
-    private String nombre;
+    private String nombreUsuario;
     private String contrasenia;
     private RolUsuario rolUsuario;
-    private Personal nLegajo;
 
     public Usuario() {
     }
 
-    public Usuario(String nombre, String contrasenia, RolUsuario rolUsuario, Personal nLegajo) {
-        this.nombre = nombre;
+    public Usuario(long nLegajo, String nombre, String apellido, String dni, String nTelefono, String nombreUsuario, String contrasenia, RolUsuario rolUsuario) {
+        super(nLegajo, nombre, apellido, dni, nTelefono);
+        this.nombreUsuario = nombreUsuario;
         this.contrasenia = contrasenia;
         this.rolUsuario = rolUsuario;
-        this.nLegajo = nLegajo;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getNombreUsuario() {
+        return nombreUsuario;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setNombreUsuario(String nombreUsuario) {
+        this.nombreUsuario = nombreUsuario;
     }
 
     public String getContrasenia() {
@@ -40,13 +38,5 @@ public class Usuario {
 
     public void setRolUsuario(RolUsuario rolUsuario) {
         this.rolUsuario = rolUsuario;
-    }
-
-    public Personal getnLegajo() {
-        return nLegajo;
-    }
-
-    public void setnLegajo(Personal nLegajo) {
-        this.nLegajo = nLegajo;
     }
 }
