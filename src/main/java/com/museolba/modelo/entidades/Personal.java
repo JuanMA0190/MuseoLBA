@@ -7,6 +7,8 @@ public class Personal {
     private String apellido;
     private String dni;
     private String nTelefono;
+    private EstadoPersonal estado;
+    
 
     public Personal() {
     }
@@ -17,6 +19,7 @@ public class Personal {
         this.apellido = apellido;
         this.dni = dni;
         this.nTelefono = nTelefono;
+        this.estado = estado.ACTIVO;
     }
 
     public long getnLegajo() {
@@ -58,5 +61,12 @@ public class Personal {
     public void setnTelefono(String nTelefono) {
         this.nTelefono = nTelefono;
     }
-    
+
+    public EstadoPersonal getEstado() {
+        return estado;
+    }
+
+    public void setEstado(EstadoPersonal estado) {
+        this.estado = estado;
+    }
 }

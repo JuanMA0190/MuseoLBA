@@ -7,7 +7,7 @@ import javax.swing.UIManager;
 
 
 public class Main {
-
+    
     public static void main(String[] args) {
          // Configurar FlatLaf como Look and Feel
         try {
