@@ -11,11 +11,12 @@ public class HistorialUsuario {
     private LocalDateTime fechaAlta;
     private LocalDateTime fechaBaja;
     private String razonInactividad;
+    private EstadoPersonal estado; 
 
     public HistorialUsuario() {
     }
 
-    public HistorialUsuario(Usuario usuario, LocalDateTime fechaCreacion, LocalDateTime fechaModificacion, LocalDateTime fechaEliminacion, LocalDateTime fechaAlta, LocalDateTime fechaBaja, String razonInactividad) {
+    public HistorialUsuario(Usuario usuario, LocalDateTime fechaCreacion, LocalDateTime fechaModificacion, LocalDateTime fechaEliminacion, LocalDateTime fechaAlta, LocalDateTime fechaBaja, String razonInactividad, EstadoPersonal estado) {
         this.usuario = usuario;
         this.fechaCreacion = fechaCreacion;
         this.fechaModificacion = null;
@@ -23,6 +24,7 @@ public class HistorialUsuario {
         this.fechaAlta = null;
         this.fechaBaja = null;
         this.razonInactividad = "-";
+        this.estado = estado;
     }
     
     public void registrarModificacion(LocalDateTime fecha) {
@@ -75,5 +77,13 @@ public class HistorialUsuario {
 
     public void setRazonInactividad(String razonInactividad) {
         this.razonInactividad = razonInactividad;
+    }
+    
+    public EstadoPersonal getEstado() {
+        return estado;
+    }
+
+    public void setEstado(EstadoPersonal estado) {
+        this.estado = estado;
     }
 }
