@@ -122,7 +122,7 @@
                           <Component id="txtNombreUsuario" pref="183" max="32767" attributes="0"/>
                           <Component id="cmbRol" alignment="0" pref="183" max="32767" attributes="0"/>
                           <Component id="lblTitulo2" alignment="0" min="-2" pref="118" max="-2" attributes="0"/>
-                          <Component id="txtContrasenia" alignment="0" max="32767" attributes="0"/>
+                          <Component id="txtContrasenia" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
@@ -137,9 +137,9 @@
                       <Component id="txtNombreUsuario" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="lblTitulo2" min="-2" pref="25" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
                       <Component id="txtContrasenia" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="lblTitulo6" min="-2" pref="25" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="cmbRol" min="-2" max="-2" attributes="0"/>
@@ -195,20 +195,18 @@
                   <Color id="Cursor de Mano"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnFinalizarActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JComboBox" name="cmbRol">
               <Properties>
                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                  <StringArray count="4">
-                    <StringItem index="0" value="Item 1"/>
-                    <StringItem index="1" value="Item 2"/>
-                    <StringItem index="2" value="Item 3"/>
-                    <StringItem index="3" value="Item 4"/>
-                  </StringArray>
+                  <StringArray count="0"/>
                 </Property>
               </Properties>
               <AuxValues>
-                <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+                <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;RolUsuario&gt;"/>
               </AuxValues>
             </Component>
             <Component class="javax.swing.JButton" name="btnCancelar">
@@ -218,8 +216,11 @@
                   <Color id="Cursor de Mano"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCancelarActionPerformed"/>
+              </Events>
             </Component>
-            <Component class="javax.swing.JPasswordField" name="txtContrasenia">
+            <Component class="javax.swing.JTextField" name="txtContrasenia">
             </Component>
           </SubComponents>
         </Container>

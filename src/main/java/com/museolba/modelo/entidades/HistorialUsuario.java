@@ -1,16 +1,41 @@
 package com.museolba.modelo.entidades;
 
+import java.io.Serializable;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
-public class HistorialUsuario {
+@Entity
+@Table(name = "historial_usuarios")
+public class HistorialUsuario implements Serializable {
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private Usuario usuario; 
+    
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "usuario_id", referencedColumnName = "n_legajo", nullable = false)
+    private Usuario usuario;
+    
+    @Column(name = "fecha_creacion", nullable = false)
     private LocalDateTime fechaCreacion;
+    
+    @Column(name = "fecha_modificacion")
     private LocalDateTime fechaModificacion;
+    
+    @Column(name = "fecha_eliminacion")
     private LocalDateTime fechaEliminacion;
+    
+    @Column(name = "fecha_alta")
     private LocalDateTime fechaAlta;
+    
+    @Column(name = "fecha_baja")
     private LocalDateTime fechaBaja;
+    
+    @Column(name = "razon_inactividad", length = 255)
     private String razonInactividad;
+    
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private EstadoPersonal estado; 
 
     public HistorialUsuario() {

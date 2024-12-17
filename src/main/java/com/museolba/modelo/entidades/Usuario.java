@@ -1,9 +1,20 @@
 package com.museolba.modelo.entidades;
 
-public class Usuario extends Personal {
+import java.io.Serializable;
+import javax.persistence.*;
 
+@Entity
+@Table(name = "usuarios")
+public class Usuario extends Personal implements Serializable {
+    
+    @Column(name = "nombre_usuario", nullable = false, unique = true)
     private String nombreUsuario;
+    
+    @Column(name = "contrasenia", nullable = false)
     private String contrasenia;
+    
+    @Enumerated(EnumType.STRING) // Almacena el valor del Enum como String en la base de datos
+    @Column(name = "rol_usuario", nullable = false)
     private RolUsuario rolUsuario;
 
     public Usuario() {

@@ -2,7 +2,19 @@ package com.museolba.modelo.entidades;
 
 
 public enum RolUsuario {
-    JEFEDEDEPARTAMENTO,
-    JEFEDEPERSONAL,
-    PERSONAL
+    PERSONAL("Personal"),
+    JEFEDEDEPARTAMENTO("Jefe de Departamento"),
+    JEFEDEPERSONAL("Jefe de Personal");
+    
+    
+    private final String descripcion;
+
+    RolUsuario(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    @Override
+    public String toString() {
+        return descripcion;
+    }
 }

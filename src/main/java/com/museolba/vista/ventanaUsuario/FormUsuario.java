@@ -1,12 +1,22 @@
 package com.museolba.vista.ventanaUsuario;
 
+import com.museolba.controlador.controladorUsuario.ControladorUsuario;
+import com.museolba.modelo.entidades.Personal;
+import com.museolba.modelo.entidades.RolUsuario;
+import com.museolba.modelo.entidades.Usuario;
+import com.museolba.utils.UtilsValidacion;
+
 
 public class FormUsuario extends javax.swing.JDialog {
-
+    private Personal personal;
+    ControladorUsuario controladorUsuario = null;
    
-    public FormUsuario(java.awt.Frame parent, boolean modal) {
+    public FormUsuario(java.awt.Frame parent, boolean modal, Personal personal) {
         super(parent, modal);
         initComponents();
+        UtilsValidacion.cargarComboBox(cmbRol, RolUsuario.class);
+        controladorUsuario = new ControladorUsuario();
+        this.personal = personal;
     }
 
     
@@ -24,7 +34,7 @@ public class FormUsuario extends javax.swing.JDialog {
         btnFinalizar = new javax.swing.JButton();
         cmbRol = new javax.swing.JComboBox<>();
         btnCancelar = new javax.swing.JButton();
-        txtContrasenia = new javax.swing.JPasswordField();
+        txtContrasenia = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -52,11 +62,19 @@ public class FormUsuario extends javax.swing.JDialog {
 
         btnFinalizar.setText("Finalizar");
         btnFinalizar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-
-        cmbRol.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        btnFinalizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFinalizarActionPerformed(evt);
+            }
+        });
 
         btnCancelar.setText("Cancelar");
         btnCancelar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -88,9 +106,9 @@ public class FormUsuario extends javax.swing.JDialog {
                 .addComponent(txtNombreUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(lblTitulo2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(8, 8, 8)
+                .addGap(12, 12, 12)
                 .addComponent(txtContrasenia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lblTitulo6, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cmbRol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -143,19 +161,47 @@ public class FormUsuario extends javax.swing.JDialog {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void btnFinalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFinalizarActionPerformed
+        if(txtNombreUsuario.getText().equals("") || txtContrasenia.getText().equals("")){
+            UtilsValidacion.MsjAlert("Rellene todos los campos para continuar!", 2, "Rellene todos los Campos");
+        }else{
+            Usuario usuario = new Usuario(
+                    personal.getnLegajo(),
+                    personal.getNombre(),
+                    personal.getApellido(),
+                    personal.getDni(),
+                    personal.getnTelefono(),
+                    txtNombreUsuario.getText(),
+                    txtContrasenia.getText(), 
+                    (RolUsuario) cmbRol.getSelectedItem());
+            try {
+                controladorUsuario.crearUsuario(usuario);
+                UtilsValidacion.MsjAlert("Usuario creado con éxito.", 1, "Éxito");
+                this.dispose();
+            } catch (Exception e) {
+                UtilsValidacion.MsjAlert("Error al crear el usuario: " + e.getMessage(), 2, "Error");
+            }
+            
+        }
+    }//GEN-LAST:event_btnFinalizarActionPerformed
+
   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnFinalizar;
-    private javax.swing.JComboBox<String> cmbRol;
+    private javax.swing.JComboBox<RolUsuario> cmbRol;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel lblTitulo1;
     private javax.swing.JLabel lblTitulo2;
     private javax.swing.JLabel lblTitulo4;
     private javax.swing.JLabel lblTitulo6;
-    private javax.swing.JPasswordField txtContrasenia;
+    private javax.swing.JTextField txtContrasenia;
     private javax.swing.JTextField txtNombreUsuario;
     // End of variables declaration//GEN-END:variables
 }

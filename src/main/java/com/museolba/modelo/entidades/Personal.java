@@ -1,12 +1,31 @@
 package com.museolba.modelo.entidades;
 
+import java.io.Serializable;
+import javax.persistence.*;
 
-public class Personal {
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+@Table(name = "personal")
+public class Personal implements Serializable {
+    
+    @Id
+    @Column(name = "n_legajo", unique = true, nullable = false)
     private long nLegajo;
+    
+    @Column(nullable = false)
     private String nombre;
+    
+    @Column(nullable = false)
     private String apellido;
+    
+    @Column(nullable = false, unique = true, length = 8)
     private String dni;
+    
+    @Column(name = "n_telefono")
     private String nTelefono;
+    
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private EstadoPersonal estado;
     
 
@@ -19,7 +38,7 @@ public class Personal {
         this.apellido = apellido;
         this.dni = dni;
         this.nTelefono = nTelefono;
-        this.estado = estado.ACTIVO;
+        this.estado = EstadoPersonal.ACTIVO;
     }
 
     public long getnLegajo() {
