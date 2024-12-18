@@ -1,10 +1,13 @@
 package com.museolba.utils;
 
+import java.util.List;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 
 
 public class UtilsValidacion {
@@ -82,5 +85,32 @@ public class UtilsValidacion {
             campoTelefono.requestFocus();
             return false;
         }    
+    }
+    
+    public static <T> void cargarTabla(JTable tabla, List<T> lista, String[] titulos, TableDataMapper<T> mapper) {
+        DefaultTableModel modeloTabla = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+
+        // Establecer los nombres de las columnas
+        modeloTabla.setColumnIdentifiers(titulos);
+
+        // Verificar y llenar la tabla
+        if (lista != null) {
+            for (T elemento : lista) {
+                Object[] fila = mapper.map(elemento);
+                modeloTabla.addRow(fila);
+            }
+        }
+
+        tabla.setModel(modeloTabla);
+    }
+    
+    @FunctionalInterface
+    public interface TableDataMapper<T> {
+        Object[] map(T elemento);
     }
 }
