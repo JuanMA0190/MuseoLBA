@@ -28,16 +28,7 @@ public class VentanaLogin extends javax.swing.JFrame {
         Usuario usuario = controladorLogin.verificarLogin(nombreUsuario, contraseniaUsuario);
        
         if (usuario != null) {
-            VentanaPrincipal vp = null;
-          
-            
-            switch (usuario.getRolUsuario()) {
-                case JEFEDEDEPARTAMENTO -> vp = new VentanaPrincipal(0);
-                case JEFEDEPERSONAL -> vp = new VentanaPrincipal(1);
-                case PERSONAL -> vp = new VentanaPrincipal(2);
-                default -> UtilsValidacion.MsjAlert("Rol no conocido", 2, "Error");
-            }
-            
+            VentanaPrincipal vp = new VentanaPrincipal(usuario);
             vp.setVisible(true);
             this.dispose();
         

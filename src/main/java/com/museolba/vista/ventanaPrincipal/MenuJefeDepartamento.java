@@ -15,7 +15,7 @@ public class MenuJefeDepartamento extends javax.swing.JPanel {
     
     private VentanaPrincipal ventanaPrincipal;
     
-    public MenuJefeDepartamento() {
+    public MenuJefeDepartamento(VentanaPrincipal ventanaPrincipal) {
         this.ventanaPrincipal = ventanaPrincipal;
         initComponents();
     }

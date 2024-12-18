@@ -1,32 +1,51 @@
 package com.museolba.vista.ventanaPrincipal;
 
+import com.museolba.modelo.entidades.Usuario;
 import com.museolba.utils.UtilsValidacion;
 import com.museolba.vista.ventanaActividades.VentanaActividades;
 import com.museolba.vista.ventanaLogin.VentanaLogin;
 import java.awt.BorderLayout;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 
 
 public class VentanaPrincipal extends javax.swing.JFrame {
     
-    public VentanaPrincipal(int rolUsuario){
+    public VentanaPrincipal(Usuario usuario){
         initComponents();
         initContent();
-        switch(rolUsuario){
-            case 0 -> {
-                MenuJefeDepartamento menuJefeDepto = new MenuJefeDepartamento();
+        switch(usuario.getRolUsuario()){
+            case JEFEDEDEPARTAMENTO -> {
+                MenuJefeDepartamento menuJefeDepto = new MenuJefeDepartamento(this);
                 abrirContenido(menuJefeDepto, 270, 720, panelMenu);
             }
-            case 1 -> {    
+            case JEFEDEPERSONAL -> {    
                 MenuJefePersonal menuJefePersonal= new MenuJefePersonal(this);
                 abrirContenido(menuJefePersonal, 270, 720, panelMenu);
             }
-            case 2 -> { 
-                MenuPersonal menuPersonal= new MenuPersonal();
+            case PERSONAL -> { 
+                MenuPersonal menuPersonal= new MenuPersonal(this);
                 abrirContenido(menuPersonal, 270, 720, panelMenu);
             }
             default -> UtilsValidacion.MsjAlert("Rol no conocido", 2, "Error");
         }
+        
+        //Cartel de bienvenida al usaurio
+        lblBienvenida.setText("¡Bienvenido, "+usuario.getNombre()+" "+usuario.getApellido()+"!");
+        
+        //Hora y fecha actual
+        Timer timer = new Timer(1000, e -> actualizarFechaHora());
+        timer.start();
+        
+    }
+    
+    public void actualizarFechaHora(){
+        LocalDateTime ahora = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        lblFecha.setText("Fecha y hora: " + ahora.format(formatter));
     }
     
     public VentanaPrincipal() {
@@ -95,10 +114,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         panelInfo.setPreferredSize(new java.awt.Dimension(744, 140));
 
         lblFecha.setFont(new java.awt.Font("DejaVu Serif", 0, 18)); // NOI18N
-        lblFecha.setText("Martes 10 de Julio de 2024");
 
         lblBienvenida.setFont(new java.awt.Font("DejaVu Serif", 0, 36)); // NOI18N
-        lblBienvenida.setText("¡Bienvenido, Juan Acosta !");
 
         btnCerrarSesion.setText("Cerrar Sesión");
         btnCerrarSesion.addActionListener(new java.awt.event.ActionListener() {
@@ -132,7 +149,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 .addGroup(panelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnCerrarSesion))
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
         panelContenido.setBackground(new java.awt.Color(204, 204, 204));

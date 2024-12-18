@@ -8,7 +8,7 @@ public class MenuPersonal extends javax.swing.JPanel {
 
     private VentanaPrincipal ventanaPrincipal;
     
-    public MenuPersonal() {
+    public MenuPersonal(VentanaPrincipal ventanaPrincipal) {
         this.ventanaPrincipal = ventanaPrincipal;
         initComponents();
     }
