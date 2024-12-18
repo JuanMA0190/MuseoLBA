@@ -1,21 +1,33 @@
 package com.museolba.vista.ventanaPrincipal;
 
+import com.museolba.utils.UtilsValidacion;
 import com.museolba.vista.ventanaActividades.VentanaActividades;
-import com.museolba.vista.ventanaArtista.VentanaArtista;
-import com.museolba.vista.ventanaCajaChica.VentanaCajaChica;
 import com.museolba.vista.ventanaLogin.VentanaLogin;
-import com.museolba.vista.ventanaObra.VentanaObra;
-import com.museolba.vista.ventanaPersonal.VentanaPersonal;
-import com.museolba.vista.ventanaSalas.VentanaSalas;
-import com.museolba.vista.ventanaTurnoExposicion.VentanaTurnoExposicion;
-import com.museolba.vista.ventanaTurnoVisita.VentanaTurnoVisita;
-import com.museolba.vista.ventanaUsuario.VentanaUsuario;
 import java.awt.BorderLayout;
 import javax.swing.JPanel;
 
 
 public class VentanaPrincipal extends javax.swing.JFrame {
-
+    
+    public VentanaPrincipal(int rolUsuario){
+        initComponents();
+        initContent();
+        switch(rolUsuario){
+            case 0 -> {
+                MenuJefeDepartamento menuJefeDepto = new MenuJefeDepartamento();
+                abrirContenido(menuJefeDepto, 270, 720, panelMenu);
+            }
+            case 1 -> {    
+                MenuJefePersonal menuJefePersonal= new MenuJefePersonal(this);
+                abrirContenido(menuJefePersonal, 270, 720, panelMenu);
+            }
+            case 2 -> { 
+                MenuPersonal menuPersonal= new MenuPersonal();
+                abrirContenido(menuPersonal, 270, 720, panelMenu);
+            }
+            default -> UtilsValidacion.MsjAlert("Rol no conocido", 2, "Error");
+        }
+    }
     
     public VentanaPrincipal() {
         initComponents();
@@ -24,17 +36,21 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     
     private void initContent(){
         VentanaActividades va = new VentanaActividades();
-        abrirContenido(va);
+        abrirContenido(va, 738, 572, panelContenido);
     }
     
-    private void abrirContenido(JPanel nuevaVentana){
-        nuevaVentana.setSize(738, 572);
+    public static void abrirContenido(JPanel nuevaVentana, int x, int y, JPanel panelPrincipal){
+        nuevaVentana.setSize(x, y);
         nuevaVentana.setLocation(0,0);
         
-        panelContenido.removeAll();
-        panelContenido.add(nuevaVentana, BorderLayout.CENTER);
-        panelContenido.revalidate();
-        panelContenido.repaint();
+        panelPrincipal.removeAll();
+        panelPrincipal.add(nuevaVentana, BorderLayout.CENTER);
+        panelPrincipal.revalidate();
+        panelPrincipal.repaint();
+    }
+    
+    public JPanel getPanelContenido() {
+        return panelContenido;
     }
     
     @SuppressWarnings("unchecked")
@@ -44,17 +60,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         background = new javax.swing.JPanel();
         panelMenu = new javax.swing.JPanel();
         lblImagen = new javax.swing.JLabel();
-        lblTitulo = new javax.swing.JLabel();
-        btnPrincipal = new javax.swing.JButton();
-        btnObras = new javax.swing.JButton();
-        btnArtistas = new javax.swing.JButton();
-        btnTurVisitas = new javax.swing.JButton();
-        btnTurExpo = new javax.swing.JButton();
-        btnUsuario = new javax.swing.JButton();
-        btnPersonal = new javax.swing.JButton();
-        btnSalas = new javax.swing.JButton();
-        btnCajaChica = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
         panelInfo = new javax.swing.JPanel();
         lblFecha = new javax.swing.JLabel();
         lblBienvenida = new javax.swing.JLabel();
@@ -69,162 +74,21 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         panelMenu.setBackground(new java.awt.Color(102, 0, 102));
         panelMenu.setPreferredSize(new java.awt.Dimension(270, 431));
 
-        lblTitulo.setFont(new java.awt.Font("DejaVu Serif", 0, 18)); // NOI18N
-        lblTitulo.setText("Museo Lucas Braulio Areco");
-
-        btnPrincipal.setText("Principal");
-        btnPrincipal.setBorder(null);
-        btnPrincipal.setBorderPainted(false);
-        btnPrincipal.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnPrincipal.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnPrincipalActionPerformed(evt);
-            }
-        });
-
-        btnObras.setText("Obras");
-        btnObras.setBorder(null);
-        btnObras.setBorderPainted(false);
-        btnObras.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnObras.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnObrasActionPerformed(evt);
-            }
-        });
-
-        btnArtistas.setText("Artistas");
-        btnArtistas.setBorder(null);
-        btnArtistas.setBorderPainted(false);
-        btnArtistas.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnArtistas.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnArtistasActionPerformed(evt);
-            }
-        });
-
-        btnTurVisitas.setText("Turnos Visitas");
-        btnTurVisitas.setBorder(null);
-        btnTurVisitas.setBorderPainted(false);
-        btnTurVisitas.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnTurVisitas.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnTurVisitasActionPerformed(evt);
-            }
-        });
-
-        btnTurExpo.setText("Turnos Exposición");
-        btnTurExpo.setBorder(null);
-        btnTurExpo.setBorderPainted(false);
-        btnTurExpo.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnTurExpo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnTurExpoActionPerformed(evt);
-            }
-        });
-
-        btnUsuario.setText("Usuarios");
-        btnUsuario.setBorder(null);
-        btnUsuario.setBorderPainted(false);
-        btnUsuario.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnUsuario.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnUsuarioActionPerformed(evt);
-            }
-        });
-
-        btnPersonal.setText("Personal");
-        btnPersonal.setBorder(null);
-        btnPersonal.setBorderPainted(false);
-        btnPersonal.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnPersonal.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnPersonalActionPerformed(evt);
-            }
-        });
-
-        btnSalas.setText("Salas");
-        btnSalas.setBorder(null);
-        btnSalas.setBorderPainted(false);
-        btnSalas.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnSalas.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSalasActionPerformed(evt);
-            }
-        });
-
-        btnCajaChica.setText("Caja Chica");
-        btnCajaChica.setBorder(null);
-        btnCajaChica.setBorderPainted(false);
-        btnCajaChica.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnCajaChica.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCajaChicaActionPerformed(evt);
-            }
-        });
-
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/imgPrinc.jpg"))); // NOI18N
-
         javax.swing.GroupLayout panelMenuLayout = new javax.swing.GroupLayout(panelMenu);
         panelMenu.setLayout(panelMenuLayout);
         panelMenuLayout.setHorizontalGroup(
             panelMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelMenuLayout.createSequentialGroup()
-                .addGroup(panelMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelMenuLayout.createSequentialGroup()
-                        .addGroup(panelMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(panelMenuLayout.createSequentialGroup()
-                                .addGap(48, 48, 48)
-                                .addComponent(lblImagen)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel1))
-                            .addGroup(panelMenuLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(lblTitulo)))
-                        .addGap(0, 2, Short.MAX_VALUE))
-                    .addGroup(panelMenuLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(panelMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnPersonal, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnArtistas, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnObras, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnCajaChica, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnTurVisitas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnTurExpo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnUsuario, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnSalas, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addContainerGap())
+                .addGap(48, 48, 48)
+                .addComponent(lblImagen)
+                .addContainerGap(222, Short.MAX_VALUE))
         );
         panelMenuLayout.setVerticalGroup(
             panelMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelMenuLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(panelMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelMenuLayout.createSequentialGroup()
-                        .addComponent(lblImagen, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(68, 68, 68))
-                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnObras, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnArtistas, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnTurVisitas, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnTurExpo, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnPersonal, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnSalas, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnCajaChica, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(28, Short.MAX_VALUE))
+                .addComponent(lblImagen, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         panelInfo.setBackground(new java.awt.Color(102, 102, 102));
@@ -304,7 +168,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 .addComponent(panelInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelContenido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(107, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -328,70 +192,14 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnCerrarSesionActionPerformed
 
-    private void btnObrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnObrasActionPerformed
-        VentanaObra vo = new VentanaObra();
-        abrirContenido(vo);
-    }//GEN-LAST:event_btnObrasActionPerformed
-
-    private void btnPrincipalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrincipalActionPerformed
-        VentanaActividades va = new VentanaActividades();
-        abrirContenido(va);
-    }//GEN-LAST:event_btnPrincipalActionPerformed
-
-    private void btnArtistasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnArtistasActionPerformed
-        VentanaArtista vart = new VentanaArtista();
-        abrirContenido(vart);
-    }//GEN-LAST:event_btnArtistasActionPerformed
-
-    private void btnTurVisitasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTurVisitasActionPerformed
-        VentanaTurnoVisita vtv = new VentanaTurnoVisita();
-        abrirContenido(vtv);
-    }//GEN-LAST:event_btnTurVisitasActionPerformed
-
-    private void btnTurExpoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTurExpoActionPerformed
-        VentanaTurnoExposicion vte = new VentanaTurnoExposicion();
-        abrirContenido(vte);
-    }//GEN-LAST:event_btnTurExpoActionPerformed
-
-    private void btnUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUsuarioActionPerformed
-        VentanaUsuario vu = new VentanaUsuario();
-        abrirContenido(vu);
-    }//GEN-LAST:event_btnUsuarioActionPerformed
-
-    private void btnPersonalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPersonalActionPerformed
-        VentanaPersonal vp = new VentanaPersonal();
-        abrirContenido(vp);
-    }//GEN-LAST:event_btnPersonalActionPerformed
-
-    private void btnSalasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalasActionPerformed
-        VentanaSalas vs = new VentanaSalas();
-        abrirContenido(vs);
-    }//GEN-LAST:event_btnSalasActionPerformed
-
-    private void btnCajaChicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCajaChicaActionPerformed
-        VentanaCajaChica vcc = new VentanaCajaChica();
-        abrirContenido(vcc);
-    }//GEN-LAST:event_btnCajaChicaActionPerformed
-
    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel background;
-    private javax.swing.JButton btnArtistas;
-    private javax.swing.JButton btnCajaChica;
     private javax.swing.JButton btnCerrarSesion;
-    private javax.swing.JButton btnObras;
-    private javax.swing.JButton btnPersonal;
-    private javax.swing.JButton btnPrincipal;
-    private javax.swing.JButton btnSalas;
-    private javax.swing.JButton btnTurExpo;
-    private javax.swing.JButton btnTurVisitas;
-    private javax.swing.JButton btnUsuario;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel lblBienvenida;
     private javax.swing.JLabel lblFecha;
     private javax.swing.JLabel lblImagen;
-    private javax.swing.JLabel lblTitulo;
     private javax.swing.JPanel panelContenido;
     private javax.swing.JPanel panelInfo;
     private javax.swing.JPanel panelMenu;

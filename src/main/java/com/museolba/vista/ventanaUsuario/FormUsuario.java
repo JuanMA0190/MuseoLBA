@@ -1,20 +1,26 @@
 package com.museolba.vista.ventanaUsuario;
 
+import com.museolba.controlador.controladorUsuario.ControladorHistorialUsuario;
 import com.museolba.controlador.controladorUsuario.ControladorUsuario;
+import com.museolba.modelo.entidades.EstadoPersonal;
+import com.museolba.modelo.entidades.HistorialUsuario;
 import com.museolba.modelo.entidades.Personal;
 import com.museolba.modelo.entidades.RolUsuario;
 import com.museolba.modelo.entidades.Usuario;
 import com.museolba.utils.UtilsValidacion;
+import java.time.LocalDateTime;
 
 
 public class FormUsuario extends javax.swing.JDialog {
     private Personal personal;
     ControladorUsuario controladorUsuario = null;
+    ControladorHistorialUsuario controladorHistorialUsuario = null;
    
     public FormUsuario(java.awt.Frame parent, boolean modal, Personal personal) {
         super(parent, modal);
         initComponents();
         UtilsValidacion.cargarComboBox(cmbRol, RolUsuario.class);
+        controladorHistorialUsuario = new ControladorHistorialUsuario();
         controladorUsuario = new ControladorUsuario();
         this.personal = personal;
     }
@@ -35,6 +41,7 @@ public class FormUsuario extends javax.swing.JDialog {
         cmbRol = new javax.swing.JComboBox<>();
         btnCancelar = new javax.swing.JButton();
         txtContrasenia = new javax.swing.JTextField();
+        lblError = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -76,17 +83,13 @@ public class FormUsuario extends javax.swing.JDialog {
             }
         });
 
+        lblError.setForeground(new java.awt.Color(204, 0, 0));
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(430, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnFinalizar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(81, 81, 81))
-            .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(43, 43, 43)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(lblTitulo6, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -95,13 +98,20 @@ public class FormUsuario extends javax.swing.JDialog {
                     .addComponent(cmbRol, 0, 183, Short.MAX_VALUE)
                     .addComponent(lblTitulo2, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtContrasenia))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 204, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblError)
+                    .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnFinalizar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(81, 81, 81))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(26, 26, 26)
-                .addComponent(lblTitulo4, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblTitulo4, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblError))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(txtNombreUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -166,26 +176,53 @@ public class FormUsuario extends javax.swing.JDialog {
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnFinalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFinalizarActionPerformed
-        if(txtNombreUsuario.getText().equals("") || txtContrasenia.getText().equals("")){
+        String resultado = "";
+
+        if (txtNombreUsuario.getText().trim().isEmpty() || txtContrasenia.getText().trim().isEmpty()) {
             UtilsValidacion.MsjAlert("Rellene todos los campos para continuar!", 2, "Rellene todos los Campos");
-        }else{
-            Usuario usuario = new Usuario(
-                    personal.getnLegajo(),
-                    personal.getNombre(),
-                    personal.getApellido(),
-                    personal.getDni(),
-                    personal.getnTelefono(),
-                    txtNombreUsuario.getText(),
-                    txtContrasenia.getText(), 
-                    (RolUsuario) cmbRol.getSelectedItem());
-            try {
-                controladorUsuario.crearUsuario(usuario);
-                UtilsValidacion.MsjAlert("Usuario creado con éxito.", 1, "Éxito");
+            return;
+        }
+
+        if (cmbRol.getSelectedItem() == null) {
+            UtilsValidacion.MsjAlert("Seleccione un rol para continuar!", 2, "Rol no seleccionado");
+            return;
+        }
+
+        Usuario usuario = new Usuario(
+                personal.getnLegajo(),
+                personal.getNombre(),
+                personal.getApellido(),
+                personal.getDni(),
+                personal.getnTelefono(),
+                txtNombreUsuario.getText().trim(),
+                txtContrasenia.getText().trim(),
+                (RolUsuario) cmbRol.getSelectedItem()
+        );
+
+        try {
+            resultado = controladorUsuario.crearUsuario(usuario);
+
+            if (resultado.equalsIgnoreCase("Usuario creado exitosamente.")) {
+                HistorialUsuario historialUsuario = new HistorialUsuario(
+                        usuario,
+                        LocalDateTime.now(),
+                        null,
+                        null,
+                        LocalDateTime.now(),
+                        null,
+                        "-",
+                        EstadoPersonal.ACTIVO
+                );
+                
+                controladorHistorialUsuario.crearHistorialUsuario(historialUsuario);
+                
+                UtilsValidacion.MsjAlert(resultado, 1, "Éxito");
                 this.dispose();
-            } catch (Exception e) {
-                UtilsValidacion.MsjAlert("Error al crear el usuario: " + e.getMessage(), 2, "Error");
+            } else {
+                UtilsValidacion.MsjAlert(resultado, 2, "Error");
             }
-            
+        } catch (Exception e) {
+            UtilsValidacion.MsjAlert("Error al crear usuario: " + e.getMessage(), 2, "Error");
         }
     }//GEN-LAST:event_btnFinalizarActionPerformed
 
@@ -197,6 +234,7 @@ public class FormUsuario extends javax.swing.JDialog {
     private javax.swing.JComboBox<RolUsuario> cmbRol;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JLabel lblError;
     private javax.swing.JLabel lblTitulo1;
     private javax.swing.JLabel lblTitulo2;
     private javax.swing.JLabel lblTitulo4;

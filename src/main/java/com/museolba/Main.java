@@ -19,8 +19,12 @@ public class Main {
         } catch (Exception ex) {
             System.err.println("Failed to initialize LaF");
         }
-        
+        /*
         VentanaPrincipal vl = new VentanaPrincipal();
+        vl.setVisible(true);*/
+        
+        VentanaLogin vl = new VentanaLogin();
         vl.setVisible(true);
+        
     }
 }

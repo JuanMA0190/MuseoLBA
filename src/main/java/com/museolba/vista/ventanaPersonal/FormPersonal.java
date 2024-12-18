@@ -234,29 +234,39 @@ public class FormPersonal extends javax.swing.JDialog {
     private void btnContinuarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnContinuarActionPerformed
         if (txtLegajo.getText().equals("") || txtNombre.getText().equals("") || txtApellido.getText().equals("") || txtDni.getText().equals("") || txtTelefono.getText().equals("")){
             UtilsValidacion.MsjAlert("Rellene todos los campos para continuar!", 2, "Rellene todos los Campos");
+            return;
+        }
+        
+        if (!UtilsValidacion.validarDNI(txtDni)) {
+            return;
+        }
+
+        if (!UtilsValidacion.validarTelefono(txtTelefono)) {
+            return;
+        }
+        
+        long legajo = Long.parseLong(txtLegajo.getText());
+        boolean existe = controladorPersonal.verificarLegajo(legajo);
+
+        if (existe){
+            UtilsValidacion.MsjAlert("El número de legajo ingresado ya existe!", 2, "Revise el campo");
         }else{
-            long legajo = Long.parseLong(txtLegajo.getText());
-            boolean existe = controladorPersonal.verificarLegajo(legajo);
-            
-            if (existe){
-                UtilsValidacion.MsjAlert("El número de legajo ingresado ya existe!", 2, "Revise el campo");
-            }else{
-                Personal personal = new Personal(
+            Personal personal = new Personal(
                 Long.parseLong(txtLegajo.getText()),
                 txtNombre.getText(),
                 txtApellido.getText(),
                 txtDni.getText(),
                 txtTelefono.getText()
             );
-            
-                VentanaPrincipal vP = (VentanaPrincipal) SwingUtilities.getWindowAncestor(this);
-                if(vP != null){
-                    FormUsuario formUsuario = new FormUsuario(vP, true, personal);
-                    this.dispose();
-                    formUsuario.setVisible(true);
-                }
+
+            VentanaPrincipal vP = (VentanaPrincipal) SwingUtilities.getWindowAncestor(this);
+            if(vP != null){
+                FormUsuario formUsuario = new FormUsuario(vP, true, personal);
+                this.dispose();
+                formUsuario.setVisible(true);
             }
         }
+        
     }//GEN-LAST:event_btnContinuarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
@@ -267,14 +277,6 @@ public class FormPersonal extends javax.swing.JDialog {
         UtilsValidacion.validacionDigito(txtLegajo, lblError);
     }//GEN-LAST:event_txtLegajoKeyReleased
 
-    private void txtNombreKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreKeyReleased
-        UtilsValidacion.validacionCaracter(txtNombre, lblError);
-    }//GEN-LAST:event_txtNombreKeyReleased
-
-    private void txtApellidoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtApellidoKeyReleased
-        UtilsValidacion.validacionCaracter(txtApellido, lblError);
-    }//GEN-LAST:event_txtApellidoKeyReleased
-
     private void txtDniKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDniKeyReleased
         UtilsValidacion.validacionDigito(txtDni, lblError);
     }//GEN-LAST:event_txtDniKeyReleased
@@ -282,6 +284,14 @@ public class FormPersonal extends javax.swing.JDialog {
     private void txtTelefonoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTelefonoKeyReleased
         UtilsValidacion.validacionDigito(txtTelefono, lblError);
     }//GEN-LAST:event_txtTelefonoKeyReleased
+
+    private void txtNombreKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreKeyReleased
+        UtilsValidacion.validacionCaracter(txtNombre, lblError);
+    }//GEN-LAST:event_txtNombreKeyReleased
+
+    private void txtApellidoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtApellidoKeyReleased
+        UtilsValidacion.validacionCaracter(txtApellido, lblError);
+    }//GEN-LAST:event_txtApellidoKeyReleased
 
   
 

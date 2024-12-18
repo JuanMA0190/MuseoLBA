@@ -46,7 +46,7 @@ public class HistorialUsuario implements Serializable {
         this.fechaCreacion = fechaCreacion;
         this.fechaModificacion = null;
         this.fechaEliminacion = null;
-        this.fechaAlta = null;
+        this.fechaAlta = fechaAlta;
         this.fechaBaja = null;
         this.razonInactividad = "-";
         this.estado = estado;
@@ -76,7 +76,7 @@ public class HistorialUsuario implements Serializable {
         return usuario;
     }
     
-     public LocalDateTime getFechaCreacion() {
+    public LocalDateTime getFechaCreacion() {
         return fechaCreacion;
     }
     
