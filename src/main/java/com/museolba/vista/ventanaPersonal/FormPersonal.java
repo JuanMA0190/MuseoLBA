@@ -3,7 +3,8 @@ package com.museolba.vista.ventanaPersonal;
 import com.museolba.controlador.controladorUsuario.ControladorPersonal;
 import com.museolba.modelo.entidades.EstadoPersonal;
 import com.museolba.modelo.entidades.Personal;
-import com.museolba.utils.UtilsValidacion;
+import com.museolba.utils.DialogoUtils;
+import com.museolba.utils.UIValidacionUtils;
 import com.museolba.vista.ventanaPrincipal.VentanaPrincipal;
 import com.museolba.vista.ventanaUsuario.FormUsuario;
 import javax.swing.SwingUtilities;
@@ -261,15 +262,15 @@ public class FormPersonal extends javax.swing.JDialog {
 
     private void btnContinuarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnContinuarActionPerformed
         if (txtLegajo.getText().equals("") || txtNombre.getText().equals("") || txtApellido.getText().equals("") || txtDni.getText().equals("") || txtTelefono.getText().equals("")){
-            UtilsValidacion.MsjAlert("Rellene todos los campos para continuar!", 2, "Rellene todos los Campos");
+            DialogoUtils.mostrarMensaje("Rellene todos los campos para continuar!", 2, "Rellene todos los Campos");
             return;
         }
         
-        if (!UtilsValidacion.validarDNI(txtDni)) {
+        if (!UIValidacionUtils.validarCampoDNI(txtDni)) {
             return;
         }
 
-        if (!UtilsValidacion.validarTelefono(txtTelefono)) {
+        if (!UIValidacionUtils.validarCampoTelefono(txtTelefono)) {
             return;
         }
         
@@ -277,7 +278,7 @@ public class FormPersonal extends javax.swing.JDialog {
         boolean existe = controladorPersonal.verificarLegajo(legajo);
 
         if (existe){
-            UtilsValidacion.MsjAlert("El número de legajo ingresado ya existe!", 2, "Revise el campo");
+            DialogoUtils.mostrarMensaje("El número de legajo ingresado ya existe!", 2, "Revise el campo");
         }else{
             Personal personal = new Personal(
                 Long.parseLong(txtLegajo.getText()),
@@ -302,29 +303,29 @@ public class FormPersonal extends javax.swing.JDialog {
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void txtLegajoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtLegajoKeyReleased
-        UtilsValidacion.validacionDigito(txtLegajo, lblError);
+        UIValidacionUtils.validacionDigito(txtLegajo, lblError);
     }//GEN-LAST:event_txtLegajoKeyReleased
 
     private void txtDniKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDniKeyReleased
-        UtilsValidacion.validacionDigito(txtDni, lblError);
+        UIValidacionUtils.validacionDigito(txtDni, lblError);
     }//GEN-LAST:event_txtDniKeyReleased
 
     private void txtTelefonoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTelefonoKeyReleased
-        UtilsValidacion.validacionDigito(txtTelefono, lblError);
+        UIValidacionUtils.validacionDigito(txtTelefono, lblError);
     }//GEN-LAST:event_txtTelefonoKeyReleased
 
     private void txtNombreKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreKeyReleased
-        UtilsValidacion.validacionCaracter(txtNombre, lblError);
+        UIValidacionUtils.validacionCaracter(txtNombre, lblError);
     }//GEN-LAST:event_txtNombreKeyReleased
 
     private void txtApellidoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtApellidoKeyReleased
-        UtilsValidacion.validacionCaracter(txtApellido, lblError);
+        UIValidacionUtils.validacionCaracter(txtApellido, lblError);
     }//GEN-LAST:event_txtApellidoKeyReleased
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         if (txtNombre.getText().isEmpty() || txtApellido.getText().isEmpty() || 
             txtDni.getText().isEmpty() || txtTelefono.getText().isEmpty()) {
-            UtilsValidacion.MsjAlert("Por favor, complete todos los campos.", 1, "Validación");
+            DialogoUtils.mostrarMensaje("Por favor, complete todos los campos.", 1, "Validación");
             return;
         }
 
@@ -338,10 +339,10 @@ public class FormPersonal extends javax.swing.JDialog {
             personal.setEstado(EstadoPersonal.ACTIVO);
 
             controladorPersonal.editarPersonal(personal);
-            UtilsValidacion.MsjAlert("¡Datos actualizados correctamente!", 1, "Éxito");
+            DialogoUtils.mostrarMensaje("¡Datos actualizados correctamente!", 1, "Éxito");
             this.dispose();
         } catch (Exception e) {
-            UtilsValidacion.MsjAlert("Ocurrió un error al actualizar los datos: " + e.getMessage(), 2, "Error");
+            DialogoUtils.mostrarMensaje("Ocurrió un error al actualizar los datos: " + e.getMessage(), 2, "Error");
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
 

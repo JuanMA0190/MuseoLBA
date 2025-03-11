@@ -4,8 +4,13 @@ import com.museolba.controlador.controladorUsuario.ControladorHistorialUsuario;
 import com.museolba.controlador.controladorUsuario.ControladorUsuario;
 import com.museolba.modelo.entidades.EstadoPersonal;
 import com.museolba.modelo.entidades.Usuario;
-import com.museolba.utils.UtilsValidacion;
+import com.museolba.utils.ComponentesUtils;
+import com.museolba.utils.DialogoUtils;
 import com.museolba.vista.ventanaPrincipal.VentanaPrincipal;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import javax.persistence.NoResultException;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
@@ -20,13 +25,30 @@ public class VentanaUsuario extends javax.swing.JPanel {
         controladorHistorialUsuario = new ControladorHistorialUsuario();
         controladorUsuario = new ControladorUsuario();
         initComponents();
-        cargarTablaUsuario();
+        cargarTodosLosDatosTabla();
         cargarOpcionesFiltro();
         btnCargarTodosDatos.setVisible(false);
     }
     
-    private void cargarTablaUsuario(){
-       controladorHistorialUsuario.cargarTablaHistorial(tblUsuario, titulos);
+    private void cargarTablaUsuario(List<Object[]> datos, String[] titulos){
+       ComponentesUtils.cargarTabla(tblUsuario, datos, titulos, fila -> {
+        DateTimeFormatter formatterFecha = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        DateTimeFormatter formatterHora = DateTimeFormatter.ofPattern("HH:mm:ss");
+        
+            for (int i = 0; i < fila.length; i++) {
+                if (fila[i] instanceof LocalDateTime) {
+                    LocalDateTime fecha = (LocalDateTime) fila[i];
+                    String fechaFormateada = fecha.format(formatterFecha);
+                    String horaFormateada = fecha.format(formatterHora);
+                    fila[i] = fechaFormateada + " " + horaFormateada;
+                }
+            }
+            return fila;
+        });
+
+        if (datos.isEmpty()) {
+            DialogoUtils.mostrarMensaje("No se encontraron resultados para el filtro y término proporcionados.", 1, "Sin Resultados");
+        }
     }
     
     private void cargarOpcionesFiltro() {
@@ -244,13 +266,42 @@ public class VentanaUsuario extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        controladorHistorialUsuario.buscarYMostrarResultados((String) cmbFiltro.getSelectedItem(), txtBuscar.getText().trim(), tblUsuario, titulos);
-        txtBuscar.setText("");
-        btnCargarTodosDatos.setVisible(true);
+        try{
+            List<Object[]> datos = controladorHistorialUsuario.buscarYMostrarResultados((String) cmbFiltro.getSelectedItem(), txtBuscar.getText().trim());
+
+            // Modificar el mapper para formatear las fechas
+            ComponentesUtils.cargarTabla(tblUsuario, datos, titulos, fila -> {
+                // Suponiendo que los índices de las fechas son los siguientes
+                DateTimeFormatter formatterFecha = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                DateTimeFormatter formatterHora = DateTimeFormatter.ofPattern("HH:mm:ss");
+
+                // Aquí se formatean las fechas (índices de las fechas en el resultado de la consulta)
+                for (int i = 0; i < fila.length; i++) {
+                    if (fila[i] instanceof LocalDateTime) {
+                        // Si es una fecha, se formatea
+                        LocalDateTime fecha = (LocalDateTime) fila[i];
+                        String fechaFormateada = fecha.format(formatterFecha);
+                        String horaFormateada = fecha.format(formatterHora);
+                        // Si la columna corresponde a una fecha, mostramos fecha y hora
+                        fila[i] = fechaFormateada + " " + horaFormateada;
+                    }
+                }
+                return fila;
+            });
+            txtBuscar.setText("");
+            btnCargarTodosDatos.setVisible(true);
+        }catch (NoResultException e){
+            DialogoUtils.mostrarMensaje(e.getMessage(), 1, "No se pudo obtener resultados.");
+        }
     }//GEN-LAST:event_btnBuscarActionPerformed
 
+    private void cargarTodosLosDatosTabla(){
+        List<Object[]> datos = controladorHistorialUsuario.obtenerTodosLosHistorialUsuarios();
+        cargarTablaUsuario(datos, titulos);
+    }
+    
     private void btnCargarTodosDatosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCargarTodosDatosActionPerformed
-        controladorHistorialUsuario.cargarTablaHistorial(tblUsuario, titulos);
+        cargarTodosLosDatosTabla();
         btnCargarTodosDatos.setVisible(false);
     }//GEN-LAST:event_btnCargarTodosDatosActionPerformed
 
@@ -269,13 +320,13 @@ public class VentanaUsuario extends javax.swing.JPanel {
                 if (opcion == JOptionPane.YES_OPTION) {
                     String mensaje = controladorUsuario.cambiarEstadoHistorialYUsuario( (long) tblUsuario.getValueAt(tblUsuario.getSelectedRow(), 0), "ELIMINADO: Usuario eliminado permanentemente.", 0);
                     JOptionPane.showMessageDialog(null, mensaje, "Resultado", JOptionPane.INFORMATION_MESSAGE);
-                    cargarTablaUsuario();
+                    cargarTodosLosDatosTabla();
                 } else {
                     JOptionPane.showMessageDialog(null, "Eliminación cancelada.", "Información", JOptionPane.INFORMATION_MESSAGE);
                 }
                 
             }else{
-                UtilsValidacion.MsjAlert("Debe seleccionar un usuario para eliminar!", 2, "Error");
+                DialogoUtils.mostrarMensaje("Debe seleccionar un usuario para eliminar!", 2, "Error");
             }
         }    
     }//GEN-LAST:event_btnEliminarActionPerformed
@@ -293,13 +344,13 @@ public class VentanaUsuario extends javax.swing.JPanel {
                     if(usuario != null){
                         FormUsuario formUsuario = new FormUsuario(vP, true, true, usuario);
                         formUsuario.setVisible(true);
-                        cargarTablaUsuario();
+                        cargarTodosLosDatosTabla();
                     }else{
-                        UtilsValidacion.MsjAlert("No se encontró el personal seleccionado.", 2, "Error");
+                        DialogoUtils.mostrarMensaje("No se encontró el personal seleccionado.", 2, "Error");
                     }     
                 }
             }else{
-                UtilsValidacion.MsjAlert("Debe seleccionar un usuario para Modificar!", 2, "Error");
+                DialogoUtils.mostrarMensaje("Debe seleccionar un usuario para Modificar!", 2, "Error");
             }
         }   
     }//GEN-LAST:event_btnModificarActionPerformed
@@ -311,10 +362,10 @@ public class VentanaUsuario extends javax.swing.JPanel {
                 long nLegajo = (long) tblUsuario.getValueAt(filaSeleccionada, 0);
                 Usuario usuario = controladorUsuario.obtenerUsuario(nLegajo);
                 if(usuario != null){
-                    UtilsValidacion.MsjAlert(controladorUsuario.cambiarEstadoHistorialYUsuario(nLegajo, "-", 1),1,"Atencion");
-                    cargarTablaUsuario();
+                    DialogoUtils.mostrarMensaje(controladorUsuario.cambiarEstadoHistorialYUsuario(nLegajo, "-", 1),1,"Atencion");
+                    cargarTodosLosDatosTabla();
                 }else{
-                    UtilsValidacion.MsjAlert("No se encontró el personal seleccionado.", 2, "Error");
+                    DialogoUtils.mostrarMensaje("No se encontró el personal seleccionado.", 2, "Error");
                 } 
             }
         }    
@@ -332,9 +383,9 @@ public class VentanaUsuario extends javax.swing.JPanel {
                     if(usuario != null){
                         FormBaja formBaja = new FormBaja(vP, true, nLegajo);
                         formBaja.setVisible(true);
-                        cargarTablaUsuario();
+                        cargarTodosLosDatosTabla();
                     }else{
-                        UtilsValidacion.MsjAlert("No se encontró el personal seleccionado.", 2, "Error");
+                        DialogoUtils.mostrarMensaje("No se encontró el personal seleccionado.", 2, "Error");
                     } 
                 }    
             }

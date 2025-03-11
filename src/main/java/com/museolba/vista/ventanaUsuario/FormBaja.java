@@ -1,8 +1,7 @@
 package com.museolba.vista.ventanaUsuario;
 
 import com.museolba.controlador.controladorUsuario.ControladorUsuario;
-import com.museolba.utils.UtilsValidacion;
-
+import com.museolba.utils.DialogoUtils;
 
 public class FormBaja extends javax.swing.JDialog {
    
@@ -147,10 +146,10 @@ public class FormBaja extends javax.swing.JDialog {
 
     private void btnFinalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFinalizarActionPerformed
         if(txtRazon.getText().isEmpty()){
-             UtilsValidacion.MsjAlert("Debe rellenar todos los campos para continuar", 2, "Error");
+             DialogoUtils.mostrarMensaje("Debe rellenar todos los campos para continuar", 2, "Error");
         }else{
             String operacion = controladorUsuario.cambiarEstadoHistorialYUsuario(nLegajo , txtRazon.getText(), 2);
-            UtilsValidacion.MsjAlert(operacion, 1, "Informacion");
+            DialogoUtils.mostrarMensaje(operacion, 1, "Informacion");
             this.dispose();
         }
     }//GEN-LAST:event_btnFinalizarActionPerformed

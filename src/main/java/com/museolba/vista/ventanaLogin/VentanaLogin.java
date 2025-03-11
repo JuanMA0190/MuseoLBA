@@ -3,7 +3,7 @@ package com.museolba.vista.ventanaLogin;
 import com.museolba.controlador.controladorLogin.ControladorLogin;
 import com.museolba.modelo.entidades.EstadoPersonal;
 import com.museolba.modelo.entidades.Usuario;
-import com.museolba.utils.UtilsValidacion;
+import com.museolba.utils.DialogoUtils;
 import com.museolba.vista.ventanaPrincipal.VentanaPrincipal;
 import java.awt.event.KeyEvent;
 
@@ -22,7 +22,7 @@ public class VentanaLogin extends javax.swing.JFrame {
         String contraseniaUsuario = new String(txtContrasenia.getPassword()).trim();
 
         if (nombreUsuario.equals("") || contraseniaUsuario.equals("")) {
-            UtilsValidacion.MsjAlert("Rellene todos los campos para ingresar!", 2, "Campos vacíos");
+            DialogoUtils.mostrarMensaje("Rellene todos los campos para ingresar!", 2, "Campos vacíos");
             return;
         }
 
@@ -30,7 +30,7 @@ public class VentanaLogin extends javax.swing.JFrame {
 
         if (usuario != null) {
             if (usuario.getEstado() == EstadoPersonal.INACTIVO) {
-                UtilsValidacion.MsjAlert("El usuario está inactivo. Contacte al administrador.", 2, "Usuario inactivo");
+                DialogoUtils.mostrarMensaje("El usuario está inactivo. Contacte al administrador.", 2, "Usuario inactivo");
                 return;
             }
 
@@ -41,7 +41,7 @@ public class VentanaLogin extends javax.swing.JFrame {
             txtUsuario.setText("");
             txtUsuario.requestFocus();
             txtContrasenia.setText("");
-            UtilsValidacion.MsjAlert("Contraseña o Usuario incorrectos!", 2, "Credenciales incorrectas");
+            DialogoUtils.mostrarMensaje("Contraseña o Usuario incorrectos!", 2, "Credenciales incorrectas");
         }
     }
 

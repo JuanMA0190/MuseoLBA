@@ -4,11 +4,9 @@ import com.museolba.modelo.dao.usuarioDAO.HistorialUsuarioDAOImpl;
 import com.museolba.modelo.entidades.EstadoPersonal;
 import com.museolba.modelo.entidades.HistorialUsuario;
 import com.museolba.modelo.jpaController.HistorialUsuarioJpaController;
-import com.museolba.utils.UtilsValidacion;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
-import javax.swing.JTable;
+import javax.persistence.NoResultException;
 
 
 public class ControladorHistorialUsuario{
@@ -29,69 +27,25 @@ public class ControladorHistorialUsuario{
         return historialUsuarioJpaController.findHistorialUsuario(id);
     }
     
-    public List<HistorialUsuario> obtenerTodosLosHistorialUsuarios() {
-        return historialUsuarioJpaController.findAll();
+    public List<Object[]> obtenerTodosLosHistorialUsuarios() {
+        return historialUsuarioDAO.obtenerHistorialesConDetalles();
     }
     
-    public void cargarTablaHistorial(JTable tabla, String[] titulos) {
-        List<Object[]> datos = historialUsuarioDAO.obtenerHistorialesConDetalles();
-
-        // Modificar el mapper para formatear las fechas
-        UtilsValidacion.cargarTabla(tabla, datos, titulos, fila -> {
-            // Suponiendo que los índices de las fechas son los siguientes
-            DateTimeFormatter formatterFecha = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            DateTimeFormatter formatterHora = DateTimeFormatter.ofPattern("HH:mm:ss");
-
-            // Aquí se formatean las fechas (índices de las fechas en el resultado de la consulta)
-            for (int i = 0; i < fila.length; i++) {
-                if (fila[i] instanceof LocalDateTime) {
-                    // Si es una fecha, se formatea
-                    LocalDateTime fecha = (LocalDateTime) fila[i];
-                    String fechaFormateada = fecha.format(formatterFecha);
-                    String horaFormateada = fecha.format(formatterHora);
-                    // Si la columna corresponde a una fecha, mostramos fecha y hora
-                    fila[i] = fechaFormateada + " " + horaFormateada;
-                }
-            }
-            return fila;
-        });
-
-        if (datos.isEmpty()) {
-            UtilsValidacion.MsjAlert("No se encontraron resultados para el filtro y término proporcionados.", 1, "Sin Resultados");
-        }
-    }
-    
-    public void buscarYMostrarResultados(String filtro, String termino, JTable tabla, String[] titulos) {
+    public List<Object[]> buscarYMostrarResultados(String filtro, String termino) {
         if (termino.isEmpty()) {
             //UtilsValidacion.MsjAlert("Por favor, ingrese un término de búsqueda.", 2, "Búsqueda Vacía");
-            return;
+            throw new NoResultException("Por favor, ingrese un término de búsqueda.");
         }
         
         List<Object[]> datos = historialUsuarioDAO.buscarPorFiltro(filtro, termino);
         
-        // Modificar el mapper para formatear las fechas
-        UtilsValidacion.cargarTabla(tabla, datos, titulos, fila -> {
-            // Suponiendo que los índices de las fechas son los siguientes
-            DateTimeFormatter formatterFecha = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            DateTimeFormatter formatterHora = DateTimeFormatter.ofPattern("HH:mm:ss");
-
-            // Aquí se formatean las fechas (índices de las fechas en el resultado de la consulta)
-            for (int i = 0; i < fila.length; i++) {
-                if (fila[i] instanceof LocalDateTime) {
-                    // Si es una fecha, se formatea
-                    LocalDateTime fecha = (LocalDateTime) fila[i];
-                    String fechaFormateada = fecha.format(formatterFecha);
-                    String horaFormateada = fecha.format(formatterHora);
-                    // Si la columna corresponde a una fecha, mostramos fecha y hora
-                    fila[i] = fechaFormateada + " " + horaFormateada;
-                }
-            }
-            return fila;
-        });
+        
         if (datos.isEmpty()) {
             //UtilsValidacion.MsjAlert("No se encontraron resultados para el filtro y término proporcionados.", 1, "Sin Resultados");
-            throw new NullPointerException();
+            throw new NoResultException("No se encontraron resultados para el filtro y término proporcionados.");
         }
+        
+        return datos;
     }
     
     public String actualizarHistorial(long nLegajo, LocalDateTime fecha, EstadoPersonal estado, String razon){

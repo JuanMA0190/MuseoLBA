@@ -1,11 +1,9 @@
 package com.museolba.vista.ventanaPersonal;
 
-import com.museolba.controlador.controladorUsuario.ControladorHistorialUsuario;
 import com.museolba.controlador.controladorUsuario.ControladorPersonal;
-import com.museolba.modelo.entidades.EstadoPersonal;
-import com.museolba.modelo.entidades.HistorialUsuario;
 import com.museolba.modelo.entidades.Personal;
-import com.museolba.utils.UtilsValidacion;
+import com.museolba.utils.ComponentesUtils;
+import com.museolba.utils.DialogoUtils;
 import com.museolba.vista.ventanaPrincipal.VentanaPrincipal;
 import java.util.List;
 import javax.persistence.NoResultException;
@@ -28,9 +26,9 @@ public class VentanaPersonal extends javax.swing.JPanel {
     private void cargarTablaPersonal(){
         try {
          List<Object[]> datosPersonal = controladorPersonal.obtenerDatosPersonal();
-         UtilsValidacion.cargarTabla(tblPersonal, datosPersonal, titulos, fila -> fila);
+            ComponentesUtils.cargarTabla(tblPersonal, datosPersonal, titulos, fila -> fila);
         } catch (NoResultException e) {
-         UtilsValidacion.MsjAlert(e.getMessage(), 1, "Sin Resultados");
+         DialogoUtils.mostrarMensaje(e.getMessage(), 1, "Sin Resultados");
          // Opcionalmente limpiar la tabla o realizar otras acciones en la GUI
         }
     }
@@ -240,11 +238,11 @@ public class VentanaPersonal extends javax.swing.JPanel {
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         try{
             List<Object[]> datosPersonal= controladorPersonal.buscarYMostrarResultados((String) cmbFiltro.getSelectedItem(), txtBuscar.getText().trim());
-            UtilsValidacion.cargarTabla(tblPersonal, datosPersonal, titulos, fila -> fila);
+            ComponentesUtils.cargarTabla(tblPersonal, datosPersonal, titulos, fila -> fila);
             txtBuscar.setText("");
             btnCargarTodosDatos.setVisible(true);
         }catch(NoResultException e){
-            UtilsValidacion.MsjAlert(e.getMessage(), 1, "Sin Resultados");
+            DialogoUtils.mostrarMensaje(e.getMessage(), 1, "Sin Resultados");
         }
         
         
@@ -265,11 +263,11 @@ public class VentanaPersonal extends javax.swing.JPanel {
                         formPersonal.setVisible(true);
                         cargarTablaPersonal();
                     }else{
-                        UtilsValidacion.MsjAlert("No se encontró el personal seleccionado.", 1, "Error");
+                        DialogoUtils.mostrarMensaje("No se encontró el personal seleccionado.", 1, "Error");
                     }     
                 }
             }else{
-                UtilsValidacion.MsjAlert("Debe seleccionar un usuario para Modificar!", 1, "Error");
+                DialogoUtils.mostrarMensaje("Debe seleccionar un usuario para Modificar!", 1, "Error");
             }
         }   
         

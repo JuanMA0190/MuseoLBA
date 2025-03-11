@@ -7,7 +7,8 @@ import com.museolba.modelo.entidades.HistorialUsuario;
 import com.museolba.modelo.entidades.Personal;
 import com.museolba.modelo.entidades.RolUsuario;
 import com.museolba.modelo.entidades.Usuario;
-import com.museolba.utils.UtilsValidacion;
+import com.museolba.utils.ComponentesUtils;
+import com.museolba.utils.DialogoUtils;
 import java.time.LocalDateTime;
 
 
@@ -20,7 +21,7 @@ public class FormUsuario extends javax.swing.JDialog {
     public FormUsuario(java.awt.Frame parent, boolean modal, Personal personal, boolean editable, Usuario usuario) {
         super(parent, modal);
         initComponents();
-        UtilsValidacion.cargarComboBox(cmbRol, RolUsuario.class);
+        ComponentesUtils.cargarComboBox(cmbRol, RolUsuario.class);
         controladorHistorialUsuario = new ControladorHistorialUsuario();
         controladorUsuario = new ControladorUsuario();
         this.personal = personal;
@@ -35,7 +36,7 @@ public class FormUsuario extends javax.swing.JDialog {
     public FormUsuario(java.awt.Frame parent, boolean modal,boolean editable, Usuario usuario) {
         super(parent, modal);
         initComponents();
-        UtilsValidacion.cargarComboBox(cmbRol, RolUsuario.class);
+        ComponentesUtils.cargarComboBox(cmbRol, RolUsuario.class);
         controladorHistorialUsuario = new ControladorHistorialUsuario();
         controladorUsuario = new ControladorUsuario();
         this.usuario = usuario;
@@ -226,12 +227,12 @@ public class FormUsuario extends javax.swing.JDialog {
         String resultado = "";
 
         if (txtNombreUsuario.getText().trim().isEmpty() || txtContrasenia.getText().trim().isEmpty()) {
-            UtilsValidacion.MsjAlert("Rellene todos los campos para continuar!", 2, "Rellene todos los Campos");
+            DialogoUtils.mostrarMensaje("Rellene todos los campos para continuar!", 2, "Rellene todos los Campos");
             return;
         }
 
         if (cmbRol.getSelectedItem() == null) {
-            UtilsValidacion.MsjAlert("Seleccione un rol para continuar!", 2, "Rol no seleccionado");
+            DialogoUtils.mostrarMensaje("Seleccione un rol para continuar!", 2, "Rol no seleccionado");
             return;
         }
 
@@ -263,19 +264,19 @@ public class FormUsuario extends javax.swing.JDialog {
                 
                 controladorHistorialUsuario.crearHistorialUsuario(historialUsuario);
                 
-                UtilsValidacion.MsjAlert(resultado, 1, "Éxito");
+                DialogoUtils.mostrarMensaje(resultado, 1, "Éxito");
                 this.dispose();
             } else {
-                UtilsValidacion.MsjAlert(resultado, 2, "Error");
+                DialogoUtils.mostrarMensaje(resultado, 2, "Error");
             }
         } catch (Exception e) {
-            UtilsValidacion.MsjAlert("Error al crear usuario: " + e.getMessage(), 2, "Error");
+            DialogoUtils.mostrarMensaje("Error al crear usuario: " + e.getMessage(), 2, "Error");
         }
     }//GEN-LAST:event_btnFinalizarActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         if (txtNombreUsuario.getText().trim().isEmpty() || txtContrasenia.getText().trim().isEmpty()) {
-            UtilsValidacion.MsjAlert("Por favor, complete todos los campos.", 1, "Validación");
+            DialogoUtils.mostrarMensaje("Por favor, complete todos los campos.", 1, "Validación");
             return;
         }
 
@@ -286,10 +287,10 @@ public class FormUsuario extends javax.swing.JDialog {
 
             // Llama al controlador para editar el usuario
             controladorUsuario.editarUsuario(usuario);
-            UtilsValidacion.MsjAlert("¡Usuario actualizado correctamente!", 0, "Éxito");
+            DialogoUtils.mostrarMensaje("¡Usuario actualizado correctamente!", 0, "Éxito");
             this.dispose();
         } catch (Exception e) {
-            UtilsValidacion.MsjAlert("Error al actualizar el usuario: " + e.getMessage(), 2, "Error");
+            DialogoUtils.mostrarMensaje("Error al actualizar el usuario: " + e.getMessage(), 2, "Error");
         }   
     }//GEN-LAST:event_btnGuardarActionPerformed
 

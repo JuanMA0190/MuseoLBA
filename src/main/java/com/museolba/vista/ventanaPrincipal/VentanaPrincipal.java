@@ -1,7 +1,7 @@
 package com.museolba.vista.ventanaPrincipal;
 
 import com.museolba.modelo.entidades.Usuario;
-import com.museolba.utils.UtilsValidacion;
+import com.museolba.utils.DialogoUtils;
 import com.museolba.vista.ventanaActividades.VentanaActividades;
 import com.museolba.vista.ventanaLogin.VentanaLogin;
 import java.awt.BorderLayout;
@@ -29,7 +29,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 MenuPersonal menuPersonal= new MenuPersonal(this);
                 abrirContenido(menuPersonal, 270, 720, panelMenu);
             }
-            default -> UtilsValidacion.MsjAlert("Rol no conocido", 2, "Error");
+            default -> DialogoUtils.mostrarMensaje("Rol no conocido", 2, "Error");
         }
         
         //Cartel de bienvenida al usaurio
