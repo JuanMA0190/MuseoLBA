@@ -7,6 +7,7 @@ import com.museolba.vista.ventanaLogin.VentanaLogin;
 import java.awt.BorderLayout;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -19,15 +20,15 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         switch(usuario.getRolUsuario()){
             case JEFEDEDEPARTAMENTO -> {
                 MenuJefeDepartamento menuJefeDepto = new MenuJefeDepartamento(this);
-                abrirContenido(menuJefeDepto, 270, 720, panelMenu);
+                abrirContenido(menuJefeDepto, 290, 730, panelMenu);
             }
             case JEFEDEPERSONAL -> {    
                 MenuJefePersonal menuJefePersonal= new MenuJefePersonal(this);
-                abrirContenido(menuJefePersonal, 270, 720, panelMenu);
+                abrirContenido(menuJefePersonal, 290, 720, panelMenu);
             }
             case PERSONAL -> { 
                 MenuPersonal menuPersonal= new MenuPersonal(this);
-                abrirContenido(menuPersonal, 270, 720, panelMenu);
+                abrirContenido(menuPersonal, 290, 720, panelMenu);
             }
             default -> DialogoUtils.mostrarMensaje("Rol no conocido", 2, "Error");
         }
@@ -43,8 +44,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     
     public void actualizarFechaHora(){
         LocalDateTime ahora = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        lblFecha.setText("Fecha y hora: " + ahora.format(formatter));
+        //DateTimeFormatter formatter = DateTimeFormatter.ofPattern("E yyyy-MM-dd HH:mm:ss");
+        DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("EEEE dd 'de' MMMM yyyy", new Locale("es", "ES"));
+        DateTimeFormatter formatterClock = DateTimeFormatter.ofPattern("HH:mm:ss");
+        lblFecha.setText(ahora.format(formatterDate));
+        lblHora.setText(ahora.format(formatterClock));
     }
     
     public VentanaPrincipal() {
@@ -82,6 +86,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         lblFecha = new javax.swing.JLabel();
         lblBienvenida = new javax.swing.JLabel();
         btnCerrarSesion = new javax.swing.JButton();
+        lblHora = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
         panelContenido = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -90,7 +96,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         background.setBackground(new java.awt.Color(204, 204, 204));
 
         panelMenu.setBackground(new java.awt.Color(102, 0, 102));
-        panelMenu.setPreferredSize(new java.awt.Dimension(270, 431));
+        panelMenu.setPreferredSize(new java.awt.Dimension(275, 431));
 
         javax.swing.GroupLayout panelMenuLayout = new javax.swing.GroupLayout(panelMenu);
         panelMenu.setLayout(panelMenuLayout);
@@ -99,14 +105,14 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             .addGroup(panelMenuLayout.createSequentialGroup()
                 .addGap(48, 48, 48)
                 .addComponent(lblImagen)
-                .addContainerGap(222, Short.MAX_VALUE))
+                .addContainerGap(227, Short.MAX_VALUE))
         );
         panelMenuLayout.setVerticalGroup(
             panelMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelMenuLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblImagen, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(670, Short.MAX_VALUE))
         );
 
         panelInfo.setBackground(new java.awt.Color(102, 102, 102));
@@ -123,6 +129,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             }
         });
 
+        lblHora.setFont(new java.awt.Font("DejaVu Serif", 0, 18)); // NOI18N
+
         javax.swing.GroupLayout panelInfoLayout = new javax.swing.GroupLayout(panelInfo);
         panelInfo.setLayout(panelInfoLayout);
         panelInfoLayout.setHorizontalGroup(
@@ -131,12 +139,14 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(panelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelInfoLayout.createSequentialGroup()
-                        .addComponent(lblBienvenida)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(panelInfoLayout.createSequentialGroup()
                         .addComponent(lblFecha)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnCerrarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(lblHora)
+                        .addGap(75, 75, 75)
+                        .addComponent(btnCerrarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panelInfoLayout.createSequentialGroup()
+                        .addComponent(lblBienvenida)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         panelInfoLayout.setVerticalGroup(
@@ -144,14 +154,18 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             .addGroup(panelInfoLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblBienvenida, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnCerrarSesion)
                     .addComponent(lblFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnCerrarSesion))
-                .addContainerGap(15, Short.MAX_VALUE))
+                    .addComponent(lblHora, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
+        jPanel1.setBackground(new java.awt.Color(204, 204, 204));
+
         panelContenido.setBackground(new java.awt.Color(204, 204, 204));
+        panelContenido.setPreferredSize(new java.awt.Dimension(738, 572));
 
         javax.swing.GroupLayout panelContenidoLayout = new javax.swing.GroupLayout(panelContenido);
         panelContenido.setLayout(panelContenidoLayout);
@@ -164,6 +178,22 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             .addGap(0, 572, Short.MAX_VALUE)
         );
 
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(107, Short.MAX_VALUE)
+                .addComponent(panelContenido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(103, 103, 103))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(panelContenido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout backgroundLayout = new javax.swing.GroupLayout(background);
         background.setLayout(backgroundLayout);
         backgroundLayout.setHorizontalGroup(
@@ -171,10 +201,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             .addGroup(backgroundLayout.createSequentialGroup()
                 .addComponent(panelMenu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(backgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(panelInfo, javax.swing.GroupLayout.DEFAULT_SIZE, 750, Short.MAX_VALUE)
+                    .addComponent(panelInfo, javax.swing.GroupLayout.DEFAULT_SIZE, 960, Short.MAX_VALUE)
                     .addGroup(backgroundLayout.createSequentialGroup()
                         .addGap(6, 6, 6)
-                        .addComponent(panelContenido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addContainerGap())))
         );
         backgroundLayout.setVerticalGroup(
@@ -183,8 +213,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             .addGroup(backgroundLayout.createSequentialGroup()
                 .addComponent(panelInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelContenido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(107, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -213,8 +243,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel background;
     private javax.swing.JButton btnCerrarSesion;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblBienvenida;
     private javax.swing.JLabel lblFecha;
+    private javax.swing.JLabel lblHora;
     private javax.swing.JLabel lblImagen;
     private javax.swing.JPanel panelContenido;
     private javax.swing.JPanel panelInfo;
