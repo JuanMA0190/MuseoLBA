@@ -1,6 +1,7 @@
 package com.museolba.controlador.controladorLogin;
 
 import com.museolba.modelo.dao.loginDAO.LoginDAOImpl;
+import com.museolba.modelo.entidades.EstadoPersonal;
 import com.museolba.modelo.entidades.Usuario;
 
 
@@ -16,7 +17,13 @@ public class ControladorLogin {
             contrasenia == null || contrasenia.trim().isEmpty()) {
             return null;
         }
-    
-        return loginDAO.verificarCredenciales(nombreUsuario, contrasenia);
+
+        Usuario usuario = loginDAO.verificarCredenciales(nombreUsuario, contrasenia);
+
+        if (usuario != null && usuario.getEstado() != EstadoPersonal.ACTIVO) {
+            return usuario; 
+        }
+
+        return usuario;
     }
 }

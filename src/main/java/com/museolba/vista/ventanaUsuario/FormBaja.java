@@ -1,13 +1,22 @@
-package com.museolba.vista.ventanaPersonal;
+package com.museolba.vista.ventanaUsuario;
+
+import com.museolba.controlador.controladorUsuario.ControladorUsuario;
+import com.museolba.utils.UtilsValidacion;
 
 
 public class FormBaja extends javax.swing.JDialog {
-
    
-    public FormBaja(java.awt.Frame parent, boolean modal) {
+    private final long nLegajo;
+    ControladorUsuario controladorUsuario = null;
+   
+    public FormBaja(java.awt.Frame parent, boolean modal, long numeroLegajo) {
         super(parent, modal);
+        this.nLegajo = numeroLegajo;
+        controladorUsuario = new ControladorUsuario();
         initComponents();
     }
+    
+    
 
     
     @SuppressWarnings("unchecked")
@@ -18,12 +27,10 @@ public class FormBaja extends javax.swing.JDialog {
         lblTitulo1 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         lblTitulo4 = new javax.swing.JLabel();
-        lblTitulo3 = new javax.swing.JLabel();
         btnFinalizar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
-        jDateChooser1 = new com.toedter.calendar.JDateChooser();
+        txtRazon = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -41,19 +48,25 @@ public class FormBaja extends javax.swing.JDialog {
         lblTitulo4.setForeground(new java.awt.Color(102, 0, 102));
         lblTitulo4.setText("Motivo de Inactividad");
 
-        lblTitulo3.setFont(new java.awt.Font("DejaVu Serif", 0, 18)); // NOI18N
-        lblTitulo3.setForeground(new java.awt.Color(102, 0, 102));
-        lblTitulo3.setText("Fecha de Alta");
-
         btnFinalizar.setText("Finalizar");
         btnFinalizar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnFinalizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFinalizarActionPerformed(evt);
+            }
+        });
 
         btnCancelar.setText("Cancelar");
         btnCancelar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        txtRazon.setColumns(20);
+        txtRazon.setRows(5);
+        jScrollPane1.setViewportView(txtRazon);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -68,24 +81,18 @@ public class FormBaja extends javax.swing.JDialog {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(43, 43, 43)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblTitulo4)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 347, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblTitulo3)
-                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(211, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 432, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblTitulo4))
+                .addContainerGap(126, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(26, 26, 26)
                 .addComponent(lblTitulo4, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
-                .addComponent(lblTitulo3, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 100, Short.MAX_VALUE)
                 .addComponent(btnFinalizar, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -134,18 +141,30 @@ public class FormBaja extends javax.swing.JDialog {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void btnFinalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFinalizarActionPerformed
+        if(txtRazon.getText().isEmpty()){
+             UtilsValidacion.MsjAlert("Debe rellenar todos los campos para continuar", 2, "Error");
+        }else{
+            String operacion = controladorUsuario.cambiarEstadoHistorialYUsuario(nLegajo , txtRazon.getText(), 2);
+            UtilsValidacion.MsjAlert(operacion, 1, "Informacion");
+            this.dispose();
+        }
+    }//GEN-LAST:event_btnFinalizarActionPerformed
+
   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnFinalizar;
-    private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JLabel lblTitulo1;
-    private javax.swing.JLabel lblTitulo3;
     private javax.swing.JLabel lblTitulo4;
+    private javax.swing.JTextArea txtRazon;
     // End of variables declaration//GEN-END:variables
 }

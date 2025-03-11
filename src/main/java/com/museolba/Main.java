@@ -2,6 +2,7 @@ package com.museolba;
 
 import com.formdev.flatlaf.intellijthemes.FlatDraculaIJTheme;
 import com.museolba.vista.ventanaLogin.VentanaLogin;
+import com.museolba.vista.ventanaPersonal.VentanaPersonal;
 import com.museolba.vista.ventanaPrincipal.VentanaPrincipal;
 import javax.swing.UIManager;
 
@@ -16,6 +17,9 @@ public class Main {
           //  UIManager.put( "TextComponent.arc", 999 );
             UIManager.put( "ScrollBar.showButtons", true );
             UIManager.setLookAndFeel(new FlatDraculaIJTheme());
+
+            VentanaLogin vl = new VentanaLogin();
+            vl.setVisible(true);
         } catch (Exception ex) {
             System.err.println("Failed to initialize LaF");
         }
@@ -23,8 +27,7 @@ public class Main {
         VentanaPrincipal vl = new VentanaPrincipal();
         vl.setVisible(true);*/
         
-        VentanaLogin vl = new VentanaLogin();
-        vl.setVisible(true);
+
         
     }
 }

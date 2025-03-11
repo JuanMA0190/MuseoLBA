@@ -1,14 +1,45 @@
 package com.museolba.vista.ventanaPersonal;
 
+import com.museolba.controlador.controladorUsuario.ControladorHistorialUsuario;
+import com.museolba.controlador.controladorUsuario.ControladorPersonal;
+import com.museolba.modelo.entidades.EstadoPersonal;
+import com.museolba.modelo.entidades.HistorialUsuario;
+import com.museolba.modelo.entidades.Personal;
+import com.museolba.utils.UtilsValidacion;
 import com.museolba.vista.ventanaPrincipal.VentanaPrincipal;
+import java.util.List;
+import javax.persistence.NoResultException;
 import javax.swing.SwingUtilities;
 
 
 public class VentanaPersonal extends javax.swing.JPanel {
 
+   ControladorPersonal controladorPersonal = null;
+   String[] titulos = {"Número Legajo", "Nombre", "Apellido", "DNI", "Número Teléfono", "Estado"};
    
     public VentanaPersonal() {
+        controladorPersonal = new ControladorPersonal();
         initComponents();
+        cargarTablaPersonal();
+        cargarOpcionesFiltro();
+        btnCargarTodosDatos.setVisible(false);
+    }
+    
+    private void cargarTablaPersonal(){
+        try {
+         List<Object[]> datosPersonal = controladorPersonal.obtenerDatosPersonal();
+         UtilsValidacion.cargarTabla(tblPersonal, datosPersonal, titulos, fila -> fila);
+        } catch (NoResultException e) {
+         UtilsValidacion.MsjAlert(e.getMessage(), 1, "Sin Resultados");
+         // Opcionalmente limpiar la tabla o realizar otras acciones en la GUI
+        }
+    }
+    
+    private void cargarOpcionesFiltro() {
+        cmbFiltro.removeAllItems();
+        cmbFiltro.addItem("Nombre");
+        cmbFiltro.addItem("Estado");
+        cmbFiltro.addItem("Num Legajo");
     }
 
     
@@ -22,13 +53,13 @@ public class VentanaPersonal extends javax.swing.JPanel {
         tblPersonal = new javax.swing.JTable();
         btnRegistrar = new javax.swing.JButton();
         btnModificar = new javax.swing.JButton();
-        btnEliminar = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         txtBuscar = new javax.swing.JTextField();
-        cmbOpcion = new javax.swing.JComboBox<>();
+        cmbFiltro = new javax.swing.JComboBox<>();
         btnBuscar = new javax.swing.JButton();
         lblTitulo1 = new javax.swing.JLabel();
         lblTitulo2 = new javax.swing.JLabel();
+        btnCargarTodosDatos = new javax.swing.JButton();
 
         setMinimumSize(new java.awt.Dimension(738, 572));
         setPreferredSize(new java.awt.Dimension(738, 572));
@@ -63,18 +94,25 @@ public class VentanaPersonal extends javax.swing.JPanel {
 
         btnModificar.setText("Modificar");
         btnModificar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-
-        btnEliminar.setText("Eliminar");
-        btnEliminar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnModificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModificarActionPerformed(evt);
+            }
+        });
 
         jPanel2.setBackground(new java.awt.Color(204, 204, 204));
         jPanel2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 0, 102), 1, true));
 
-        cmbOpcion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbFiltro.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         btnBuscar.setText("Buscar");
         btnBuscar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnBuscar.setPreferredSize(new java.awt.Dimension(90, 38));
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarActionPerformed(evt);
+            }
+        });
 
         lblTitulo1.setFont(new java.awt.Font("DejaVu Serif", 0, 18)); // NOI18N
         lblTitulo1.setForeground(new java.awt.Color(102, 0, 102));
@@ -101,7 +139,7 @@ public class VentanaPersonal extends javax.swing.JPanel {
                         .addComponent(lblTitulo1, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(cmbOpcion, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmbFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblTitulo2, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(33, 33, 33))
         );
@@ -114,11 +152,20 @@ public class VentanaPersonal extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cmbOpcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
+
+        btnCargarTodosDatos.setText("Volver a Cargar Todos los Datos");
+        btnCargarTodosDatos.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnCargarTodosDatos.setPreferredSize(new java.awt.Dimension(90, 38));
+        btnCargarTodosDatos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCargarTodosDatosActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -130,17 +177,16 @@ public class VentanaPersonal extends javax.swing.JPanel {
                     .addComponent(jScrollPane1)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(btnRegistrar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 3, Short.MAX_VALUE)))
+                            .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnCargarTodosDatos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 3, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnRegistrar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -150,7 +196,9 @@ public class VentanaPersonal extends javax.swing.JPanel {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnCargarTodosDatos, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addContainerGap(18, Short.MAX_VALUE)
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -159,8 +207,7 @@ public class VentanaPersonal extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnRegistrar, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -179,18 +226,62 @@ public class VentanaPersonal extends javax.swing.JPanel {
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
         VentanaPrincipal vP = (VentanaPrincipal) SwingUtilities.getWindowAncestor(this);
         if(vP != null){
-            FormPersonal formPersonal = new FormPersonal(vP, true);
+            FormPersonal formPersonal = new FormPersonal(vP, true, false, null);
             formPersonal.setVisible(true);
+            cargarTablaPersonal();
         }
     }//GEN-LAST:event_btnRegistrarActionPerformed
+
+    private void btnCargarTodosDatosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCargarTodosDatosActionPerformed
+        this.cargarTablaPersonal();
+        btnCargarTodosDatos.setVisible(false);
+    }//GEN-LAST:event_btnCargarTodosDatosActionPerformed
+
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        try{
+            List<Object[]> datosPersonal= controladorPersonal.buscarYMostrarResultados((String) cmbFiltro.getSelectedItem(), txtBuscar.getText().trim());
+            UtilsValidacion.cargarTabla(tblPersonal, datosPersonal, titulos, fila -> fila);
+            txtBuscar.setText("");
+            btnCargarTodosDatos.setVisible(true);
+        }catch(NoResultException e){
+            UtilsValidacion.MsjAlert(e.getMessage(), 1, "Sin Resultados");
+        }
+        
+        
+    }//GEN-LAST:event_btnBuscarActionPerformed
+
+    private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
+        VentanaPrincipal vP = (VentanaPrincipal) SwingUtilities.getWindowAncestor(this);
+        if(tblPersonal.getRowCount()> 0){
+            if(tblPersonal.getSelectedRow()!=-1){
+                if(vP != null){
+                    int filaSeleccionada = tblPersonal.getSelectedRow();
+                    long nLegajo = (long) tblPersonal.getValueAt(filaSeleccionada, 0);
+                    
+                    Personal personal = controladorPersonal.obtenerPersonal(nLegajo);
+                    
+                    if(personal != null){
+                        FormPersonal formPersonal = new FormPersonal(vP, true, true, personal);
+                        formPersonal.setVisible(true);
+                        cargarTablaPersonal();
+                    }else{
+                        UtilsValidacion.MsjAlert("No se encontró el personal seleccionado.", 1, "Error");
+                    }     
+                }
+            }else{
+                UtilsValidacion.MsjAlert("Debe seleccionar un usuario para Modificar!", 1, "Error");
+            }
+        }   
+        
+    }//GEN-LAST:event_btnModificarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;
-    private javax.swing.JButton btnEliminar;
+    private javax.swing.JButton btnCargarTodosDatos;
     private javax.swing.JButton btnModificar;
     private javax.swing.JButton btnRegistrar;
-    private javax.swing.JComboBox<String> cmbOpcion;
+    private javax.swing.JComboBox<String> cmbFiltro;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;

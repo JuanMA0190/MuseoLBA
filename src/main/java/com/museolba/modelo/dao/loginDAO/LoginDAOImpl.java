@@ -14,11 +14,10 @@ public class LoginDAOImpl extends PersistenceJpaController implements LoginDAO{
         EntityManager em = getEmf().createEntityManager();
 
         try {
-            String queryStr = "SELECT u FROM Usuario u WHERE u.nombreUsuario = :nombreUsuario AND u.contrasenia = :contrasenia AND u.estado = :estado";
+            String queryStr = "SELECT u FROM Usuario u WHERE u.nombreUsuario = :nombreUsuario AND u.contrasenia = :contrasenia";
             Query query = em.createQuery(queryStr);
             query.setParameter("nombreUsuario", nombreUsuario);
             query.setParameter("contrasenia", contrasenia);
-            query.setParameter("estado", EstadoPersonal.ACTIVO); // Verifica que el estado sea ACTIVO
 
             return (Usuario) query.getSingleResult();
         } catch (Exception e) {

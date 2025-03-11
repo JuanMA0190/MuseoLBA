@@ -1,6 +1,7 @@
 package com.museolba.vista.ventanaPersonal;
 
 import com.museolba.controlador.controladorUsuario.ControladorPersonal;
+import com.museolba.modelo.entidades.EstadoPersonal;
 import com.museolba.modelo.entidades.Personal;
 import com.museolba.utils.UtilsValidacion;
 import com.museolba.vista.ventanaPrincipal.VentanaPrincipal;
@@ -11,10 +12,24 @@ import javax.swing.SwingUtilities;
 public class FormPersonal extends javax.swing.JDialog {
    ControladorPersonal controladorPersonal = null;
    
-    public FormPersonal(java.awt.Frame parent, boolean modal) {
+    public FormPersonal(java.awt.Frame parent, boolean modal, boolean editable, Personal personal) {
         super(parent, modal);
         controladorPersonal = new ControladorPersonal();
         initComponents();
+        btnGuardar.setVisible(false);
+        if(editable){
+            btnContinuar.setVisible(false);
+            btnGuardar.setVisible(true);
+            txtLegajo.setEditable(false);
+        }
+        
+        if (personal != null) {
+            txtLegajo.setText(String.valueOf(personal.getnLegajo()));
+            txtNombre.setText(personal.getNombre());
+            txtApellido.setText(personal.getApellido());
+            txtDni.setText(personal.getDni());
+            txtTelefono.setText(personal.getnTelefono());
+        }
     }
    
     
@@ -38,6 +53,7 @@ public class FormPersonal extends javax.swing.JDialog {
         btnContinuar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
         lblError = new javax.swing.JLabel();
+        btnGuardar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -119,6 +135,14 @@ public class FormPersonal extends javax.swing.JDialog {
 
         lblError.setForeground(new java.awt.Color(204, 0, 0));
 
+        btnGuardar.setText("Guardar");
+        btnGuardar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -152,6 +176,8 @@ public class FormPersonal extends javax.swing.JDialog {
                                         .addComponent(lblError))))))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnContinuar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))))
@@ -185,7 +211,9 @@ public class FormPersonal extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 95, Short.MAX_VALUE)
                 .addComponent(btnContinuar, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(13, 13, 13))
         );
 
@@ -261,7 +289,7 @@ public class FormPersonal extends javax.swing.JDialog {
 
             VentanaPrincipal vP = (VentanaPrincipal) SwingUtilities.getWindowAncestor(this);
             if(vP != null){
-                FormUsuario formUsuario = new FormUsuario(vP, true, personal);
+                FormUsuario formUsuario = new FormUsuario(vP, true, personal, false, null);
                 this.dispose();
                 formUsuario.setVisible(true);
             }
@@ -293,11 +321,36 @@ public class FormPersonal extends javax.swing.JDialog {
         UtilsValidacion.validacionCaracter(txtApellido, lblError);
     }//GEN-LAST:event_txtApellidoKeyReleased
 
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+        if (txtNombre.getText().isEmpty() || txtApellido.getText().isEmpty() || 
+            txtDni.getText().isEmpty() || txtTelefono.getText().isEmpty()) {
+            UtilsValidacion.MsjAlert("Por favor, complete todos los campos.", 1, "Validación");
+            return;
+        }
+
+        try {
+            Personal personal = new Personal();
+            personal.setnLegajo(Long.parseLong(txtLegajo.getText()));
+            personal.setNombre(txtNombre.getText());
+            personal.setApellido(txtApellido.getText());
+            personal.setDni(txtDni.getText());
+            personal.setnTelefono(txtTelefono.getText());
+            personal.setEstado(EstadoPersonal.ACTIVO);
+
+            controladorPersonal.editarPersonal(personal);
+            UtilsValidacion.MsjAlert("¡Datos actualizados correctamente!", 1, "Éxito");
+            this.dispose();
+        } catch (Exception e) {
+            UtilsValidacion.MsjAlert("Ocurrió un error al actualizar los datos: " + e.getMessage(), 2, "Error");
+        }
+    }//GEN-LAST:event_btnGuardarActionPerformed
+
   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnContinuar;
+    private javax.swing.JButton btnGuardar;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel lblError;
