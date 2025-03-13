@@ -3,6 +3,7 @@ package com.museolba.vista.ventanaUsuario;
 import com.museolba.controlador.controladorUsuario.ControladorHistorialUsuario;
 import com.museolba.controlador.controladorUsuario.ControladorUsuario;
 import com.museolba.modelo.entidades.EstadoPersonal;
+import com.museolba.modelo.entidades.RolUsuario;
 import com.museolba.modelo.entidades.Usuario;
 import com.museolba.utils.ComponentesUtils;
 import com.museolba.utils.DialogoUtils;
@@ -20,6 +21,7 @@ public class VentanaUsuario extends javax.swing.JPanel {
     ControladorUsuario controladorUsuario = null;
     String[] titulos = {"Número Legajo", "Nombre", "Rol", "Estado", "Fecha Creación", "Fecha Modificación",
                 "Fecha Eliminación", "Fecha Alta", "Fecha Baja", "Razon Inactividad"};
+    boolean isSelectedAOption = false;
    
     public VentanaUsuario() {
         controladorHistorialUsuario = new ControladorHistorialUsuario();
@@ -28,6 +30,8 @@ public class VentanaUsuario extends javax.swing.JPanel {
         cargarTodosLosDatosTabla();
         cargarOpcionesFiltro();
         btnCargarTodosDatos.setVisible(false);
+        cmbOpcion.setVisible(false);
+        
     }
     
     private void cargarTablaUsuario(List<Object[]> datos, String[] titulos){
@@ -70,6 +74,7 @@ public class VentanaUsuario extends javax.swing.JPanel {
         btnBuscar = new javax.swing.JButton();
         lblTitulo1 = new javax.swing.JLabel();
         lblTitulo2 = new javax.swing.JLabel();
+        cmbOpcion = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblUsuario = new javax.swing.JTable();
         btnModificar = new javax.swing.JButton();
@@ -89,6 +94,12 @@ public class VentanaUsuario extends javax.swing.JPanel {
 
         jPanel2.setBackground(new java.awt.Color(204, 204, 204));
         jPanel2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 0, 102), 1, true));
+
+        cmbFiltro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbFiltroActionPerformed(evt);
+            }
+        });
 
         btnBuscar.setText("Buscar");
         btnBuscar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -111,20 +122,18 @@ public class VentanaUsuario extends javax.swing.JPanel {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+            .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblTitulo1, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblTitulo1, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 78, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(cmbFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblTitulo2, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblTitulo2, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmbOpcion, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(33, 33, 33))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(166, 166, 166))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -137,7 +146,9 @@ public class VentanaUsuario extends javax.swing.JPanel {
                     .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cmbFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmbOpcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -267,7 +278,10 @@ public class VentanaUsuario extends javax.swing.JPanel {
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         try{
-            List<Object[]> datos = controladorHistorialUsuario.buscarYMostrarResultados((String) cmbFiltro.getSelectedItem(), txtBuscar.getText().trim());
+            if(isSelectedAOption)
+                txtBuscar.setText(cmbOpcion.getSelectedItem().toString());
+            
+            List<Object[]> datos = controladorHistorialUsuario.obtenerDatosUsuariosConTerminos((String) cmbFiltro.getSelectedItem(), txtBuscar.getText().trim());
 
             // Modificar el mapper para formatear las fechas
             ComponentesUtils.cargarTabla(tblUsuario, datos, titulos, fila -> {
@@ -292,6 +306,8 @@ public class VentanaUsuario extends javax.swing.JPanel {
             btnCargarTodosDatos.setVisible(true);
         }catch (NoResultException e){
             DialogoUtils.mostrarMensaje(e.getMessage(), 1, "No se pudo obtener resultados.");
+        }catch (IllegalArgumentException e){
+            DialogoUtils.mostrarMensaje(e.getMessage(), 1,"No se encontro el termino ingresado");
         }
     }//GEN-LAST:event_btnBuscarActionPerformed
 
@@ -326,7 +342,7 @@ public class VentanaUsuario extends javax.swing.JPanel {
                 }
                 
             }else{
-                DialogoUtils.mostrarMensaje("Debe seleccionar un usuario para eliminar!", 2, "Error");
+                DialogoUtils.mostrarMensaje("Debe seleccionar un usuario para eliminar!", 1, "Error");
             }
         }    
     }//GEN-LAST:event_btnEliminarActionPerformed
@@ -346,11 +362,11 @@ public class VentanaUsuario extends javax.swing.JPanel {
                         formUsuario.setVisible(true);
                         cargarTodosLosDatosTabla();
                     }else{
-                        DialogoUtils.mostrarMensaje("No se encontró el personal seleccionado.", 2, "Error");
+                        DialogoUtils.mostrarMensaje("No se encontró el personal seleccionado.", 1, "Atención");
                     }     
                 }
             }else{
-                DialogoUtils.mostrarMensaje("Debe seleccionar un usuario para Modificar!", 2, "Error");
+                DialogoUtils.mostrarMensaje("Debe seleccionar un usuario para Modificar!", 1, "Atención");
             }
         }   
     }//GEN-LAST:event_btnModificarActionPerformed
@@ -365,7 +381,7 @@ public class VentanaUsuario extends javax.swing.JPanel {
                     DialogoUtils.mostrarMensaje(controladorUsuario.cambiarEstadoHistorialYUsuario(nLegajo, "-", 1),1,"Atencion");
                     cargarTodosLosDatosTabla();
                 }else{
-                    DialogoUtils.mostrarMensaje("No se encontró el personal seleccionado.", 2, "Error");
+                    DialogoUtils.mostrarMensaje("No se encontró el personal seleccionado.", 1, "Atención");
                 } 
             }
         }    
@@ -385,7 +401,7 @@ public class VentanaUsuario extends javax.swing.JPanel {
                         formBaja.setVisible(true);
                         cargarTodosLosDatosTabla();
                     }else{
-                        DialogoUtils.mostrarMensaje("No se encontró el personal seleccionado.", 2, "Error");
+                        DialogoUtils.mostrarMensaje("No se encontró el personal seleccionado.", 1, "Atención");
                     } 
                 }    
             }
@@ -399,6 +415,32 @@ public class VentanaUsuario extends javax.swing.JPanel {
             actualizarBotones(estado);
         }
     }//GEN-LAST:event_tblUsuarioMouseClicked
+
+    private void cmbFiltroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbFiltroActionPerformed
+        String seleccion = (String) cmbFiltro.getSelectedItem();
+        cmbOpcion.removeAllItems();
+        switch (seleccion) {
+            case "Nombre" -> {
+                txtBuscar.setEditable(true);
+                cmbOpcion.setVisible(false);
+                cmbOpcion.removeAllItems();
+                isSelectedAOption = false;
+            }
+            case "Rol" -> {
+                txtBuscar.setEditable(false);
+                ComponentesUtils.cargarComboBox(cmbOpcion, RolUsuario.class);
+                cmbOpcion.setVisible(true);
+                isSelectedAOption = true;
+            }
+            case "Estado" -> {
+                txtBuscar.setEditable(false);
+                ComponentesUtils.cargarComboBox(cmbOpcion, EstadoPersonal.class);
+                cmbOpcion.setVisible(true);
+                isSelectedAOption = true;
+            }
+            default -> DialogoUtils.mostrarMensaje("No se pudo encontrar lo seleccionado", 2, "ERROR");
+        }
+    }//GEN-LAST:event_cmbFiltroActionPerformed
 
     private void actualizarBotones(EstadoPersonal estado) {
         if (estado == estado.ACTIVO) {
@@ -419,6 +461,7 @@ public class VentanaUsuario extends javax.swing.JPanel {
     private javax.swing.JButton btnInactivo;
     private javax.swing.JButton btnModificar;
     private javax.swing.JComboBox<String> cmbFiltro;
+    private javax.swing.JComboBox<String> cmbOpcion;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;

@@ -11,9 +11,10 @@ import com.museolba.modelo.entidades.EstadoPersonal;
         public long contarUsuariosPorRol(RolUsuario rolUsuario) {
             EntityManager em = getEmf().createEntityManager();
             try {
-                String queryStr = "SELECT COUNT(u) FROM Usuario u WHERE u.rolUsuario = :rolUsuario";
+                String queryStr = "SELECT COUNT(u) FROM Usuario u WHERE u.rolUsuario = :rolUsuario AND u.estado = :estado";
                 Query query = em.createQuery(queryStr);
                 query.setParameter("rolUsuario", rolUsuario);
+                query.setParameter("estado", EstadoPersonal.ACTIVO); // Solo contar activos
 
                 return (long) query.getSingleResult();
             } finally {
@@ -35,4 +36,6 @@ import com.museolba.modelo.entidades.EstadoPersonal;
                 em.close();
             }
         }
+        
+        
     }

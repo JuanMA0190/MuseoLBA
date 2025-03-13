@@ -8,6 +8,7 @@ import com.museolba.modelo.entidades.Personal;
 import com.museolba.modelo.entidades.RolUsuario;
 import com.museolba.modelo.entidades.Usuario;
 import com.museolba.utils.ComponentesUtils;
+import com.museolba.utils.ContraseniaEncriptacionUtils;
 import com.museolba.utils.DialogoUtils;
 import java.time.LocalDateTime;
 
@@ -17,7 +18,9 @@ public class FormUsuario extends javax.swing.JDialog {
     private Usuario usuario;
     ControladorUsuario controladorUsuario = null;
     ControladorHistorialUsuario controladorHistorialUsuario = null;
+    RolUsuario rolUsuarioOriginal = null;
    
+    //Constructor para crear usuario
     public FormUsuario(java.awt.Frame parent, boolean modal, Personal personal, boolean editable, Usuario usuario) {
         super(parent, modal);
         initComponents();
@@ -32,7 +35,7 @@ public class FormUsuario extends javax.swing.JDialog {
             btnGuardar.setVisible(true);
         }
     }
-    
+    //Constructor para editar usuario
     public FormUsuario(java.awt.Frame parent, boolean modal,boolean editable, Usuario usuario) {
         super(parent, modal);
         initComponents();
@@ -41,6 +44,7 @@ public class FormUsuario extends javax.swing.JDialog {
         controladorUsuario = new ControladorUsuario();
         this.usuario = usuario;
         btnGuardar.setVisible(false);
+        
         if (editable) {
             cmbRol.setEditable(false);
             btnFinalizar.setVisible(false);
@@ -49,8 +53,10 @@ public class FormUsuario extends javax.swing.JDialog {
         
         if (usuario != null) {
             txtNombreUsuario.setText(usuario.getNombreUsuario());
-            txtContrasenia.setText(usuario.getContrasenia());
             cmbRol.setSelectedItem(usuario.getRolUsuario()); 
+            //cmbRol.setVisible(false);
+            //lblTitulo6.setVisible(false);
+            rolUsuarioOriginal = (RolUsuario) cmbRol.getSelectedItem();
         }
     }
     
@@ -275,19 +281,27 @@ public class FormUsuario extends javax.swing.JDialog {
     }//GEN-LAST:event_btnFinalizarActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        if (txtNombreUsuario.getText().trim().isEmpty() || txtContrasenia.getText().trim().isEmpty()) {
+       if (txtNombreUsuario.getText().trim().isEmpty()) {
             DialogoUtils.mostrarMensaje("Por favor, complete todos los campos.", 1, "Validación");
             return;
         }
-
+        
         try {
+            RolUsuario rolUsuarioSeleccionado = (RolUsuario) cmbRol.getSelectedItem();
+          
             usuario.setNombreUsuario(txtNombreUsuario.getText());
-            usuario.setContrasenia(txtContrasenia.getText());
-            usuario.setRolUsuario((RolUsuario) cmbRol.getSelectedItem());
+            
+            if(!txtContrasenia.getText().trim().isEmpty()){
+                usuario.setContrasenia(txtContrasenia.getText().trim());
+            }else{
+                usuario.setContrasenia(usuario.getContrasenia());
+            }
+            
+            usuario.setRolUsuario(rolUsuarioSeleccionado);
 
             // Llama al controlador para editar el usuario
-            controladorUsuario.editarUsuario(usuario);
-            DialogoUtils.mostrarMensaje("¡Usuario actualizado correctamente!", 0, "Éxito");
+            controladorUsuario.editarUsuario(usuario, rolUsuarioOriginal);
+            DialogoUtils.mostrarMensaje("¡Usuario actualizado correctamente!", 1, "Éxito");
             this.dispose();
         } catch (Exception e) {
             DialogoUtils.mostrarMensaje("Error al actualizar el usuario: " + e.getMessage(), 2, "Error");

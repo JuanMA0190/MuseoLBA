@@ -8,6 +8,7 @@ import com.museolba.modelo.entidades.Usuario;
 import com.museolba.modelo.jpaController.UsuarioJpaController;
 import java.time.LocalDateTime;
 import java.util.List;
+import javax.persistence.PersistenceException;
 
 
 
@@ -33,14 +34,31 @@ public class ControladorUsuario {
         }
         
     }
-    public void editarUsuario(Usuario usuario) throws Exception {
-        // Validar roles únicos
-        if (!puedeAgregarUsuarioConRol(usuario.getRolUsuario())) {
-            throw new Exception("No se puede asignar este rol. Ya existe un usuario con el rol " + usuario.getRolUsuario());
-            
-        }else{
+    public void editarUsuario(Usuario usuario, RolUsuario rolUsuarioOriginal) throws Exception {
+        if (usuario.getEstado() == EstadoPersonal.ACTIVO) {
+        RolUsuario rolUsuarioModificado = usuario.getRolUsuario();
+
+        // Si el rol no cambia, solo editar el usuario
+        if (rolUsuarioModificado == rolUsuarioOriginal) {
             usuarioJpaController.edit(usuario, usuario.getnLegajo());
+            return;
         }
+
+        // Verificar si el nuevo rol es Jefe de Departamento o Jefe de Personal
+        if (rolUsuarioModificado == RolUsuario.JEFEDEDEPARTAMENTO || rolUsuarioModificado == RolUsuario.JEFEDEPERSONAL) {
+            long cantidadActual = this.usuarioDAO.contarUsuariosPorRol(rolUsuarioModificado);
+
+            // Si ya hay un jefe con ese rol, impedir la edición
+            if (cantidadActual > 0) {
+                throw new PersistenceException("Ya existe un usuario con el rol " + rolUsuarioModificado + ". No se puede asignar a otro.");
+            }
+        }
+
+        // Si todo está correcto, editar usuario
+        usuarioJpaController.edit(usuario, usuario.getnLegajo());
+    } else {
+        throw new IllegalAccessException("Usuario dado de baja no se puede modificar");
+    }
         
     }
 
@@ -131,17 +149,25 @@ public class ControladorUsuario {
     private String eliminarUsuario(Usuario usuario){
         try{
             // Validar si es seguro eliminar al usuario según su rol
-            if (usuario.getRolUsuario() == RolUsuario.JEFEDEDEPARTAMENTO || 
-                usuario.getRolUsuario() == RolUsuario.JEFEDEPERSONAL) {
+            if (usuario.getRolUsuario() == RolUsuario.JEFEDEDEPARTAMENTO || usuario.getRolUsuario() == RolUsuario.JEFEDEPERSONAL) {
 
-                long cantidadConRol = usuarioDAO.contarUsuariosPorRol(usuario.getRolUsuario());
-                if (cantidadConRol <= 1) {
-                    return "ERROR. No se puede eliminar. Debe haber al menos un usuario con rol " + usuario.getRolUsuario();
+                RolUsuario rolACambiar = usuario.getRolUsuario();
+                long cantidadConRol = 0;
+                
+                if(rolACambiar == RolUsuario.JEFEDEDEPARTAMENTO){
+                    cantidadConRol = usuarioDAO.contarUsuariosPorRol(RolUsuario.JEFEDEPERSONAL);
+                }else if(rolACambiar == RolUsuario.JEFEDEPERSONAL){
+                    cantidadConRol = usuarioDAO.contarUsuariosPorRol(RolUsuario.JEFEDEDEPARTAMENTO);
+                }
+                
+                if (cantidadConRol <= 0) {
+                    return "ERROR. No se puede eliminar. Debe haber al menos un usuario con rol superior";
                 }
             }
             
             // Cambiar el estado del usuario a eliminado
             usuario.setEstado(EstadoPersonal.INACTIVO);
+            usuario.setRolUsuario(RolUsuario.PERSONAL);
             usuarioJpaController.edit(usuario, usuario.getnLegajo());
             
             return "Usuario eliminado correctamente.";     

@@ -1,26 +1,38 @@
 package com.museolba.modelo.dao.loginDAO;
 
-import com.museolba.modelo.entidades.EstadoPersonal;
 import com.museolba.modelo.entidades.Usuario;
 import com.museolba.modelo.jpaController.PersistenceJpaController;
+import com.museolba.utils.ContraseniaEncriptacionUtils;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 
 public class LoginDAOImpl extends PersistenceJpaController implements LoginDAO{
-
-    @Override
+    
+     @Override
     public Usuario verificarCredenciales(String nombreUsuario, String contrasenia) {
         EntityManager em = getEmf().createEntityManager();
 
         try {
-            String queryStr = "SELECT u FROM Usuario u WHERE u.nombreUsuario = :nombreUsuario AND u.contrasenia = :contrasenia";
+            // Primero buscamos al usuario solo por nombre de usuario
+            String queryStr = "SELECT u FROM Usuario u WHERE u.nombreUsuario = :nombreUsuario";
             Query query = em.createQuery(queryStr);
             query.setParameter("nombreUsuario", nombreUsuario);
-            query.setParameter("contrasenia", contrasenia);
 
-            return (Usuario) query.getSingleResult();
+            Usuario usuario = (Usuario) query.getSingleResult();
+            
+            // Verificamos la contraseña usando BCrypt
+            if (usuario != null && ContraseniaEncriptacionUtils.checkContrasenia(contrasenia, usuario.getContrasenia())) {
+                return usuario;
+            } else {
+                return null;
+            }
+        } catch (NoResultException e) {
+            // Usuario no encontrado
+            return null;
         } catch (Exception e) {
+            // Otra excepción
             return null;
         } finally {
             em.close();

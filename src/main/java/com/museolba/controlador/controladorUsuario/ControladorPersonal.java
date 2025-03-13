@@ -52,7 +52,7 @@ public class ControladorPersonal {
     return datos;
 }
     
-     public List<Object[]> buscarYMostrarResultados(String filtro, String termino) {
+     public List<Object[]> obtenerDatosPersonalConTerminos(String filtro, String termino) {
         if (termino.isEmpty()) {
             throw new NoResultException("Por favor, ingrese un término de búsqueda.");
         }

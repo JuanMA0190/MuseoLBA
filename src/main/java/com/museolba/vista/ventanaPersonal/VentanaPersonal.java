@@ -1,6 +1,7 @@
 package com.museolba.vista.ventanaPersonal;
 
 import com.museolba.controlador.controladorUsuario.ControladorPersonal;
+import com.museolba.modelo.entidades.EstadoPersonal;
 import com.museolba.modelo.entidades.Personal;
 import com.museolba.utils.ComponentesUtils;
 import com.museolba.utils.DialogoUtils;
@@ -14,6 +15,7 @@ public class VentanaPersonal extends javax.swing.JPanel {
 
    ControladorPersonal controladorPersonal = null;
    String[] titulos = {"Número Legajo", "Nombre", "Apellido", "DNI", "Número Teléfono", "Estado"};
+   boolean isSelectedAOption = false;
    
     public VentanaPersonal() {
         controladorPersonal = new ControladorPersonal();
@@ -21,6 +23,7 @@ public class VentanaPersonal extends javax.swing.JPanel {
         cargarTablaPersonal();
         cargarOpcionesFiltro();
         btnCargarTodosDatos.setVisible(false);
+        cmbOpcion.setVisible(false);
     }
     
     private void cargarTablaPersonal(){
@@ -57,6 +60,7 @@ public class VentanaPersonal extends javax.swing.JPanel {
         btnBuscar = new javax.swing.JButton();
         lblTitulo1 = new javax.swing.JLabel();
         lblTitulo2 = new javax.swing.JLabel();
+        cmbOpcion = new javax.swing.JComboBox<>();
         btnCargarTodosDatos = new javax.swing.JButton();
 
         setMinimumSize(new java.awt.Dimension(738, 572));
@@ -101,7 +105,17 @@ public class VentanaPersonal extends javax.swing.JPanel {
         jPanel2.setBackground(new java.awt.Color(204, 204, 204));
         jPanel2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 0, 102), 1, true));
 
-        cmbFiltro.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        txtBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtBuscarActionPerformed(evt);
+            }
+        });
+
+        cmbFiltro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbFiltroActionPerformed(evt);
+            }
+        });
 
         btnBuscar.setText("Buscar");
         btnBuscar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -125,18 +139,14 @@ public class VentanaPersonal extends javax.swing.JPanel {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(190, 190, 190)
-                        .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(lblTitulo1, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblTitulo1, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 78, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(cmbOpcion, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cmbFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblTitulo2, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(33, 33, 33))
@@ -152,7 +162,9 @@ public class VentanaPersonal extends javax.swing.JPanel {
                     .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cmbFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmbOpcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -237,12 +249,15 @@ public class VentanaPersonal extends javax.swing.JPanel {
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         try{
-            List<Object[]> datosPersonal= controladorPersonal.buscarYMostrarResultados((String) cmbFiltro.getSelectedItem(), txtBuscar.getText().trim());
+            if(isSelectedAOption)
+                txtBuscar.setText(cmbOpcion.getSelectedItem().toString());
+            
+            List<Object[]> datosPersonal= controladorPersonal.obtenerDatosPersonalConTerminos((String) cmbFiltro.getSelectedItem(), txtBuscar.getText().trim());
             ComponentesUtils.cargarTabla(tblPersonal, datosPersonal, titulos, fila -> fila);
             txtBuscar.setText("");
             btnCargarTodosDatos.setVisible(true);
         }catch(NoResultException e){
-            DialogoUtils.mostrarMensaje(e.getMessage(), 1, "Sin Resultados");
+            DialogoUtils.mostrarMensaje(e.getMessage(), 1, "No se pudo obtener resultados.");
         }
         
         
@@ -263,15 +278,34 @@ public class VentanaPersonal extends javax.swing.JPanel {
                         formPersonal.setVisible(true);
                         cargarTablaPersonal();
                     }else{
-                        DialogoUtils.mostrarMensaje("No se encontró el personal seleccionado.", 1, "Error");
+                        DialogoUtils.mostrarMensaje("No se encontró el personal seleccionado.", 1, "Atención");
                     }     
                 }
             }else{
-                DialogoUtils.mostrarMensaje("Debe seleccionar un usuario para Modificar!", 1, "Error");
+                DialogoUtils.mostrarMensaje("Debe seleccionar un usuario para Modificar!", 1, "Atención");
             }
         }   
         
     }//GEN-LAST:event_btnModificarActionPerformed
+
+    private void cmbFiltroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbFiltroActionPerformed
+        String seleccion = (String) cmbFiltro.getSelectedItem();
+        cmbOpcion.removeAllItems();
+        if(seleccion.equals("Estado")){
+            txtBuscar.setEditable(false);
+            ComponentesUtils.cargarComboBox(cmbOpcion, EstadoPersonal.class);
+            cmbOpcion.setVisible(true);
+            isSelectedAOption = true;
+        }else{
+            txtBuscar.setEditable(true);
+            cmbOpcion.setVisible(false);
+            isSelectedAOption = false;
+        }
+    }//GEN-LAST:event_cmbFiltroActionPerformed
+
+    private void txtBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBuscarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtBuscarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -280,6 +314,7 @@ public class VentanaPersonal extends javax.swing.JPanel {
     private javax.swing.JButton btnModificar;
     private javax.swing.JButton btnRegistrar;
     private javax.swing.JComboBox<String> cmbFiltro;
+    private javax.swing.JComboBox<String> cmbOpcion;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;

@@ -31,9 +31,8 @@ public class ControladorHistorialUsuario{
         return historialUsuarioDAO.obtenerHistorialesConDetalles();
     }
     
-    public List<Object[]> buscarYMostrarResultados(String filtro, String termino) {
+    public List<Object[]> obtenerDatosUsuariosConTerminos(String filtro, String termino) {
         if (termino.isEmpty()) {
-            //UtilsValidacion.MsjAlert("Por favor, ingrese un término de búsqueda.", 2, "Búsqueda Vacía");
             throw new NoResultException("Por favor, ingrese un término de búsqueda.");
         }
         
@@ -41,7 +40,6 @@ public class ControladorHistorialUsuario{
         
         
         if (datos.isEmpty()) {
-            //UtilsValidacion.MsjAlert("No se encontraron resultados para el filtro y término proporcionados.", 1, "Sin Resultados");
             throw new NoResultException("No se encontraron resultados para el filtro y término proporcionados.");
         }
         

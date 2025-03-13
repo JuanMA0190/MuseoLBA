@@ -1,5 +1,6 @@
 package com.museolba.utils;
 
+
 import java.util.List;
 import javax.swing.JComboBox;
 import javax.swing.JTable;
@@ -7,12 +8,13 @@ import javax.swing.table.DefaultTableModel;
 
 public class ComponentesUtils {
     // Para comboboxes
-    public static <E extends Enum<E>> void cargarComboBox(JComboBox<E> comboBox, Class<E> enumClass) {
+    public static <E extends Enum<E>> void cargarComboBox(JComboBox comboBox, Class<E> enumClass) {
         comboBox.removeAllItems(); 
         for (E valor : enumClass.getEnumConstants()) {
             comboBox.addItem(valor);
         }
     }
+    
     
     // Para tablas
     @FunctionalInterface

@@ -1,5 +1,6 @@
 package com.museolba.vista.ventanaLogin;
 
+import com.museolba.config.DBInitializer;
 import com.museolba.controlador.controladorLogin.ControladorLogin;
 import com.museolba.modelo.entidades.EstadoPersonal;
 import com.museolba.modelo.entidades.Usuario;
@@ -27,10 +28,13 @@ public class VentanaLogin extends javax.swing.JFrame {
         }
 
         Usuario usuario = controladorLogin.verificarLogin(nombreUsuario, contraseniaUsuario);
-
+        
         if (usuario != null) {
             if (usuario.getEstado() == EstadoPersonal.INACTIVO) {
                 DialogoUtils.mostrarMensaje("El usuario está inactivo. Contacte al administrador.", 2, "Usuario inactivo");
+                 txtUsuario.setText("");
+                 txtUsuario.requestFocus();
+                 txtContrasenia.setText("");
                 return;
             }
 

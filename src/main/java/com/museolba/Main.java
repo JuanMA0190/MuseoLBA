@@ -1,9 +1,10 @@
 package com.museolba;
 
+import com.museolba.config.DBInitializer;
 import com.formdev.flatlaf.intellijthemes.FlatDraculaIJTheme;
+import com.museolba.modelo.jpaController.PersistenceJpaController;
 import com.museolba.vista.ventanaLogin.VentanaLogin;
-import com.museolba.vista.ventanaPersonal.VentanaPersonal;
-import com.museolba.vista.ventanaPrincipal.VentanaPrincipal;
+import javax.persistence.EntityManagerFactory;
 import javax.swing.UIManager;
 
 
@@ -17,11 +18,17 @@ public class Main {
           //  UIManager.put( "TextComponent.arc", 999 );
             UIManager.put( "ScrollBar.showButtons", true );
             UIManager.setLookAndFeel(new FlatDraculaIJTheme());
-
+            
+            EntityManagerFactory emf = PersistenceJpaController.getEmf();
+            DBInitializer dbInitializer = new DBInitializer(emf);
+            dbInitializer.initialize();
+            
             VentanaLogin vl = new VentanaLogin();
             vl.setVisible(true);
         } catch (Exception ex) {
-            System.err.println("Failed to initialize LaF");
+            //System.err.println("Failed to initialize LaF");
+            System.err.println(ex.getClass());
+            System.out.println(ex.getMessage());
         }
         /*
         VentanaPrincipal vl = new VentanaPrincipal();
