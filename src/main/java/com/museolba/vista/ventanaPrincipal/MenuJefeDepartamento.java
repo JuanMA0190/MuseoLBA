@@ -36,13 +36,14 @@ public class MenuJefeDepartamento extends javax.swing.JPanel {
         btnSalas = new javax.swing.JButton();
         btnCajaChica = new javax.swing.JButton();
         btnPersonal = new javax.swing.JButton();
-        jPanel1 = new javax.swing.JPanel();
+        panelImagen = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         lblTitulo = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(102, 0, 102));
 
         panelMenu.setBackground(new java.awt.Color(102, 0, 102));
+        panelMenu.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         panelMenu.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
         panelMenu1.setBackground(new java.awt.Color(102, 0, 102));
@@ -59,7 +60,7 @@ public class MenuJefeDepartamento extends javax.swing.JPanel {
                 btnPrincipalActionPerformed(evt);
             }
         });
-        panelMenu1.add(btnPrincipal, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 6, 248, 47));
+        panelMenu1.add(btnPrincipal, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 248, 47));
 
         btnObras.setText("Obras");
         btnObras.setBorder(null);
@@ -70,7 +71,7 @@ public class MenuJefeDepartamento extends javax.swing.JPanel {
                 btnObrasActionPerformed(evt);
             }
         });
-        panelMenu1.add(btnObras, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 71, 248, 47));
+        panelMenu1.add(btnObras, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, 248, 47));
 
         btnArtistas.setText("Artistas");
         btnArtistas.setBorder(null);
@@ -81,7 +82,7 @@ public class MenuJefeDepartamento extends javax.swing.JPanel {
                 btnArtistasActionPerformed(evt);
             }
         });
-        panelMenu1.add(btnArtistas, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 136, 248, 47));
+        panelMenu1.add(btnArtistas, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, 248, 47));
 
         btnTurVisitas.setText("Turnos Visitas");
         btnTurVisitas.setBorder(null);
@@ -92,7 +93,7 @@ public class MenuJefeDepartamento extends javax.swing.JPanel {
                 btnTurVisitasActionPerformed(evt);
             }
         });
-        panelMenu1.add(btnTurVisitas, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 201, 248, 47));
+        panelMenu1.add(btnTurVisitas, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 180, 248, 47));
 
         btnTurExpo.setText("Turnos Exposición");
         btnTurExpo.setBorder(null);
@@ -103,7 +104,7 @@ public class MenuJefeDepartamento extends javax.swing.JPanel {
                 btnTurExpoActionPerformed(evt);
             }
         });
-        panelMenu1.add(btnTurExpo, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 266, 248, 47));
+        panelMenu1.add(btnTurExpo, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 240, 248, 47));
 
         btnUsuario.setText("Usuarios");
         btnUsuario.setBorder(null);
@@ -114,7 +115,7 @@ public class MenuJefeDepartamento extends javax.swing.JPanel {
                 btnUsuarioActionPerformed(evt);
             }
         });
-        panelMenu1.add(btnUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 331, 248, 47));
+        panelMenu1.add(btnUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 300, 248, 47));
 
         btnAsistencia.setText("Asistencia");
         btnAsistencia.setBorder(null);
@@ -125,7 +126,7 @@ public class MenuJefeDepartamento extends javax.swing.JPanel {
                 btnAsistenciaActionPerformed(evt);
             }
         });
-        panelMenu1.add(btnAsistencia, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 396, 248, 47));
+        panelMenu1.add(btnAsistencia, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 360, 248, 47));
 
         btnSalas.setText("Salas");
         btnSalas.setBorder(null);
@@ -136,7 +137,7 @@ public class MenuJefeDepartamento extends javax.swing.JPanel {
                 btnSalasActionPerformed(evt);
             }
         });
-        panelMenu1.add(btnSalas, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 526, 248, 47));
+        panelMenu1.add(btnSalas, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 480, 248, 47));
 
         btnCajaChica.setText("Caja Chica");
         btnCajaChica.setBorder(null);
@@ -148,7 +149,7 @@ public class MenuJefeDepartamento extends javax.swing.JPanel {
                 btnCajaChicaActionPerformed(evt);
             }
         });
-        panelMenu1.add(btnCajaChica, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 620, 248, 47));
+        panelMenu1.add(btnCajaChica, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 540, 248, 47));
 
         btnPersonal.setText("Personal");
         btnPersonal.setBorder(null);
@@ -159,53 +160,54 @@ public class MenuJefeDepartamento extends javax.swing.JPanel {
                 btnPersonalActionPerformed(evt);
             }
         });
-        panelMenu1.add(btnPersonal, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 461, 248, 47));
+        panelMenu1.add(btnPersonal, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 420, 248, 47));
 
         panelMenu.setViewportView(panelMenu1);
 
-        jPanel1.setBackground(new java.awt.Color(102, 0, 102));
+        panelImagen.setBackground(new java.awt.Color(102, 0, 102));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/imgPrinc.jpg"))); // NOI18N
 
         lblTitulo.setFont(new java.awt.Font("DejaVu Serif", 0, 18)); // NOI18N
         lblTitulo.setText("Museo Lucas Braulio Areco");
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout panelImagenLayout = new javax.swing.GroupLayout(panelImagen);
+        panelImagen.setLayout(panelImagenLayout);
+        panelImagenLayout.setHorizontalGroup(
+            panelImagenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelImagenLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addGap(61, 61, 61))
-            .addGroup(jPanel1Layout.createSequentialGroup()
+            .addGroup(panelImagenLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblTitulo)
                 .addContainerGap(23, Short.MAX_VALUE))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        panelImagenLayout.setVerticalGroup(
+            panelImagenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelImagenLayout.createSequentialGroup()
                 .addGap(15, 15, 15)
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
                 .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(13, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(panelImagen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(panelMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(panelImagen, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelMenu, javax.swing.GroupLayout.DEFAULT_SIZE, 647, Short.MAX_VALUE))
+                .addComponent(panelMenu, javax.swing.GroupLayout.DEFAULT_SIZE, 663, Short.MAX_VALUE)
+                .addGap(12, 12, 12))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -240,7 +242,7 @@ public class MenuJefeDepartamento extends javax.swing.JPanel {
     }//GEN-LAST:event_btnUsuarioActionPerformed
 
     private void btnAsistenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAsistenciaActionPerformed
-        VentanaAsistencia va = new VentanaAsistencia(ventanaPrincipal.getRolUsuarioOnline());
+        VentanaAsistencia va = new VentanaAsistencia(ventanaPrincipal.getUsuarioOnline());
         ventanaPrincipal.abrirContenido(va, 738, 572, ventanaPrincipal.getPanelContenido());
     }//GEN-LAST:event_btnAsistenciaActionPerformed
 
@@ -272,9 +274,9 @@ public class MenuJefeDepartamento extends javax.swing.JPanel {
     private javax.swing.JButton btnTurVisitas;
     private javax.swing.JButton btnUsuario;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblImagen;
     private javax.swing.JLabel lblTitulo;
+    private javax.swing.JPanel panelImagen;
     private javax.swing.JScrollPane panelMenu;
     private javax.swing.JPanel panelMenu1;
     // End of variables declaration//GEN-END:variables

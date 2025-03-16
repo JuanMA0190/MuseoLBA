@@ -1,11 +1,28 @@
 package com.museolba.vista.ventanaAsistencia;
 
+import com.museolba.controlador.controladorAsistencia.ControladorAsistenciaUsuario;
+import com.museolba.modelo.entidades.Usuario;
+import com.museolba.utils.DialogoUtils;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-public class DiaForm extends javax.swing.JDialog {
 
-    public DiaForm(java.awt.Frame parent, boolean modal) {
+public class FormDia extends javax.swing.JDialog {
+    
+    private Usuario usuario;
+    private LocalDate fechaSeleccionada;
+    private ControladorAsistenciaUsuario controladorAsistencia;
+    
+    public FormDia(java.awt.Frame parent, boolean modal, Usuario usuario, LocalDate fechaSeleccionada) {
         super(parent, modal);
         initComponents();
+        this.usuario = usuario;
+        this.fechaSeleccionada = fechaSeleccionada;
+        this.controladorAsistencia = new ControladorAsistenciaUsuario();
     }
 
     @SuppressWarnings("unchecked")
@@ -20,11 +37,15 @@ public class DiaForm extends javax.swing.JDialog {
         txtFecha = new javax.swing.JTextField();
         btnCerrar = new javax.swing.JButton();
         txtHorarioManiana = new javax.swing.JTextField();
-        lblError = new javax.swing.JLabel();
         lblTitulo3 = new javax.swing.JLabel();
         txtHorarioTarde = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(204, 204, 204));
         jPanel1.setPreferredSize(new java.awt.Dimension(600, 487));
@@ -45,6 +66,7 @@ public class DiaForm extends javax.swing.JDialog {
         lblTitulo2.setText("Horario Mañana");
 
         txtFecha.setEditable(false);
+        txtFecha.setText("-");
 
         btnCerrar.setText("Cerrar");
         btnCerrar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -55,14 +77,14 @@ public class DiaForm extends javax.swing.JDialog {
         });
 
         txtHorarioManiana.setEditable(false);
-
-        lblError.setForeground(new java.awt.Color(204, 0, 0));
+        txtHorarioManiana.setText("-");
 
         lblTitulo3.setFont(new java.awt.Font("DejaVu Serif", 0, 18)); // NOI18N
         lblTitulo3.setForeground(new java.awt.Color(102, 0, 102));
         lblTitulo3.setText("Horario Tarde");
 
         txtHorarioTarde.setEditable(false);
+        txtHorarioTarde.setText("-");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -72,38 +94,32 @@ public class DiaForm extends javax.swing.JDialog {
                 .addGap(43, 43, 43)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblTitulo4, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnCerrar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(txtHorarioManiana)
                             .addComponent(lblTitulo2, javax.swing.GroupLayout.DEFAULT_SIZE, 183, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 111, Short.MAX_VALUE)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(txtHorarioTarde)
-                            .addComponent(lblTitulo3, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblTitulo4, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblError)
-                            .addComponent(btnCerrar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(lblTitulo3, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(81, 81, 81))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(26, 26, 26)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblTitulo4, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblError))
+                .addComponent(lblTitulo4, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(38, 38, 38)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel2Layout.createSequentialGroup()
-                            .addComponent(lblTitulo2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(35, 35, 35))
+                        .addComponent(lblTitulo2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(jPanel2Layout.createSequentialGroup()
                             .addGap(37, 37, 37)
                             .addComponent(txtHorarioManiana, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -158,12 +174,51 @@ public class DiaForm extends javax.swing.JDialog {
         this.dispose();
     }//GEN-LAST:event_btnCerrarActionPerformed
 
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+         // Obtener las asistencias por número de legajo y fecha
+        List<Object[]> listaInfoAsistencia = controladorAsistencia.obtenerAsistenciasPorLegajo(
+            usuario.getnLegajo(), fechaSeleccionada);
+
+        // Verificar si hay datos
+        if (listaInfoAsistencia != null && !listaInfoAsistencia.isEmpty()) {
+            // Mostrar la fecha en el campo correspondiente
+            txtFecha.setText(fechaSeleccionada.toString());
+
+            // Separar horarios en mañana y tarde
+            StringBuilder horariosManiana = new StringBuilder();
+            StringBuilder horariosTarde = new StringBuilder();
+
+            for (Object[] asistencia : listaInfoAsistencia) {
+                LocalTime horario = (LocalTime) asistencia[1]; // El horario está en la posición 1
+
+                if (horario.isBefore(LocalTime.NOON)) { // Horario de mañana
+                    horariosManiana.append(horario.toString()).append("\n");
+                } else { // Horario de tarde
+                    horariosTarde.append(horario.toString()).append("\n");
+                }
+            }
+
+            // Mostrar los horarios en los campos correspondientes
+            if(!horariosManiana.toString().trim().isEmpty())
+                txtHorarioManiana.setText(horariosManiana.toString().trim());
+            if(!txtHorarioTarde.toString().trim().isEmpty())
+                txtHorarioTarde.setText(horariosTarde.toString().trim());
+        } else {
+            // Si no hay datos, limpiar los campos
+            txtFecha.setText("---");
+            txtHorarioManiana.setText("---");
+            txtHorarioTarde.setText("---");
+            DialogoUtils.mostrarMensaje("No hay Información de Asistencia", 2, "Información no disponible");
+            this.dispose();
+        }
+        
+    }//GEN-LAST:event_formWindowOpened
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCerrar;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JLabel lblError;
     private javax.swing.JLabel lblTitulo1;
     private javax.swing.JLabel lblTitulo2;
     private javax.swing.JLabel lblTitulo3;

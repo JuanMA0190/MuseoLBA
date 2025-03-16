@@ -1,16 +1,24 @@
 package com.museolba.vista.ventanaAsistencia;
 
+import com.museolba.modelo.entidades.Usuario;
 import com.museolba.modelo.entidades.RolUsuario;
+import com.museolba.utils.DialogoUtils;
 import com.museolba.vista.ventanaPrincipal.VentanaPrincipal;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import javax.swing.SwingUtilities;
 
 
 
 public class VentanaAsistencia extends javax.swing.JPanel {
     
-    public VentanaAsistencia(RolUsuario rolUsuario) {
+    private Usuario usuario = null;
+    
+    public VentanaAsistencia(Usuario usuario) {
         initComponents();
-        if (rolUsuario == RolUsuario.PERSONAL){
+        this.usuario = usuario;
+        if (usuario.getRolUsuario() == RolUsuario.PERSONAL){
             panelReporte.setVisible(false);
         }
     }
@@ -42,6 +50,7 @@ public class VentanaAsistencia extends javax.swing.JPanel {
         lblTitulo.setText("Gestión de Asistencias");
 
         panelReporte.setBackground(new java.awt.Color(204, 204, 204));
+        panelReporte.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 0, 102), 1, true));
 
         btnReporte.setText("Reporte");
         btnReporte.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -118,15 +127,27 @@ public class VentanaAsistencia extends javax.swing.JPanel {
     }//GEN-LAST:event_btnReporteActionPerformed
 
     private void calendarioAsistenciasPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_calendarioAsistenciasPropertyChange
-        // Verificar que el evento sea el cambio de fecha
+         // Verificar que el evento sea el cambio de fecha
         if ("calendar".equals(evt.getPropertyName())) {
-            // Obtener la ventana principal
-            VentanaPrincipal vP = (VentanaPrincipal) SwingUtilities.getWindowAncestor(this);
+            // Obtener la fecha seleccionada del JCalendar
+            Date fechaSeleccionada = calendarioAsistencias.getDate();
+            if (fechaSeleccionada != null) {
+                // Convertir la fecha a LocalDate
+                LocalDate fecha = fechaSeleccionada.toInstant()
+                                                  .atZone(ZoneId.systemDefault())
+                                                  .toLocalDate();
 
-            // Crear y mostrar el diálogo
-            DiaForm dF = new DiaForm(vP, true);
-            dF.setLocationRelativeTo(vP); // Centrar el diálogo respecto a la ventana principal
-            dF.setVisible(true);
+                // Obtener la ventana principal
+                VentanaPrincipal vP = (VentanaPrincipal) SwingUtilities.getWindowAncestor(this);
+
+                // Crear y mostrar el diálogo con la fecha seleccionada
+                FormDia dF = new FormDia(vP, true, usuario, fecha);
+                dF.setLocationRelativeTo(vP);
+                dF.setVisible(true);
+            } else {
+                DialogoUtils.mostrarMensaje("Seleccione una fecha para continuar", 2, "Atención");
+                
+            }
         }
     }//GEN-LAST:event_calendarioAsistenciasPropertyChange
 

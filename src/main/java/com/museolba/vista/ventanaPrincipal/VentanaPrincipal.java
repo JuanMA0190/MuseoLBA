@@ -16,20 +16,20 @@ import javax.swing.Timer;
 
 
 public class VentanaPrincipal extends javax.swing.JFrame {
-    private RolUsuario rolUsuarioOnline;
+    private Usuario usuarioOnline=null;
     
     public VentanaPrincipal(Usuario usuario){
         initComponents();
         initContent();
-        this.rolUsuarioOnline = usuario.getRolUsuario();
+        this.usuarioOnline = usuario;
         mostrarMenuSegunRol();
-        mostrarBienvenida(usuario);
+        mostrarBienvenida(usuarioOnline);
         iniciarReloj();
         
     }
     
     private void mostrarMenuSegunRol() {
-        RolStrategy estrategia = RolStrategyFactory.getStrategy(rolUsuarioOnline);
+        RolStrategy estrategia = RolStrategyFactory.getStrategy(usuarioOnline.getRolUsuario());
         estrategia.mostrarMenu(this);
     }
     
@@ -50,8 +50,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         lblHora.setText(ahora.format(formatterClock));
     }
     
-    public RolUsuario getRolUsuarioOnline() {
-        return rolUsuarioOnline;
+    public Usuario getUsuarioOnline(){
+        return usuarioOnline;
     }
     
     public JPanel getPanelMenu() {
