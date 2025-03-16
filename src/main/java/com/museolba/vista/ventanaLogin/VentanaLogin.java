@@ -6,6 +6,7 @@ import com.museolba.modelo.entidades.EstadoPersonal;
 import com.museolba.modelo.entidades.Usuario;
 import com.museolba.utils.DialogoUtils;
 import com.museolba.vista.ventanaPrincipal.VentanaPrincipal;
+import com.museolba.vista.ventanaPrincipal.VentanaPrincipal;
 import java.awt.event.KeyEvent;
 
 public class VentanaLogin extends javax.swing.JFrame {

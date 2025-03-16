@@ -16,9 +16,9 @@ import java.time.LocalDateTime;
 public class FormUsuario extends javax.swing.JDialog {
     private Personal personal;
     private Usuario usuario;
-    ControladorUsuario controladorUsuario = null;
-    ControladorHistorialUsuario controladorHistorialUsuario = null;
-    RolUsuario rolUsuarioOriginal = null;
+    private ControladorUsuario controladorUsuario = null;
+    private ControladorHistorialUsuario controladorHistorialUsuario = null;
+    private RolUsuario rolUsuarioOriginal = null;
    
     //Constructor para crear usuario
     public FormUsuario(java.awt.Frame parent, boolean modal, Personal personal, boolean editable, Usuario usuario) {

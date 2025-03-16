@@ -1,70 +1,66 @@
 package com.museolba.vista.ventanaPrincipal;
 
+import com.museolba.vista.ventanaPrincipal.estrategia.RolStrategy;
+import com.museolba.vista.ventanaPrincipal.estrategia.RolStrategyFactory;
+import com.museolba.modelo.entidades.RolUsuario;
 import com.museolba.modelo.entidades.Usuario;
-import com.museolba.utils.DialogoUtils;
 import com.museolba.vista.ventanaActividades.VentanaActividades;
 import com.museolba.vista.ventanaLogin.VentanaLogin;
 import java.awt.BorderLayout;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
+
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
 
 public class VentanaPrincipal extends javax.swing.JFrame {
+    private RolUsuario rolUsuarioOnline;
     
     public VentanaPrincipal(Usuario usuario){
         initComponents();
         initContent();
-        switch(usuario.getRolUsuario()){
-            case JEFEDEDEPARTAMENTO -> {
-                MenuJefeDepartamento menuJefeDepto = new MenuJefeDepartamento(this);
-                abrirContenido(menuJefeDepto, 290, 730, panelMenu);
-            }
-            case JEFEDEPERSONAL -> {    
-                MenuJefePersonal menuJefePersonal= new MenuJefePersonal(this);
-                abrirContenido(menuJefePersonal, 290, 720, panelMenu);
-            }
-            case PERSONAL -> { 
-                MenuPersonal menuPersonal= new MenuPersonal(this);
-                abrirContenido(menuPersonal, 290, 720, panelMenu);
-            }
-            default -> DialogoUtils.mostrarMensaje("Rol no conocido", 2, "Error");
-        }
-        
-        //Cartel de bienvenida al usaurio
-        lblBienvenida.setText("¡Bienvenido, "+usuario.getNombre()+" "+usuario.getApellido()+"!");
-        
-        //Hora y fecha actual
-        Timer timer = new Timer(1000, e -> actualizarFechaHora());
-        timer.start();
+        this.rolUsuarioOnline = usuario.getRolUsuario();
+        mostrarMenuSegunRol();
+        mostrarBienvenida(usuario);
+        iniciarReloj();
         
     }
     
-    public void actualizarFechaHora(){
+    private void mostrarMenuSegunRol() {
+        RolStrategy estrategia = RolStrategyFactory.getStrategy(rolUsuarioOnline);
+        estrategia.mostrarMenu(this);
+    }
+    
+    private void mostrarBienvenida(Usuario usuario) {
+        lblBienvenida.setText("¡Bienvenido, " + usuario.getNombre() + " " + usuario.getApellido() + "!");
+    }
+    
+    private void iniciarReloj() {
+        Timer timer = new Timer(1000, e -> actualizarFechaHora());
+        timer.start();
+    }
+    
+    private void actualizarFechaHora() {
         LocalDateTime ahora = LocalDateTime.now();
-        //DateTimeFormatter formatter = DateTimeFormatter.ofPattern("E yyyy-MM-dd HH:mm:ss");
         DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("EEEE dd 'de' MMMM yyyy", new Locale("es", "ES"));
         DateTimeFormatter formatterClock = DateTimeFormatter.ofPattern("HH:mm:ss");
         lblFecha.setText(ahora.format(formatterDate));
         lblHora.setText(ahora.format(formatterClock));
     }
     
-    public VentanaPrincipal() {
-        initComponents();
-        initContent();
+    public RolUsuario getRolUsuarioOnline() {
+        return rolUsuarioOnline;
     }
     
-    private void initContent(){
-        VentanaActividades va = new VentanaActividades();
-        abrirContenido(va, 738, 572, panelContenido);
+    public JPanel getPanelMenu() {
+        return panelMenu;
     }
     
-    public static void abrirContenido(JPanel nuevaVentana, int x, int y, JPanel panelPrincipal){
+     public static void abrirContenido(JPanel nuevaVentana, int x, int y, JPanel panelPrincipal) {
         nuevaVentana.setSize(x, y);
-        nuevaVentana.setLocation(0,0);
-        
+        nuevaVentana.setLocation(0, 0);
         panelPrincipal.removeAll();
         panelPrincipal.add(nuevaVentana, BorderLayout.CENTER);
         panelPrincipal.revalidate();
@@ -73,6 +69,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     
     public JPanel getPanelContenido() {
         return panelContenido;
+    }
+   
+     private void initContent(){
+        VentanaActividades va = new VentanaActividades();
+        abrirContenido(va, 738, 572, panelContenido);
     }
     
     @SuppressWarnings("unchecked")
@@ -238,7 +239,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnCerrarSesionActionPerformed
 
-   
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel background;
