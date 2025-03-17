@@ -1,15 +1,15 @@
 package com.museolba.controlador.controladorUsuario;
 
 import com.museolba.modelo.dao.usuarioDAO.UsuarioDAOImpl;
-import com.museolba.modelo.entidades.EstadoPersonal;
+import com.museolba.modelo.entidades.enums.EstadoPersonal;
 import com.museolba.modelo.entidades.HistorialUsuario;
-import com.museolba.modelo.entidades.RolUsuario;
+import com.museolba.modelo.entidades.enums.RolUsuario;
 import com.museolba.modelo.entidades.Usuario;
 import com.museolba.modelo.jpaController.UsuarioJpaController;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.LocalDateTime;
 import java.util.List;
 import javax.persistence.PersistenceException;
-
 
 
 public class ControladorUsuario {
@@ -28,9 +28,11 @@ public class ControladorUsuario {
             }
             usuarioJpaController.create(usuario);
             return "Usuario creado exitosamente.";
+   
         }catch(Exception e){
-            e.printStackTrace();
-            return "Error al crear el usuario: " + e.getMessage();
+            //e.printStackTrace();
+            //System.out.println(e.getMessage());
+            return "Error hay datos duplicados de usuario!";
         }
         
     }

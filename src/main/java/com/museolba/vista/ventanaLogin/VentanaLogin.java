@@ -2,7 +2,7 @@ package com.museolba.vista.ventanaLogin;
 
 import com.museolba.config.DBInitializer;
 import com.museolba.controlador.controladorLogin.ControladorLogin;
-import com.museolba.modelo.entidades.EstadoPersonal;
+import com.museolba.modelo.entidades.enums.EstadoPersonal;
 import com.museolba.modelo.entidades.Usuario;
 import com.museolba.utils.DialogoUtils;
 import com.museolba.vista.ventanaPrincipal.VentanaPrincipal;

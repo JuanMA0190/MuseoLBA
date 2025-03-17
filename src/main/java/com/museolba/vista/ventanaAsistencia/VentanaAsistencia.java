@@ -1,11 +1,14 @@
 package com.museolba.vista.ventanaAsistencia;
 
+import com.museolba.config.TiposReporte;
+import com.museolba.controlador.controladorAsistencia.ControladorAsistenciaUsuario;
 import com.museolba.modelo.entidades.Usuario;
-import com.museolba.modelo.entidades.RolUsuario;
-import com.museolba.utils.DialogoUtils;
+import com.museolba.modelo.entidades.enums.RolUsuario;
+import com.museolba.utils.ComponentesUtils;
 import com.museolba.vista.ventanaPrincipal.VentanaPrincipal;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.Calendar;
 import java.util.Date;
 import javax.swing.SwingUtilities;
 
@@ -14,14 +17,22 @@ import javax.swing.SwingUtilities;
 public class VentanaAsistencia extends javax.swing.JPanel {
     
     private Usuario usuario = null;
+    private ControladorAsistenciaUsuario controladorAsistencia = null;
     
     public VentanaAsistencia(Usuario usuario) {
+ 
         initComponents();
         this.usuario = usuario;
-        if (usuario.getRolUsuario() == RolUsuario.PERSONAL){
+        this.controladorAsistencia = new ControladorAsistenciaUsuario();
+        
+        ComponentesUtils.cargarComboBox(cmbReporte, TiposReporte.class);
+
+        if (usuario.getRolUsuario() == RolUsuario.PERSONAL) {
             panelReporte.setVisible(false);
         }
+         
     }
+    
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -60,8 +71,6 @@ public class VentanaAsistencia extends javax.swing.JPanel {
                 btnReporteActionPerformed(evt);
             }
         });
-
-        cmbReporte.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout panelReporteLayout = new javax.swing.GroupLayout(panelReporte);
         panelReporte.setLayout(panelReporteLayout);
@@ -123,31 +132,47 @@ public class VentanaAsistencia extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReporteActionPerformed
+        /*
+        // Obtener la fecha actual
+        LocalDate fechaActual = LocalDate.now();
+
+        // Obtener el número del mes actual
+        int numeroMes = fechaActual.getMonthValue();
+        System.out.println("Número del mes actual: " + numeroMes);*/
+        Calendar calendario = calendarioAsistencias.getCalendar();
+        int mes =  calendario.get(Calendar.MONTH) + 1;
+        int anio = calendario.get(Calendar.YEAR);
         
+        if(cmbReporte.getSelectedItem() == TiposReporte.PDF)
+            controladorAsistencia.generarReporteAsistencia(mes, anio, "ReporteAsistencia"+1+anio+".pdf");
+        else if(cmbReporte.getSelectedItem() == TiposReporte.EXCEL)
+            controladorAsistencia.generarReporteAsistencia(mes, anio, "ReporteAsistencia"+3+anio+".xlsx");
     }//GEN-LAST:event_btnReporteActionPerformed
 
     private void calendarioAsistenciasPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_calendarioAsistenciasPropertyChange
-         // Verificar que el evento sea el cambio de fecha
         if ("calendar".equals(evt.getPropertyName())) {
-            // Obtener la fecha seleccionada del JCalendar
-            Date fechaSeleccionada = calendarioAsistencias.getDate();
-            if (fechaSeleccionada != null) {
-                // Convertir la fecha a LocalDate
-                LocalDate fecha = fechaSeleccionada.toInstant()
-                                                  .atZone(ZoneId.systemDefault())
-                                                  .toLocalDate();
+            // Obtener el calendario antiguo y nuevo del evento
+                Calendar calendarioAntiguo = (Calendar) evt.getOldValue();
+                Calendar calendarioNuevo = (Calendar) evt.getNewValue();
 
-                // Obtener la ventana principal
-                VentanaPrincipal vP = (VentanaPrincipal) SwingUtilities.getWindowAncestor(this);
+                // Verificar si el día cambió (solo se abre el diálogo si se seleccionó un día)
+                if (calendarioAntiguo != null && calendarioNuevo != null) {
+                    int diaAntiguo = calendarioAntiguo.get(Calendar.DAY_OF_MONTH);
+                    int diaNuevo = calendarioNuevo.get(Calendar.DAY_OF_MONTH);
 
-                // Crear y mostrar el diálogo con la fecha seleccionada
-                FormDia dF = new FormDia(vP, true, usuario, fecha);
-                dF.setLocationRelativeTo(vP);
-                dF.setVisible(true);
-            } else {
-                DialogoUtils.mostrarMensaje("Seleccione una fecha para continuar", 2, "Atención");
-                
-            }
+                    if (diaAntiguo != diaNuevo) {
+                        // Solo se abre el diálogo si el día cambió
+                        Date fechaSeleccionada = calendarioAsistencias.getDate();
+                        LocalDate fecha = fechaSeleccionada.toInstant()
+                                                          .atZone(ZoneId.systemDefault())
+                                                          .toLocalDate();
+
+                        VentanaPrincipal vP = (VentanaPrincipal) SwingUtilities.getWindowAncestor(VentanaAsistencia.this);
+                        FormDia dF = new FormDia(vP, true, usuario, fecha);
+                        dF.setLocationRelativeTo(vP);
+                        dF.setVisible(true);
+                    }
+                }
         }
     }//GEN-LAST:event_calendarioAsistenciasPropertyChange
 

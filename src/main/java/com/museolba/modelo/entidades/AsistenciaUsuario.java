@@ -16,7 +16,7 @@ import javax.persistence.Table;
 public class AsistenciaUsuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_asistencia", unique = true, nullable = false)
+    @Column(name = "id", unique = true, nullable = false)
     private Long id;
 
     // Relación muchos a uno: muchas asistencias para un usuario identificado por nLegajo

@@ -1,6 +1,6 @@
 package com.museolba.vista.ventanaPrincipal.estrategia;
 
-import com.museolba.modelo.entidades.RolUsuario;
+import com.museolba.modelo.entidades.enums.RolUsuario;
 
 
 public class RolStrategyFactory {

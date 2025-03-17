@@ -44,6 +44,10 @@ public class ControladorPersonal {
         return personalDAO.existeLegajo(nLegajo);
     }
     
+    public boolean verificarDNI(String dni){
+        return personalDAO.existeDNI(dni);
+    }
+    
     public List<Object[]> obtenerDatosPersonal() {
     List<Object[]> datos = personalDAO.obtenerPersonalConDetalles();
     if (datos.isEmpty()) {

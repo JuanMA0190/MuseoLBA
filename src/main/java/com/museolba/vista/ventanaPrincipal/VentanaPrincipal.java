@@ -2,7 +2,7 @@ package com.museolba.vista.ventanaPrincipal;
 
 import com.museolba.vista.ventanaPrincipal.estrategia.RolStrategy;
 import com.museolba.vista.ventanaPrincipal.estrategia.RolStrategyFactory;
-import com.museolba.modelo.entidades.RolUsuario;
+import com.museolba.modelo.entidades.enums.RolUsuario;
 import com.museolba.modelo.entidades.Usuario;
 import com.museolba.vista.ventanaActividades.VentanaActividades;
 import com.museolba.vista.ventanaLogin.VentanaLogin;

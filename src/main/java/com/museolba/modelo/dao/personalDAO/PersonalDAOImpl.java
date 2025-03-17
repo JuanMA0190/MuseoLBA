@@ -1,6 +1,6 @@
 package com.museolba.modelo.dao.personalDAO;
 
-import com.museolba.modelo.entidades.EstadoPersonal;
+import com.museolba.modelo.entidades.enums.EstadoPersonal;
 import com.museolba.modelo.jpaController.PersistenceJpaController;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -16,6 +16,21 @@ public class PersonalDAOImpl extends PersistenceJpaController implements Persona
             String queryStr = "SELECT COUNT(p) FROM Personal p WHERE p.nLegajo = :n_legajo";
             Query query = em.createQuery(queryStr);
             query.setParameter("n_legajo", nLegajo);
+        
+            long count = (long) query.getSingleResult();
+            return count > 0;
+        }finally{
+            em.close();
+        }
+    }
+    
+    @Override
+    public boolean existeDNI(String dni){
+        EntityManager em = getEmf().createEntityManager();
+        try{
+            String queryStr = "SELECT COUNT(p) FROM Personal p WHERE p.dni = :dni";
+            Query query = em.createQuery(queryStr);
+            query.setParameter("dni", dni);
         
             long count = (long) query.getSingleResult();
             return count > 0;

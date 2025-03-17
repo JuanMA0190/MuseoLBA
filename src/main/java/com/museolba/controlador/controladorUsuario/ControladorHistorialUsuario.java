@@ -1,7 +1,7 @@
 package com.museolba.controlador.controladorUsuario;
 
 import com.museolba.modelo.dao.usuarioDAO.HistorialUsuarioDAOImpl;
-import com.museolba.modelo.entidades.EstadoPersonal;
+import com.museolba.modelo.entidades.enums.EstadoPersonal;
 import com.museolba.modelo.entidades.HistorialUsuario;
 import com.museolba.modelo.jpaController.HistorialUsuarioJpaController;
 import java.time.LocalDateTime;

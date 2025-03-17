@@ -1,26 +1,23 @@
 package com.museolba.vista.ventanaAsistencia;
 
 import com.museolba.controlador.controladorAsistencia.ControladorAsistenciaUsuario;
+import com.museolba.modelo.entidades.AsistenciaUsuario;
 import com.museolba.modelo.entidades.Usuario;
 import com.museolba.utils.DialogoUtils;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Map;
 
 
 public class FormDia extends javax.swing.JDialog {
     
-    private Usuario usuario;
-    private LocalDate fechaSeleccionada;
-    private ControladorAsistenciaUsuario controladorAsistencia;
+    private LocalDate fechaSeleccionada = null;
+    private ControladorAsistenciaUsuario controladorAsistencia = null;
     
     public FormDia(java.awt.Frame parent, boolean modal, Usuario usuario, LocalDate fechaSeleccionada) {
         super(parent, modal);
         initComponents();
-        this.usuario = usuario;
         this.fechaSeleccionada = fechaSeleccionada;
         this.controladorAsistencia = new ControladorAsistenciaUsuario();
     }
@@ -176,20 +173,22 @@ public class FormDia extends javax.swing.JDialog {
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
          // Obtener las asistencias por número de legajo y fecha
-        List<Object[]> listaInfoAsistencia = controladorAsistencia.obtenerAsistenciasPorLegajo(
-            usuario.getnLegajo(), fechaSeleccionada);
+        List<AsistenciaUsuario> listaInfoAsistencia = controladorAsistencia.obtenerAsistenciasDetalladas(fechaSeleccionada);
 
         // Verificar si hay datos
         if (listaInfoAsistencia != null && !listaInfoAsistencia.isEmpty()) {
             // Mostrar la fecha en el campo correspondiente
-            txtFecha.setText(fechaSeleccionada.toString());
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            String fechaFormateada = fechaSeleccionada.format(formatter);
+            txtFecha.setText(fechaFormateada);
 
             // Separar horarios en mañana y tarde
             StringBuilder horariosManiana = new StringBuilder();
             StringBuilder horariosTarde = new StringBuilder();
 
-            for (Object[] asistencia : listaInfoAsistencia) {
-                LocalTime horario = (LocalTime) asistencia[1]; // El horario está en la posición 1
+            for (AsistenciaUsuario asistencia : listaInfoAsistencia) {
+                // Obtener el horario directamente desde el objeto AsistenciaUsuario
+                LocalTime horario = asistencia.getHorario();
 
                 if (horario.isBefore(LocalTime.NOON)) { // Horario de mañana
                     horariosManiana.append(horario.toString()).append("\n");
@@ -199,10 +198,17 @@ public class FormDia extends javax.swing.JDialog {
             }
 
             // Mostrar los horarios en los campos correspondientes
-            if(!horariosManiana.toString().trim().isEmpty())
+            if (!horariosManiana.toString().trim().isEmpty()) {
                 txtHorarioManiana.setText(horariosManiana.toString().trim());
-            if(!txtHorarioTarde.toString().trim().isEmpty())
+            } else {
+                txtHorarioManiana.setText("---");
+            }
+
+            if (!horariosTarde.toString().trim().isEmpty()) {
                 txtHorarioTarde.setText(horariosTarde.toString().trim());
+            } else {
+                txtHorarioTarde.setText("---");
+            }
         } else {
             // Si no hay datos, limpiar los campos
             txtFecha.setText("---");

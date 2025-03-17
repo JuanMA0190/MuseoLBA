@@ -1,7 +1,7 @@
 package com.museolba.vista.ventanaPersonal;
 
 import com.museolba.controlador.controladorUsuario.ControladorPersonal;
-import com.museolba.modelo.entidades.EstadoPersonal;
+import com.museolba.modelo.entidades.enums.EstadoPersonal;
 import com.museolba.modelo.entidades.Personal;
 import com.museolba.utils.DialogoUtils;
 import com.museolba.utils.UIValidacionUtils;
@@ -275,26 +275,33 @@ public class FormPersonal extends javax.swing.JDialog {
         }
         
         long legajo = Long.parseLong(txtLegajo.getText());
-        boolean existe = controladorPersonal.verificarLegajo(legajo);
-
-        if (existe){
-            DialogoUtils.mostrarMensaje("El número de legajo ingresado ya existe!", 2, "Revise el campo");
+        boolean existeNLegajo = controladorPersonal.verificarLegajo(legajo);
+        boolean existeDNI = controladorPersonal.verificarDNI(txtDni.getText());
+        
+        if(existeDNI){
+            DialogoUtils.mostrarMensaje("El número de DNI ingresado ya existe!", 2, "Revise el campo");
         }else{
-            Personal personal = new Personal(
-                Long.parseLong(txtLegajo.getText()),
-                txtNombre.getText(),
-                txtApellido.getText(),
-                txtDni.getText(),
-                txtTelefono.getText()
-            );
+            if (existeNLegajo){
+                DialogoUtils.mostrarMensaje("El número de legajo ingresado ya existe!", 2, "Revise el campo");
+            }else{
+                Personal personal = new Personal(
+                    Long.parseLong(txtLegajo.getText()),
+                    txtNombre.getText(),
+                    txtApellido.getText(),
+                    txtDni.getText(),
+                    txtTelefono.getText()
+                );
 
-            VentanaPrincipal vP = (VentanaPrincipal) SwingUtilities.getWindowAncestor(this);
-            if(vP != null){
-                FormUsuario formUsuario = new FormUsuario(vP, true, personal, false, null);
-                this.dispose();
-                formUsuario.setVisible(true);
+                VentanaPrincipal vP = (VentanaPrincipal) SwingUtilities.getWindowAncestor(this);
+                if(vP != null){
+                    FormUsuario formUsuario = new FormUsuario(vP, true, personal, false, null);
+                    this.dispose();
+                    formUsuario.setVisible(true);
+                }
             }
         }
+        
+        
         
     }//GEN-LAST:event_btnContinuarActionPerformed
 

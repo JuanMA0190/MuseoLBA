@@ -1,13 +1,14 @@
-package com.museolba.modelo.entidades;
+package com.museolba.config;
 
 
-public enum EstadoPersonal {
-    ACTIVO("Activo"),
-    INACTIVO("Inactivo");
+public enum TiposReporte {
+    PDF("PDF"),
+    EXCEL("Excel");
+    
     
     private final String descripcion;
 
-    EstadoPersonal(String descripcion) {
+    TiposReporte(String descripcion) {
         this.descripcion = descripcion;
     }
 

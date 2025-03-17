@@ -2,10 +2,10 @@ package com.museolba.vista.ventanaUsuario;
 
 import com.museolba.controlador.controladorUsuario.ControladorHistorialUsuario;
 import com.museolba.controlador.controladorUsuario.ControladorUsuario;
-import com.museolba.modelo.entidades.EstadoPersonal;
+import com.museolba.modelo.entidades.enums.EstadoPersonal;
 import com.museolba.modelo.entidades.HistorialUsuario;
 import com.museolba.modelo.entidades.Personal;
-import com.museolba.modelo.entidades.RolUsuario;
+import com.museolba.modelo.entidades.enums.RolUsuario;
 import com.museolba.modelo.entidades.Usuario;
 import com.museolba.utils.ComponentesUtils;
 import com.museolba.utils.ContraseniaEncriptacionUtils;

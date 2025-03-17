@@ -1,5 +1,6 @@
 package com.museolba.modelo.entidades;
 
+import com.museolba.modelo.entidades.enums.RolUsuario;
 import java.io.Serializable;
 import javax.persistence.*;
 

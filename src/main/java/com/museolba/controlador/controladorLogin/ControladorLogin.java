@@ -1,7 +1,7 @@
 package com.museolba.controlador.controladorLogin;
 
 import com.museolba.modelo.dao.loginDAO.LoginDAOImpl;
-import com.museolba.modelo.entidades.EstadoPersonal;
+import com.museolba.modelo.entidades.enums.EstadoPersonal;
 import com.museolba.modelo.entidades.Usuario;
 
 
