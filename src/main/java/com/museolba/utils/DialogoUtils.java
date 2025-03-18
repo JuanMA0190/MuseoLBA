@@ -15,6 +15,7 @@ public class DialogoUtils {
             optionPane.setMessageType(JOptionPane.ERROR_MESSAGE);
         }
         JDialog dialog = optionPane.createDialog(titulo);
+        ComponentesUtils.cargarImagenIcono(dialog);
         dialog.setAlwaysOnTop(true);
         dialog.setVisible(true);
     } 

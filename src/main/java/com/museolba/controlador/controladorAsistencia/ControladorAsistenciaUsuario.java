@@ -3,6 +3,7 @@ package com.museolba.controlador.controladorAsistencia;
 import com.museolba.config.TiposReporte;
 import com.museolba.modelo.dao.asistenciaDAO.AsistenciaDAOImpl;
 import com.museolba.modelo.entidades.AsistenciaUsuario;
+import com.museolba.utils.reportes.AsistenciaEXCELGenerador;
 import com.museolba.utils.reportes.AsistenciaPDFGeneradorUtil;
 import java.time.LocalDate;
 import java.util.List;
@@ -35,7 +36,9 @@ public class ControladorAsistenciaUsuario {
             AsistenciaPDFGeneradorUtil pdfGenerator = new AsistenciaPDFGeneradorUtil();
             pdfGenerator.generarReporteAsistencia(filePath, asistencias, mes, anio);
         }else if(filePath.endsWith(".xlsx")){
-            System.out.println("Nao nao");
+            //Generar el excel
+            AsistenciaEXCELGenerador excelGenerator = new AsistenciaEXCELGenerador();
+            excelGenerator.generarReporteExcel(filePath, asistencias, mes, anio);
         }
         
     }

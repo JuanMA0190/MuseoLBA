@@ -6,6 +6,7 @@ import com.museolba.modelo.jpaController.PersistenceJpaController;
 import com.museolba.utils.DialogoUtils;
 import com.museolba.vista.ventanaLogin.VentanaLogin;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceException;
 import javax.swing.UIManager;
 
 public class Main {
@@ -28,17 +29,15 @@ public class Main {
             
             VentanaLogin vl = new VentanaLogin();
             vl.setVisible(true);
-        } catch (Exception ex) {
+            
+        }catch (PersistenceException e){
+            DialogoUtils.mostrarMensaje("Error: No se encontro la base de datos", 1, "No se pudo iniciar!");
+        }catch (Exception ex) {
             System.err.println("Failed to initialize LaF");
             System.err.println(ex.getClass());
             System.out.println(ex.getMessage());
-            DialogoUtils.mostrarMensaje(ex.getMessage(), 2, "No se pudo iniciar!");
+            DialogoUtils.mostrarMensaje(ex.getMessage(), 1, "No se pudo iniciar!");
         }
-        /*
-        VentanaPrincipal vl = new VentanaPrincipal();
-        vl.setVisible(true);*/
-        
-
         
     }
 }

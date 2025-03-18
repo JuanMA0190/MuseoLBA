@@ -4,12 +4,17 @@ import com.museolba.vista.ventanaPrincipal.estrategia.RolStrategy;
 import com.museolba.vista.ventanaPrincipal.estrategia.RolStrategyFactory;
 import com.museolba.modelo.entidades.enums.RolUsuario;
 import com.museolba.modelo.entidades.Usuario;
+import com.museolba.utils.ComponentesUtils;
+import com.museolba.utils.DialogoUtils;
 import com.museolba.vista.ventanaActividades.VentanaActividades;
 import com.museolba.vista.ventanaLogin.VentanaLogin;
 import java.awt.BorderLayout;
+import java.awt.Image;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
+import javax.imageio.ImageIO;
 
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -21,12 +26,14 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     public VentanaPrincipal(Usuario usuario){
         initComponents();
         initContent();
+        ComponentesUtils.cargarImagenIcono(this);
         this.usuarioOnline = usuario;
         mostrarMenuSegunRol();
         mostrarBienvenida(usuarioOnline);
         iniciarReloj();
         
     }
+
     
     private void mostrarMenuSegunRol() {
         RolStrategy estrategia = RolStrategyFactory.getStrategy(usuarioOnline.getRolUsuario());
@@ -92,6 +99,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         panelContenido = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Museo Lucas Braulio Areco");
         setMinimumSize(new java.awt.Dimension(1020, 733));
 
         background.setBackground(new java.awt.Color(204, 204, 204));

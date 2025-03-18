@@ -1,8 +1,13 @@
 package com.museolba.utils;
 
 
+import java.awt.Image;
+import java.awt.Window;
+import java.io.IOException;
 import java.util.List;
+import javax.imageio.ImageIO;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
@@ -46,6 +51,16 @@ public class ComponentesUtils {
         if (lista == null || lista.isEmpty()) {
             DialogoUtils.mostrarMensaje("No se encontraron resultados para el filtro y término proporcionados.", 
                                      DialogoUtils.TIPO_INFO, "Sin Resultados");
+        }
+    }
+    
+    
+    public static void cargarImagenIcono(Window ventana){
+        try {
+            Image icono = ImageIO.read(ComponentesUtils.class.getResource("/images/imageIcon.jpeg"));
+            ventana.setIconImage(icono);
+        } catch (IOException | IllegalArgumentException e) {
+            System.out.println("Error al cargar el ícono: " + e.getMessage());
         }
     }
 }

@@ -1,13 +1,13 @@
 package com.museolba.vista.ventanaLogin;
 
-import com.museolba.config.DBInitializer;
 import com.museolba.controlador.controladorLogin.ControladorLogin;
 import com.museolba.modelo.entidades.enums.EstadoPersonal;
 import com.museolba.modelo.entidades.Usuario;
+import com.museolba.utils.ComponentesUtils;
 import com.museolba.utils.DialogoUtils;
 import com.museolba.vista.ventanaPrincipal.VentanaPrincipal;
-import com.museolba.vista.ventanaPrincipal.VentanaPrincipal;
 import java.awt.event.KeyEvent;
+
 
 public class VentanaLogin extends javax.swing.JFrame {
     
@@ -17,6 +17,7 @@ public class VentanaLogin extends javax.swing.JFrame {
     public VentanaLogin() {
         controladorLogin = new ControladorLogin();
         initComponents();
+        ComponentesUtils.cargarImagenIcono(this);
     }
     
     private void ingresar(){
@@ -49,7 +50,6 @@ public class VentanaLogin extends javax.swing.JFrame {
             DialogoUtils.mostrarMensaje("Contraseña o Usuario incorrectos!", 2, "Credenciales incorrectas");
         }
     }
-
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -69,6 +69,8 @@ public class VentanaLogin extends javax.swing.JFrame {
         btnVer = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Museo Lucas Braulio Areco");
+        setIconImages(null);
         setResizable(false);
 
         background.setBackground(new java.awt.Color(204, 204, 204));
