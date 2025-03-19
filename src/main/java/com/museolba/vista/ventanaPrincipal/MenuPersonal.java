@@ -2,16 +2,10 @@ package com.museolba.vista.ventanaPrincipal;
 
 import com.museolba.vista.ventanaActividades.VentanaActividades;
 import com.museolba.vista.ventanaAsistencia.VentanaAsistencia;
+import com.museolba.vista.ventanaCajaChica.VentanaCajaChica;
 
 
 public class MenuPersonal extends javax.swing.JPanel {
-    /*
-    private VentanaPrincipal ventanaPrincipal;
-    
-    public MenuPersonal(VentanaPrincipal ventanaPrincipal) {
-        this.ventanaPrincipal = ventanaPrincipal;
-        initComponents();
-    }*/
 
     private VentanaPrincipal ventanaPrincipal;
     
@@ -199,8 +193,8 @@ public class MenuPersonal extends javax.swing.JPanel {
     }//GEN-LAST:event_btnSalasActionPerformed
 
     private void btnCajaChicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCajaChicaActionPerformed
-        // VentanaCajaChica vcc = new VentanaCajaChica();
-        // abrirContenido(vcc);
+        VentanaCajaChica vcc = new VentanaCajaChica(ventanaPrincipal.getUsuarioOnline());
+        ventanaPrincipal.abrirContenido(vcc, 738, 572, ventanaPrincipal.getPanelContenido());
     }//GEN-LAST:event_btnCajaChicaActionPerformed
 
     private void btnAsistenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAsistenciaActionPerformed

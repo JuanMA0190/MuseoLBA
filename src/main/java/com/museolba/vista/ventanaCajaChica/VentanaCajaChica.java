@@ -1,38 +1,431 @@
 package com.museolba.vista.ventanaCajaChica;
 
+import com.museolba.controlador.controladorCajaChica.ControladorCajaChica;
+import com.museolba.modelo.entidades.CajaChica;
+import com.museolba.modelo.entidades.Recibo;
+import com.museolba.modelo.entidades.Usuario;
+import com.museolba.modelo.entidades.enums.RolUsuario;
+import com.museolba.utils.ComponentesUtils;
+import com.museolba.utils.DialogoUtils;
+import com.museolba.utils.UIValidacionUtils;
+import com.museolba.vista.ventanaPrincipal.VentanaPrincipal;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import javax.persistence.NoResultException;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 public class VentanaCajaChica extends javax.swing.JPanel {
-
+    ControladorCajaChica controladorCajaChica = null;
+    Long usuarioNumLegajo = null;
+    String[] titulos = {"Nombre", "Fecha"};
+    LocalDate fechaActual = null;
+    int mesActual = 0;
+    int anioActual = 0;
    
-    public VentanaCajaChica() {
+    public VentanaCajaChica(Usuario usuario) {
+        
         initComponents();
+        controladorCajaChica = new ControladorCajaChica();
+        this.usuarioNumLegajo = usuario.getnLegajo();
+        
+        fechaActual = LocalDate.now();
+        
+        mesActual = fechaActual.getMonthValue();
+        anioActual = fechaActual.getYear();
+        
+        panelFondoInical.setVisible(false);
+        
+        // Ejecutar después de que el JPanel esté completamente inicializado
+        SwingUtilities.invokeLater(() -> {
+          estadoInicial(usuario, mesActual, anioActual);
+        });
+        
+        
+    }
+    
+    public void estadoInicial(Usuario usuario, int mesActual, int anioActual){
+       
+        //Verificar si ya hay una caja chica el mes actual y si no la hay la crea
+        verificarYCrearCajaChicaParaMesActual();
+        
+        //Cargar Tabla
+        cargarTablaCajaChica(monthChooser.getMonth()+1, yearChooser.getYear());
+        
+        verificarFondoInicial(monthChooser.getMonth()+1, yearChooser.getYear());
+        
+        //Si el usuario es personal
+        if (usuario.getRolUsuario() == RolUsuario.PERSONAL) {
+            panelReporte.setVisible(false);
+            panelMail.setVisible(false);
+            panelFondoInical.setVisible(false);
+            btnAgregarRecibo.setEnabled(false);
+        }
+        
+        estamosEnElMesYAnioActual(monthChooser.getMonth()+1, yearChooser.getYear());
+        
+    }
+    
+    public void estamosEnElMesYAnioActual(int mes, int anio){
+        if(mes != mesActual || anio != anioActual){
+            panelMail.setVisible(false);
+            btnAgregarRecibo.setVisible(false);
+            panelFondoInical.setVisible(false);
+        }else{
+            panelMail.setVisible(true);
+            btnAgregarRecibo.setVisible(true);
+        }
+    }
+        
+    public void verificarYCrearCajaChicaParaMesActual() {
+        int mesActual = monthChooser.getMonth()+1;
+        int anioActual = yearChooser.getYear();
+        try{
+           // Verificar si ya existe una CajaChica para el mes actual
+            if (!controladorCajaChica.existeCajaChicaParaMes(mesActual, anioActual)) {
+                // Crear una nueva CajaChica con valores iniciales
+                CajaChica nuevaCajaChica = new CajaChica(0.0, 0.0, fechaActual.withDayOfMonth(1), null );
+
+                // Guardar la nueva CajaChica en la base de datos
+                controladorCajaChica.crearCajaChica(nuevaCajaChica);
+            }
+        }catch(Exception e){
+            DialogoUtils.mostrarMensaje("Error no se pudo crear la caja chica del mes actual"+e.getMessage(), 2, "Error!");
+        }
+        
+    }
+    
+    private void verificarFondoInicial(int mes, int anio) {
+    if (controladorCajaChica.esFondoInicialCero(mes, anio)) {
+        DialogoUtils.mostrarMensaje("Ingrese el fondo inicial para empezar a gestionar la Caja Chica", 1, "Atención");
+        btnReporte.setEnabled(false);
+        btnAgregarRecibo.setEnabled(false);
+        btnEnviarMail.setEnabled(false);
+        panelFondoInical.setVisible(true);
+    } else {
+        btnReporte.setEnabled(true);
+        btnAgregarRecibo.setEnabled(true);
+        btnEnviarMail.setEnabled(true);
+        panelFondoInical.setVisible(false);
+    }
+}
+    
+    private void cargarTablaCajaChica(int mesSeleccionado , int anioSeleccionado){
+        try {
+            
+            CajaChica cajaChica = controladorCajaChica.obtenerCajaChicaPorMes(mesSeleccionado, anioSeleccionado);
+
+            if (cajaChica != null) {
+                List<Recibo> todosLosRecibos = new ArrayList<>();
+
+                for (Recibo recibos : cajaChica.getRecibos()) {
+                    todosLosRecibos.addAll((Collection<? extends Recibo>) recibos);
+                }
+
+                // Cargar los recibos en la tabla
+                ComponentesUtils.cargarTabla(tblRecibo, todosLosRecibos, titulos, recibo -> {
+                    DateTimeFormatter formatterFecha = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+                    Object[] fila = new Object[]{
+                        recibo.getNombre(),
+                        recibo.getFechaRegistro().format(formatterFecha)
+                    };
+                    return fila;
+                });
+            } else {
+                DialogoUtils.mostrarMensaje("No se encontró una caja chica para el mes seleccionado.", 1, "Sin Resultados");
+            }
+        } catch (NoResultException e) {
+            DialogoUtils.mostrarMensaje("La Caja Chica no tiene Recibos almacenados!", 1, "Atención!");
+        }
+
+        // 🔹 Agregar la verificación del fondo inicial aquí
+        verificarFondoInicial(mesSeleccionado, anioSeleccionado);
+
+        estamosEnElMesYAnioActual(mesSeleccionado, anioSeleccionado);
+         
     }
 
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        lblTitulo = new javax.swing.JLabel();
+        panelReporte = new javax.swing.JPanel();
+        btnReporte = new javax.swing.JButton();
+        cmbReporte = new javax.swing.JComboBox<>();
+        panelMail = new javax.swing.JPanel();
+        btnEnviarMail = new javax.swing.JButton();
+        panelRecibo = new javax.swing.JPanel();
+        btnAgregarRecibo = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblRecibo = new javax.swing.JTable();
+        panelBusqueda = new javax.swing.JPanel();
+        lblTitulo1 = new javax.swing.JLabel();
+        yearChooser = new com.toedter.calendar.JYearChooser();
+        monthChooser = new com.toedter.calendar.JMonthChooser();
+        panelFondoInical = new javax.swing.JPanel();
+        btnAgregarFondoInical1 = new javax.swing.JButton();
+        txtFondoInicial = new javax.swing.JTextField();
+        lblTitulo2 = new javax.swing.JLabel();
+        lblAtencion = new javax.swing.JLabel();
 
         setMinimumSize(new java.awt.Dimension(738, 572));
         setPreferredSize(new java.awt.Dimension(738, 572));
 
         jPanel1.setBackground(new java.awt.Color(204, 204, 204));
 
+        lblTitulo.setFont(new java.awt.Font("DejaVu Serif", 0, 24)); // NOI18N
+        lblTitulo.setForeground(new java.awt.Color(102, 0, 102));
+        lblTitulo.setText("Gestión de Caja Chica");
+
+        panelReporte.setBackground(new java.awt.Color(204, 204, 204));
+        panelReporte.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 0, 102), 1, true));
+
+        btnReporte.setText("Reporte");
+        btnReporte.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnReporte.setPreferredSize(new java.awt.Dimension(90, 38));
+
+        javax.swing.GroupLayout panelReporteLayout = new javax.swing.GroupLayout(panelReporte);
+        panelReporte.setLayout(panelReporteLayout);
+        panelReporteLayout.setHorizontalGroup(
+            panelReporteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelReporteLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(cmbReporte, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
+                .addComponent(btnReporte, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        panelReporteLayout.setVerticalGroup(
+            panelReporteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelReporteLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelReporteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnReporte, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmbReporte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        panelMail.setBackground(new java.awt.Color(204, 204, 204));
+        panelMail.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 0, 102), 1, true));
+
+        btnEnviarMail.setText("Enviar Mail");
+        btnEnviarMail.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnEnviarMail.setPreferredSize(new java.awt.Dimension(90, 38));
+        btnEnviarMail.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEnviarMailActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout panelMailLayout = new javax.swing.GroupLayout(panelMail);
+        panelMail.setLayout(panelMailLayout);
+        panelMailLayout.setHorizontalGroup(
+            panelMailLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelMailLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(btnEnviarMail, javax.swing.GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        panelMailLayout.setVerticalGroup(
+            panelMailLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelMailLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(btnEnviarMail, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        panelRecibo.setBackground(new java.awt.Color(204, 204, 204));
+        panelRecibo.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 0, 102), 1, true));
+
+        btnAgregarRecibo.setText("Agregar Recibo");
+        btnAgregarRecibo.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnAgregarRecibo.setPreferredSize(new java.awt.Dimension(90, 38));
+        btnAgregarRecibo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarReciboActionPerformed(evt);
+            }
+        });
+
+        tblRecibo.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {},
+                {},
+                {},
+                {}
+            },
+            new String [] {
+
+            }
+        ));
+        jScrollPane1.setViewportView(tblRecibo);
+
+        javax.swing.GroupLayout panelReciboLayout = new javax.swing.GroupLayout(panelRecibo);
+        panelRecibo.setLayout(panelReciboLayout);
+        panelReciboLayout.setHorizontalGroup(
+            panelReciboLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelReciboLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 541, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnAgregarRecibo, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        panelReciboLayout.setVerticalGroup(
+            panelReciboLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelReciboLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelReciboLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelReciboLayout.createSequentialGroup()
+                        .addComponent(btnAgregarRecibo, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 356, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+
+        panelBusqueda.setBackground(new java.awt.Color(204, 204, 204));
+        panelBusqueda.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 0, 102), 1, true));
+
+        lblTitulo1.setFont(new java.awt.Font("DejaVu Serif", 0, 24)); // NOI18N
+        lblTitulo1.setForeground(new java.awt.Color(102, 0, 102));
+        lblTitulo1.setText("Buscar por Mes y Año");
+
+        yearChooser.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                yearChooserPropertyChange(evt);
+            }
+        });
+
+        monthChooser.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                monthChooserPropertyChange(evt);
+            }
+        });
+
+        javax.swing.GroupLayout panelBusquedaLayout = new javax.swing.GroupLayout(panelBusqueda);
+        panelBusqueda.setLayout(panelBusquedaLayout);
+        panelBusquedaLayout.setHorizontalGroup(
+            panelBusquedaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelBusquedaLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelBusquedaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(panelBusquedaLayout.createSequentialGroup()
+                        .addComponent(monthChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(yearChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblTitulo1))
+                .addContainerGap(49, Short.MAX_VALUE))
+        );
+        panelBusquedaLayout.setVerticalGroup(
+            panelBusquedaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelBusquedaLayout.createSequentialGroup()
+                .addComponent(lblTitulo1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelBusquedaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(yearChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(monthChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        panelFondoInical.setBackground(new java.awt.Color(204, 204, 204));
+        panelFondoInical.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 0, 102), 1, true));
+
+        btnAgregarFondoInical1.setText("Agregar");
+        btnAgregarFondoInical1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnAgregarFondoInical1.setPreferredSize(new java.awt.Dimension(90, 38));
+        btnAgregarFondoInical1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarFondoInical1ActionPerformed(evt);
+            }
+        });
+
+        txtFondoInicial.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtFondoInicialKeyReleased(evt);
+            }
+        });
+
+        lblTitulo2.setFont(new java.awt.Font("DejaVu Serif", 0, 24)); // NOI18N
+        lblTitulo2.setForeground(new java.awt.Color(102, 0, 102));
+        lblTitulo2.setText("Fondo Inicial");
+
+        lblAtencion.setForeground(new java.awt.Color(255, 102, 102));
+
+        javax.swing.GroupLayout panelFondoInicalLayout = new javax.swing.GroupLayout(panelFondoInical);
+        panelFondoInical.setLayout(panelFondoInicalLayout);
+        panelFondoInicalLayout.setHorizontalGroup(
+            panelFondoInicalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelFondoInicalLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelFondoInicalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelFondoInicalLayout.createSequentialGroup()
+                        .addComponent(txtFondoInicial, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnAgregarFondoInical1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(20, 20, 20))
+                    .addGroup(panelFondoInicalLayout.createSequentialGroup()
+                        .addComponent(lblTitulo2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblAtencion)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+        );
+        panelFondoInicalLayout.setVerticalGroup(
+            panelFondoInicalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelFondoInicalLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelFondoInicalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblTitulo2, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblAtencion))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(panelFondoInicalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(btnAgregarFondoInical1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(txtFondoInicial))
+                .addContainerGap())
+        );
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 738, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(panelReporte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(panelMail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(panelBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(panelFondoInical, javax.swing.GroupLayout.PREFERRED_SIZE, 313, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 634, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(panelRecibo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 572, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(panelBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(panelFondoInical, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(12, 12, 12)
+                .addComponent(panelRecibo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(panelReporte, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(panelMail, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -47,8 +440,96 @@ public class VentanaCajaChica extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnEnviarMailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarMailActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnEnviarMailActionPerformed
+
+    private void btnAgregarReciboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarReciboActionPerformed
+       VentanaPrincipal vP = (VentanaPrincipal) SwingUtilities.getWindowAncestor(this);
+       if(vP != null){
+            FormGestionRecibo formRecibo = new FormGestionRecibo(vP, true, usuarioNumLegajo, false);
+            formRecibo.setLocationRelativeTo(vP);
+            formRecibo.setVisible(true);
+            cargarTablaCajaChica(monthChooser.getMonth()+1, yearChooser.getYear());
+        }
+    }//GEN-LAST:event_btnAgregarReciboActionPerformed
+
+    private void monthChooserPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_monthChooserPropertyChange
+        if ("month".equals(evt.getPropertyName())) {
+            cargarTablaCajaChica(monthChooser.getMonth()+1, yearChooser.getYear());
+        }
+    }//GEN-LAST:event_monthChooserPropertyChange
+
+    private void yearChooserPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_yearChooserPropertyChange
+        if ("year".equals(evt.getPropertyName())) {
+            cargarTablaCajaChica(monthChooser.getMonth()+1, yearChooser.getYear());
+        }
+    }//GEN-LAST:event_yearChooserPropertyChange
+
+    private void btnAgregarFondoInical1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarFondoInical1ActionPerformed
+        try{
+            CajaChica cajaChica = controladorCajaChica.obtenerCajaChicaPorMes(monthChooser.getMonth()+1, yearChooser.getYear());
+       
+            if(!txtFondoInicial.getText().equals("")){
+                if(cajaChica != null){
+                    int opcion = JOptionPane.showConfirmDialog(
+                            null, 
+                            "¿Está seguro de que desea agregar el Fondo Inicial con la suma de $"+txtFondoInicial.getText()+"?", 
+                            "RECUERDE ESTA OPCIÓN NO SE PUEDE MODIFICAR", 
+                            JOptionPane.YES_NO_OPTION, 
+                            JOptionPane.WARNING_MESSAGE
+                    );
+                    if (opcion == JOptionPane.YES_OPTION) {
+
+                            controladorCajaChica.editarFondoInicial(cajaChica.getId(), Double.valueOf(txtFondoInicial.getText()));
+
+                            DialogoUtils.mostrarMensaje("Se guardo exitosamente", 1, "Exito");
+                            cargarTablaCajaChica(monthChooser.getMonth()+1, yearChooser.getYear());
+                        } else {
+                            DialogoUtils.mostrarMensaje("Se cancelo el guardado del fondo inicial", 1, "Atencion!");
+                        }
+
+
+                }else{
+                    DialogoUtils.mostrarMensaje("No se encontro caja chica", 2, "Error");
+                }
+            }else{
+                DialogoUtils.mostrarMensaje("Ingrese un monto", 2, "Atención");
+            }
+        }catch (Exception e){
+            DialogoUtils.mostrarMensaje("Error: "+e.getMessage(), 2, "Atención");
+        }
+        
+        
+        
+        
+    }//GEN-LAST:event_btnAgregarFondoInical1ActionPerformed
+
+    private void txtFondoInicialKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFondoInicialKeyReleased
+        UIValidacionUtils.validacionDigito(txtFondoInicial, lblAtencion);
+    }//GEN-LAST:event_txtFondoInicialKeyReleased
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAgregarFondoInical1;
+    private javax.swing.JButton btnAgregarRecibo;
+    private javax.swing.JButton btnEnviarMail;
+    private javax.swing.JButton btnReporte;
+    private javax.swing.JComboBox<String> cmbReporte;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblAtencion;
+    private javax.swing.JLabel lblTitulo;
+    private javax.swing.JLabel lblTitulo1;
+    private javax.swing.JLabel lblTitulo2;
+    private com.toedter.calendar.JMonthChooser monthChooser;
+    private javax.swing.JPanel panelBusqueda;
+    private javax.swing.JPanel panelFondoInical;
+    private javax.swing.JPanel panelMail;
+    private javax.swing.JPanel panelRecibo;
+    private javax.swing.JPanel panelReporte;
+    private javax.swing.JTable tblRecibo;
+    private javax.swing.JTextField txtFondoInicial;
+    private com.toedter.calendar.JYearChooser yearChooser;
     // End of variables declaration//GEN-END:variables
 }

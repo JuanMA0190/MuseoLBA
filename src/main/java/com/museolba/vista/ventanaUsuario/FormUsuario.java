@@ -54,8 +54,6 @@ public class FormUsuario extends javax.swing.JDialog {
         if (usuario != null) {
             txtNombreUsuario.setText(usuario.getNombreUsuario());
             cmbRol.setSelectedItem(usuario.getRolUsuario()); 
-            //cmbRol.setVisible(false);
-            //lblTitulo6.setVisible(false);
             rolUsuarioOriginal = (RolUsuario) cmbRol.getSelectedItem();
         }
     }

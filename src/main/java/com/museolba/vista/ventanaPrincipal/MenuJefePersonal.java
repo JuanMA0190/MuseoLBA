@@ -246,7 +246,7 @@ public class MenuJefePersonal extends javax.swing.JPanel {
     }//GEN-LAST:event_btnSalasActionPerformed
 
     private void btnCajaChicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCajaChicaActionPerformed
-        VentanaCajaChica vcc = new VentanaCajaChica();
+        VentanaCajaChica vcc = new VentanaCajaChica(ventanaPrincipal.getUsuarioOnline());
         ventanaPrincipal.abrirContenido(vcc, 738, 572, ventanaPrincipal.getPanelContenido());
     }//GEN-LAST:event_btnCajaChicaActionPerformed
 

@@ -4,7 +4,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 public class UIValidacionUtils {
- public static void validacionDigito(JTextField txt, JLabel lbl) {
+    public static void validacionDigito(JTextField txt, JLabel lbl) {
         if(!ValidacionUtils.esDigito(txt.getText())) {
             lbl.setText("Solo se permiten numeros en este campo.");
             txt.setText("");

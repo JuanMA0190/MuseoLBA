@@ -35,24 +35,27 @@ public class VentanaUsuario extends javax.swing.JPanel {
     }
     
     private void cargarTablaUsuario(List<Object[]> datos, String[] titulos){
-       ComponentesUtils.cargarTabla(tblUsuario, datos, titulos, fila -> {
-        DateTimeFormatter formatterFecha = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        DateTimeFormatter formatterHora = DateTimeFormatter.ofPattern("HH:mm:ss");
-        
-            for (int i = 0; i < fila.length; i++) {
-                if (fila[i] instanceof LocalDateTime) {
-                    LocalDateTime fecha = (LocalDateTime) fila[i];
-                    String fechaFormateada = fecha.format(formatterFecha);
-                    String horaFormateada = fecha.format(formatterHora);
-                    fila[i] = fechaFormateada + " " + horaFormateada;
-                }
-            }
-            return fila;
-        });
+       try{
+           ComponentesUtils.cargarTabla(tblUsuario, datos, titulos, fila -> {
+            DateTimeFormatter formatterFecha = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            DateTimeFormatter formatterHora = DateTimeFormatter.ofPattern("HH:mm:ss");
 
-        if (datos.isEmpty()) {
-            DialogoUtils.mostrarMensaje("No se encontraron resultados para el filtro y término proporcionados.", 1, "Sin Resultados");
-        }
+                for (int i = 0; i < fila.length; i++) {
+                    if (fila[i] instanceof LocalDateTime) {
+                        LocalDateTime fecha = (LocalDateTime) fila[i];
+                        String fechaFormateada = fecha.format(formatterFecha);
+                        String horaFormateada = fecha.format(formatterHora);
+                        fila[i] = fechaFormateada + " " + horaFormateada;
+                    }
+                }
+                return fila;
+            });
+       }catch(NoResultException e){
+           DialogoUtils.mostrarMensaje(e.getMessage(), 2, "Error");
+       }
+        
+
+        
     }
     
     private void cargarOpcionesFiltro() {

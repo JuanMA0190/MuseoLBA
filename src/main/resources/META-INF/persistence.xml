@@ -6,10 +6,11 @@
     <class>com.museolba.modelo.entidades.Usuario</class>
     <class>com.museolba.modelo.entidades.HistorialUsuario</class>
     <class>com.museolba.modelo.entidades.AsistenciaUsuario</class>
+    <class>com.museolba.modelo.entidades.CajaChica</class>
+    <class>com.museolba.modelo.entidades.Recibo</class>
     <properties>
       <!-- Configuración básica de conexión -->
       <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
-      
       <!-- Activar el log de consultas de EclipseLink -->
       <property name="eclipselink.logging.level" value="FINE"/>
       <property name="eclipselink.logging.logger" value="DefaultLogger"/>
@@ -17,6 +18,7 @@
       <property name="eclipselink.sql-execution-trace" value="true"/>
       <!-- Mostrar todas las consultas SQL en el log -->
       <property name="eclipselink.logging.level.sql" value="FINE"/>
+      <property name="javax.persistence.schema-generation.database.action" value="create"/>
     </properties>
   </persistence-unit>
 </persistence>

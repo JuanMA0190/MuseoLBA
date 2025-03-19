@@ -6,8 +6,8 @@ import java.awt.Window;
 import java.io.IOException;
 import java.util.List;
 import javax.imageio.ImageIO;
+import javax.persistence.NoResultException;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
@@ -49,8 +49,9 @@ public class ComponentesUtils {
         tabla.setModel(modeloTabla);
         
         if (lista == null || lista.isEmpty()) {
-            DialogoUtils.mostrarMensaje("No se encontraron resultados para el filtro y término proporcionados.", 
-                                     DialogoUtils.TIPO_INFO, "Sin Resultados");
+            throw new NoResultException("No se encontraron resultados para el filtro y término proporcionados.");
+            /*DialogoUtils.mostrarMensaje("No se encontraron resultados para el filtro y término proporcionados.", 
+                                     DialogoUtils.TIPO_INFO, "Sin Resultados");*/
         }
     }
     

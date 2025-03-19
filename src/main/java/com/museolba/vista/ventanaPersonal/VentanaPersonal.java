@@ -32,7 +32,6 @@ public class VentanaPersonal extends javax.swing.JPanel {
             ComponentesUtils.cargarTabla(tblPersonal, datosPersonal, titulos, fila -> fila);
         } catch (NoResultException e) {
          DialogoUtils.mostrarMensaje(e.getMessage(), 1, "Sin Resultados");
-         // Opcionalmente limpiar la tabla o realizar otras acciones en la GUI
         }
     }
     
@@ -104,12 +103,6 @@ public class VentanaPersonal extends javax.swing.JPanel {
 
         jPanel2.setBackground(new java.awt.Color(204, 204, 204));
         jPanel2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 0, 102), 1, true));
-
-        txtBuscar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtBuscarActionPerformed(evt);
-            }
-        });
 
         cmbFiltro.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -302,10 +295,6 @@ public class VentanaPersonal extends javax.swing.JPanel {
             isSelectedAOption = false;
         }
     }//GEN-LAST:event_cmbFiltroActionPerformed
-
-    private void txtBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBuscarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtBuscarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

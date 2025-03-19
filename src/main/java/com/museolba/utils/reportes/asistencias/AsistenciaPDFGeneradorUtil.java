@@ -1,4 +1,4 @@
-package com.museolba.utils.reportes;
+package com.museolba.utils.reportes.asistencias;
 
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPCell;
@@ -8,6 +8,9 @@ import com.museolba.controlador.controladorUsuario.ControladorHistorialUsuario;
 import com.museolba.modelo.entidades.AsistenciaUsuario;
 import com.museolba.modelo.entidades.HistorialUsuario;
 import com.museolba.modelo.entidades.Usuario;
+import com.museolba.utils.DialogoUtils;
+import com.museolba.utils.FechaUtils;
+import java.io.File;
 import java.io.FileOutputStream;
 
 import java.time.LocalDate;
@@ -32,13 +35,24 @@ public class AsistenciaPDFGeneradorUtil {
      */
     public void generarReporteAsistencia(String filePath, List<AsistenciaUsuario> asistencias, int mes, int anio) {
         try {
+            // Crear directorio si no existe
+            File file = new File(filePath);
+            File parentDir = file.getParentFile();
+            if (parentDir != null && !parentDir.exists()) {
+                boolean dirCreated = parentDir.mkdirs();
+                if (!dirCreated) {
+                    DialogoUtils.mostrarMensaje("No se pudo crear el directorio: " + parentDir.getAbsolutePath(), 2, "Error!");
+                    return;
+                }
+            }
+            
             // Crear el documento en orientación horizontal
             Document document = new Document(PageSize.A4.rotate()); // Orientación horizontal
             PdfWriter.getInstance(document, new FileOutputStream(filePath));
             document.open();
 
             // Agregar el título
-            String nombreMes = obtenerNombreMes(mes);
+            String nombreMes = FechaUtils.obtenerMes(mes);
             Paragraph titulo = new Paragraph("Asistencia del mes " + nombreMes + " " + anio, 
                                             FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18, BaseColor.BLACK));
             titulo.setAlignment(Element.ALIGN_CENTER);
@@ -84,18 +98,18 @@ public class AsistenciaPDFGeneradorUtil {
 
             //Agregar referencias de Asistencia
             agregarReferencias(document);
-            
+
             // Agregar las firmas al final del documento
             agregarFirmas(document);
 
             // Cerrar el documento
             document.close();
 
-            System.out.println("Reporte de asistencia generado exitosamente en: " + filePath);
-
+            DialogoUtils.mostrarMensaje("Reporte PDF generado exitosamente en: " + filePath,1,"Exito!");
+              
         } catch (Exception e) {
             e.printStackTrace();
-            System.err.println("Error al generar el reporte de asistencia: " + e.getMessage());
+            DialogoUtils.mostrarMensaje("Error al generar el reporte PDF: " + e.getMessage(),2,"Error!");
         }
     }
 
@@ -271,17 +285,5 @@ public class AsistenciaPDFGeneradorUtil {
     private int obtenerDiasDelMes(int mes, int anio) {
         YearMonth yearMonth = YearMonth.of(anio, mes);
         return yearMonth.lengthOfMonth();
-    }
-
-    /**
-     * Obtiene el nombre del mes a partir de su número.
-     *
-     * @param mes Número del mes (1-12).
-     * @return Nombre del mes.
-     */
-    private String obtenerNombreMes(int mes) {
-        String[] nombresMeses = {"Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
-                                 "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"};
-        return nombresMeses[mes - 1];
     }
 }

@@ -1,9 +1,11 @@
-package com.museolba.utils.reportes;
+package com.museolba.utils.reportes.asistencias;
 
 import com.museolba.controlador.controladorUsuario.ControladorHistorialUsuario;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import com.museolba.modelo.entidades.*;
+import com.museolba.utils.DialogoUtils;
+import java.io.File;
 
 import java.io.FileOutputStream;
 import java.text.DateFormatSymbols;
@@ -15,8 +17,8 @@ import java.util.stream.Collectors;
 import org.apache.poi.ss.util.CellRangeAddress;
 
 public class AsistenciaEXCELGenerador {
+    
     private static final Map<String, String> CODIGOS_INASISTENCIA = crearMapeoInasistencias();
-     
     private ControladorHistorialUsuario controladorHU = new ControladorHistorialUsuario();
      
     private static final String[] REFERENCIAS = {
@@ -32,53 +34,66 @@ public class AsistenciaEXCELGenerador {
     };
 
     public void generarReporteExcel(String filePath, List<AsistenciaUsuario> asistencias, int mes, int anio) {
-        try (Workbook workbook = new XSSFWorkbook()) {
-            Sheet sheet = workbook.createSheet("Asistencia " + obtenerNombreMes(mes));
-
-            // Configurar estilos
-            CellStyle headerStyle = crearEstiloEncabezado(workbook);
-            CellStyle dataStyle = crearEstiloDatos(workbook);
-            CellStyle centeredStyle = crearEstiloCentrado(workbook);
-            CellStyle titleStyle = crearEstiloTitulo(workbook);
-            
-            // Agregar título
-            Row titleRow = sheet.createRow(0);
-            crearTitulo(titleRow, sheet, mes, anio, titleStyle);
-            
-            // Crear encabezados
-            int rowNum = 1;
-            Row headerRow = sheet.createRow(rowNum++);
-            crearEncabezados(headerRow, headerStyle, mes, anio);
-
-            // Agrupar datos por usuario
-            Map<Usuario, List<AsistenciaUsuario>> asistenciasPorUsuario = asistencias.stream()
-                    .collect(Collectors.groupingBy(AsistenciaUsuario::getUsuario));
-
-            // Llenar datos
-            for (Map.Entry<Usuario, List<AsistenciaUsuario>> entry : asistenciasPorUsuario.entrySet()) {
-                Row dataRow = sheet.createRow(rowNum++);
-                agregarFilaUsuario(dataRow, entry.getKey(), entry.getValue(), dataStyle, mes, anio);
+        try{
+            // Crear directorio si no existe
+            File file = new File(filePath);
+            File parentDir = file.getParentFile();
+            if (parentDir != null && !parentDir.exists()) {
+                boolean dirCreated = parentDir.mkdirs();
+                if (!dirCreated) {
+                    DialogoUtils.mostrarMensaje("No se pudo crear el directorio: " + parentDir.getAbsolutePath(), 2, "Error!");
+                    return;
+                }
             }
-
-            // Agregar referencias
-            agregarReferencias(sheet, rowNum++, centeredStyle);
             
-            // Agregar firmas
-            agregarFirmas(sheet, rowNum, centeredStyle);
+            try (Workbook workbook = new XSSFWorkbook()) {
+                Sheet sheet = workbook.createSheet("Asistencia " + obtenerNombreMes(mes));
 
-            // Ajustar anchos de columnas
-            ajustarAnchosColumnas(sheet, mes, anio);
+                // Configurar estilos
+                CellStyle headerStyle = crearEstiloEncabezado(workbook);
+                CellStyle dataStyle = crearEstiloDatos(workbook);
+                CellStyle centeredStyle = crearEstiloCentrado(workbook);
+                CellStyle titleStyle = crearEstiloTitulo(workbook);
 
-            // Escribir archivo
-            try (FileOutputStream outputStream = new FileOutputStream(filePath)) {
-                workbook.write(outputStream);
-            }
+                // Agregar título
+                Row titleRow = sheet.createRow(0);
+                crearTitulo(titleRow, sheet, mes, anio, titleStyle);
 
-            System.out.println("Reporte Excel generado exitosamente en: " + filePath);
+                // Crear encabezados
+                int rowNum = 1;
+                Row headerRow = sheet.createRow(rowNum++);
+                crearEncabezados(headerRow, headerStyle, mes, anio);
 
+                // Agrupar datos por usuario
+                Map<Usuario, List<AsistenciaUsuario>> asistenciasPorUsuario = asistencias.stream()
+                        .collect(Collectors.groupingBy(AsistenciaUsuario::getUsuario));
+
+                // Llenar datos
+                for (Map.Entry<Usuario, List<AsistenciaUsuario>> entry : asistenciasPorUsuario.entrySet()) {
+                    Row dataRow = sheet.createRow(rowNum++);
+                    agregarFilaUsuario(dataRow, entry.getKey(), entry.getValue(), dataStyle, mes, anio);
+                }
+
+                // Agregar referencias
+                agregarReferencias(sheet, rowNum++, centeredStyle, mes, anio);
+
+                // Agregar firmas
+                agregarFirmas(sheet, rowNum, centeredStyle, mes, anio);
+
+                // Ajustar anchos de columnas
+                ajustarAnchosColumnas(sheet, mes, anio);
+
+                // Escribir archivo
+                try (FileOutputStream outputStream = new FileOutputStream(filePath)) {
+                    workbook.write(outputStream);
+                }
+
+                DialogoUtils.mostrarMensaje("Reporte Excel generado exitosamente en: " + filePath,1,"Exito!");
+
+            } 
         } catch (Exception e) {
-            System.err.println("Error al generar el reporte Excel: " + e.getMessage());
             e.printStackTrace();
+            DialogoUtils.mostrarMensaje("Error al generar el reporte Excel: " + e.getMessage(), 2, "Error!");
         }
     }
     
@@ -87,32 +102,42 @@ public class AsistenciaEXCELGenerador {
         Cell cell = titleRow.createCell(0);
         cell.setCellValue("Asistencia del mes " + obtenerNombreMes(mes) + " " + anio);
         cell.setCellStyle(style);
-        sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 3 + YearMonth.of(anio, mes).lengthOfMonth()));
+        int lastColumn = 3 + YearMonth.of(anio, mes).lengthOfMonth();
+        sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, lastColumn));
     }
     
-    private void agregarReferencias(Sheet sheet, int rowNum, CellStyle style) {
+    private void agregarReferencias(Sheet sheet, int rowNum, CellStyle style, int mes, int anio) {
         Row refRow = sheet.createRow(rowNum);
-
-        for (int i = 0; i < REFERENCIAS.length; i++) {
-            Cell cell = refRow.createCell(i);
-            cell.setCellValue(REFERENCIAS[i]);
-            cell.setCellStyle(style);
-        }
+        Cell cell = refRow.createCell(0);
+        String texto = String.join("   |   ", REFERENCIAS);
+        cell.setCellValue(texto);
+        cell.setCellStyle(style);
+        int lastColumn = 3 + YearMonth.of(anio, mes).lengthOfMonth();
+        sheet.addMergedRegion(new CellRangeAddress(rowNum, rowNum, 0, lastColumn));
     }
     
-    private void agregarFirmas(Sheet sheet, int rowNum, CellStyle style) {
-        // Espacio antes de firmas
-        Row espacioRow = sheet.createRow(rowNum++);
-        
-        // Fila de firmas
-        Row firmaRow = sheet.createRow(rowNum++);
-        crearCelda(firmaRow, 0, "_________________________", style);
-        crearCelda(firmaRow, 3 + YearMonth.of(2024, 3).lengthOfMonth() - 2, "_________________________", style);
+    private void agregarFirmas(Sheet sheet, int rowNum, CellStyle style, int mes, int anio) {
+        int lastColumn = 3 + YearMonth.of(anio, mes).lengthOfMonth();
 
-        // Texto firmas
-        Row textoRow = sheet.createRow(rowNum);
-        crearCelda(textoRow, 0, "Jefe de Departamento de Museo", style);
-        crearCelda(textoRow, 3 + YearMonth.of(2024, 3).lengthOfMonth() - 2, "Jefe de Personal de Museo", style);
+        // Líneas de firma
+        Row firmaLineaRow = sheet.createRow(rowNum++);
+        Cell firmaIzq = firmaLineaRow.createCell(0);
+        firmaIzq.setCellValue("_________________________");
+        sheet.addMergedRegion(new CellRangeAddress(rowNum - 1, rowNum - 1, 0, 2));
+
+        Cell firmaDer = firmaLineaRow.createCell(lastColumn - 2);
+        firmaDer.setCellValue("_________________________");
+        sheet.addMergedRegion(new CellRangeAddress(rowNum - 1, rowNum - 1, lastColumn - 2, lastColumn));
+
+        // Textos de firma
+        Row textoFirmaRow = sheet.createRow(rowNum++);
+        Cell textoIzq = textoFirmaRow.createCell(0);
+        textoIzq.setCellValue("Jefe de Departamento de Museo");
+        sheet.addMergedRegion(new CellRangeAddress(rowNum - 1, rowNum - 1, 0, 2));
+
+        Cell textoDer = textoFirmaRow.createCell(lastColumn - 2);
+        textoDer.setCellValue("Jefe de Personal de Museo");
+        sheet.addMergedRegion(new CellRangeAddress(rowNum - 1, rowNum - 1, lastColumn - 2, lastColumn));
     }
     
     private CellStyle crearEstiloTitulo(Workbook workbook) {
@@ -221,13 +246,11 @@ public class AsistenciaEXCELGenerador {
     }
 
     private void ajustarAnchosColumnas(Sheet sheet, int mes, int anio) {
-        // Anchos fijos para las primeras columnas
-        sheet.setColumnWidth(0, 25 * 256);   // Nombre
-        sheet.setColumnWidth(1, 15 * 256);   // Legajo
-        sheet.setColumnWidth(2, 15 * 256);   // DNI
-        sheet.setColumnWidth(3, 12 * 256);   // Horario
+        sheet.setColumnWidth(0, 35 * 256);   // Nombre
+        sheet.setColumnWidth(1, 18 * 256);   // Legajo
+        sheet.setColumnWidth(2, 18 * 256);   // DNI
+        sheet.setColumnWidth(3, 15 * 256);   // Horario
 
-        // Ancho para días
         int dias = YearMonth.of(anio, mes).lengthOfMonth();
         for (int i = 4; i < 4 + dias; i++) {
             sheet.setColumnWidth(i, 5 * 256);

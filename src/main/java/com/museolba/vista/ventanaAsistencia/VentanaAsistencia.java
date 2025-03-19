@@ -5,6 +5,7 @@ import com.museolba.controlador.controladorAsistencia.ControladorAsistenciaUsuar
 import com.museolba.modelo.entidades.Usuario;
 import com.museolba.modelo.entidades.enums.RolUsuario;
 import com.museolba.utils.ComponentesUtils;
+import com.museolba.utils.FechaUtils;
 import com.museolba.vista.ventanaPrincipal.VentanaPrincipal;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -132,21 +133,16 @@ public class VentanaAsistencia extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReporteActionPerformed
-        /*
-        // Obtener la fecha actual
-        LocalDate fechaActual = LocalDate.now();
-
-        // Obtener el número del mes actual
-        int numeroMes = fechaActual.getMonthValue();
-        System.out.println("Número del mes actual: " + numeroMes);*/
+        
         Calendar calendario = calendarioAsistencias.getCalendar();
         int mes =  calendario.get(Calendar.MONTH) + 1;
         int anio = calendario.get(Calendar.YEAR);
-        
-        if(cmbReporte.getSelectedItem() == TiposReporte.PDF)
-            controladorAsistencia.generarReporteAsistencia(mes, anio, "ReporteAsistencia"+1+anio+".pdf");
-        else if(cmbReporte.getSelectedItem() == TiposReporte.EXCEL)
-            controladorAsistencia.generarReporteAsistencia(mes, anio, "ReporteAsistencia"+3+anio+".xlsx");
+        String url = "reportes/asistencia/ReporteAsistencia"+FechaUtils.obtenerMes(mes)+anio;
+            if(cmbReporte.getSelectedItem() == TiposReporte.PDF){
+                controladorAsistencia.generarReporteAsistencia(mes, anio, url+".pdf");
+            }else if(cmbReporte.getSelectedItem() == TiposReporte.EXCEL){
+                controladorAsistencia.generarReporteAsistencia(mes, anio, url+".xlsx");
+            }
     }//GEN-LAST:event_btnReporteActionPerformed
 
     private void calendarioAsistenciasPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_calendarioAsistenciasPropertyChange
