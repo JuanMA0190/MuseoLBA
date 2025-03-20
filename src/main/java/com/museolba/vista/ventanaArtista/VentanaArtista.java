@@ -1,12 +1,50 @@
 package com.museolba.vista.ventanaArtista;
 
+import com.museolba.controlador.controladorObra.ControladorObra;
+import com.museolba.modelo.entidades.obras.Obra;
+import com.museolba.utils.ComponentesUtils;
+import com.museolba.utils.DialogoUtils;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import javax.persistence.NoResultException;
+
 
 
 public class VentanaArtista extends javax.swing.JPanel {
-
+    String titulos[] = {"Titulo", "Artista", "Tipo Obra", "Fecha Registro", "Sala"};
+    ControladorObra controladorObra = null;
    
     public VentanaArtista() {
         initComponents();
+        controladorObra = new ControladorObra();
+        cargarTabla();
+    }
+    
+    private void cargarTabla(){
+        try {
+            // Obtener la lista de obras desde el controlador
+            List<Obra> listaObra = controladorObra.todasObras();
+
+            // Formateador de fecha
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+
+            // Mapper para convertir Obra a fila de la tabla
+            ComponentesUtils.TableDataMapper<Obra> obraMapper = obra -> {
+                String fechaFormateada = obra.getFechaEntrada().format(formatter); // Formatear la fecha
+                return new Object[]{
+                    obra.getTitulo(),       // Título de la obra
+                    obra.getArtista(),      // Artista (String)
+                    obra.getTipoObra(),
+                    fechaFormateada,        // Fecha de registro formateada
+                    obra.getSala().getNombre() // Nombre de la sala
+                };
+            };
+
+            // Cargar la tabla usando el método utilitario
+            ComponentesUtils.cargarTabla(tblPersonal, listaObra, titulos, obraMapper);
+        } catch (NoResultException e) {
+            DialogoUtils.mostrarMensaje("Error al cargar la tabla: " + e.getMessage(), 2, "Error");
+        }
     }
 
     /**
@@ -19,21 +57,89 @@ public class VentanaArtista extends javax.swing.JPanel {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        lblTitulo = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblPersonal = new javax.swing.JTable();
+        jPanel2 = new javax.swing.JPanel();
+        txtBuscar = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
 
         setMinimumSize(new java.awt.Dimension(738, 572));
         setPreferredSize(new java.awt.Dimension(738, 572));
 
         jPanel1.setBackground(new java.awt.Color(204, 204, 204));
 
+        lblTitulo.setFont(new java.awt.Font("DejaVu Serif", 0, 24)); // NOI18N
+        lblTitulo.setForeground(new java.awt.Color(102, 0, 102));
+        lblTitulo.setText("Gestión de Artista");
+
+        tblPersonal.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {},
+                {},
+                {},
+                {}
+            },
+            new String [] {
+
+            }
+        ));
+        jScrollPane1.setViewportView(tblPersonal);
+
+        jPanel2.setBackground(new java.awt.Color(204, 204, 204));
+        jPanel2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 0, 102), 1, true));
+
+        jButton1.setText("Buscar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(31, 31, 31)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(40, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 738, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(103, 103, 103)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 738, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 572, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(81, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -48,8 +154,41 @@ public class VentanaArtista extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        try {
+            // Obtener la lista de obras desde el controlador
+            List<Obra> listaObra = controladorObra.buscarObrasPorArtista(txtBuscar.getText());
+
+            // Formateador de fecha
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+
+            // Mapper para convertir Obra a fila de la tabla
+            ComponentesUtils.TableDataMapper<Obra> obraMapper = obra -> {
+                String fechaFormateada = obra.getFechaEntrada().format(formatter); // Formatear la fecha
+                return new Object[]{
+                    obra.getTitulo(),       // Título de la obra
+                    obra.getArtista(),      // Artista (String)
+                    obra.getTipoObra(),
+                    fechaFormateada,        // Fecha de registro formateada
+                    obra.getSala().getNombre() // Nombre de la sala
+                };
+            };
+
+            // Cargar la tabla usando el método utilitario
+            ComponentesUtils.cargarTabla(tblPersonal, listaObra, titulos, obraMapper);
+        } catch (NoResultException e) {
+            DialogoUtils.mostrarMensaje("Error al cargar la tabla: " + e.getMessage(), 2, "Error");
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblTitulo;
+    private javax.swing.JTable tblPersonal;
+    private javax.swing.JTextField txtBuscar;
     // End of variables declaration//GEN-END:variables
 }

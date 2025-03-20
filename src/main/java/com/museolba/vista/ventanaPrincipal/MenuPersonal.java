@@ -3,6 +3,7 @@ package com.museolba.vista.ventanaPrincipal;
 import com.museolba.vista.ventanaActividades.VentanaActividades;
 import com.museolba.vista.ventanaAsistencia.VentanaAsistencia;
 import com.museolba.vista.ventanaCajaChica.VentanaCajaChica;
+import com.museolba.vista.ventanaObra.VentanaObra;
 
 
 public class MenuPersonal extends javax.swing.JPanel {
@@ -164,7 +165,7 @@ public class MenuPersonal extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelMenu, javax.swing.GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE)
+            .addComponent(panelMenu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -178,8 +179,8 @@ public class MenuPersonal extends javax.swing.JPanel {
     }//GEN-LAST:event_btnPrincipalActionPerformed
 
     private void btnObrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnObrasActionPerformed
-        // VentanaObra vo = new VentanaObra();
-        // abrirContenido(vo);
+        VentanaObra vo = new VentanaObra();
+        ventanaPrincipal.abrirContenido(vo, 738, 572, ventanaPrincipal.getPanelContenido());
     }//GEN-LAST:event_btnObrasActionPerformed
 
     private void btnTurVisitasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTurVisitasActionPerformed

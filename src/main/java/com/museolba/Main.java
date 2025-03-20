@@ -2,6 +2,7 @@ package com.museolba;
 
 import com.museolba.config.DBInitializer;
 import com.formdev.flatlaf.intellijthemes.FlatDraculaIJTheme;
+import com.museolba.config.DataSalaInitializr;
 import com.museolba.modelo.jpaController.PersistenceJpaController;
 import com.museolba.utils.DialogoUtils;
 import com.museolba.vista.ventanaLogin.VentanaLogin;
@@ -23,6 +24,8 @@ public class Main {
             //_----------------------Script----------------------------_
             EntityManagerFactory emf = PersistenceJpaController.getEmf();
             DBInitializer dbInitializer = new DBInitializer(emf);
+            DataSalaInitializr dataSala = new DataSalaInitializr(emf);
+            dataSala.initializeSalas();
             dbInitializer.initialize();
             //_--------------------------------------------------------_
             

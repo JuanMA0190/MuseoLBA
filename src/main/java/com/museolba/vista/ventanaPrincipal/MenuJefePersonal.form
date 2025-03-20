@@ -113,7 +113,6 @@
                           </Group>
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="btnTurVisitas" alignment="0" min="-2" pref="256" max="-2" attributes="0"/>
                                   <Component id="btnUsuario" alignment="0" min="-2" pref="256" max="-2" attributes="0"/>
                                   <Component id="btnPersonal" alignment="0" min="-2" pref="256" max="-2" attributes="0"/>
                                   <Component id="btnAsistencia" alignment="0" min="-2" pref="256" max="-2" attributes="0"/>
@@ -138,9 +137,7 @@
                               <Component id="btnObras" min="-2" pref="47" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="btnTurVisitas" min="-2" pref="47" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="btnUsuario" min="-2" pref="47" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="btnPersonal" min="-2" pref="47" max="-2" attributes="0"/>
@@ -150,7 +147,7 @@
                       <Component id="btnSalas" min="-2" pref="47" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="btnCajaChica" min="-2" pref="47" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace pref="57" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -186,21 +183,6 @@
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnObrasActionPerformed"/>
-              </Events>
-            </Component>
-            <Component class="javax.swing.JButton" name="btnTurVisitas">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Turnos Visitas"/>
-                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-                  <Border info="null"/>
-                </Property>
-                <Property name="borderPainted" type="boolean" value="false"/>
-                <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-                  <Color id="Cursor de Mano"/>
-                </Property>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnTurVisitasActionPerformed"/>
               </Events>
             </Component>
             <Component class="javax.swing.JButton" name="btnUsuario">

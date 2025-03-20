@@ -6,7 +6,6 @@ import com.museolba.vista.ventanaCajaChica.VentanaCajaChica;
 import com.museolba.vista.ventanaObra.VentanaObra;
 import com.museolba.vista.ventanaPersonal.VentanaPersonal;
 import com.museolba.vista.ventanaSalas.VentanaSalas;
-import com.museolba.vista.ventanaTurnoVisita.VentanaTurnoVisita;
 import com.museolba.vista.ventanaUsuario.VentanaUsuario;
 
 public class MenuJefePersonal extends javax.swing.JPanel {
@@ -28,7 +27,6 @@ public class MenuJefePersonal extends javax.swing.JPanel {
         lblImagen = new javax.swing.JLabel();
         btnPrincipal = new javax.swing.JButton();
         btnObras = new javax.swing.JButton();
-        btnTurVisitas = new javax.swing.JButton();
         btnUsuario = new javax.swing.JButton();
         btnPersonal = new javax.swing.JButton();
         btnSalas = new javax.swing.JButton();
@@ -64,16 +62,6 @@ public class MenuJefePersonal extends javax.swing.JPanel {
         btnObras.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnObrasActionPerformed(evt);
-            }
-        });
-
-        btnTurVisitas.setText("Turnos Visitas");
-        btnTurVisitas.setBorder(null);
-        btnTurVisitas.setBorderPainted(false);
-        btnTurVisitas.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnTurVisitas.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnTurVisitasActionPerformed(evt);
             }
         });
 
@@ -142,7 +130,6 @@ public class MenuJefePersonal extends javax.swing.JPanel {
                         .addComponent(lblImagen))
                     .addGroup(panelMenuLayout.createSequentialGroup()
                         .addGroup(panelMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnTurVisitas, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnPersonal, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnAsistencia, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -160,9 +147,7 @@ public class MenuJefePersonal extends javax.swing.JPanel {
                         .addComponent(btnPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnObras, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnTurVisitas, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(btnUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnPersonal, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -172,7 +157,7 @@ public class MenuJefePersonal extends javax.swing.JPanel {
                 .addComponent(btnSalas, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnCajaChica, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(57, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -200,7 +185,7 @@ public class MenuJefePersonal extends javax.swing.JPanel {
                 .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(panelMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 470, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(11, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -225,16 +210,6 @@ public class MenuJefePersonal extends javax.swing.JPanel {
         ventanaPrincipal.abrirContenido(vo, 738, 572, ventanaPrincipal.getPanelContenido());
     }//GEN-LAST:event_btnObrasActionPerformed
 
-    private void btnTurVisitasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTurVisitasActionPerformed
-        VentanaTurnoVisita vtv = new VentanaTurnoVisita();
-        ventanaPrincipal.abrirContenido(vtv, 738, 572, ventanaPrincipal.getPanelContenido());
-    }//GEN-LAST:event_btnTurVisitasActionPerformed
-
-    private void btnUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUsuarioActionPerformed
-        VentanaUsuario vu = new VentanaUsuario();
-        ventanaPrincipal.abrirContenido(vu, 738, 572, ventanaPrincipal.getPanelContenido());
-    }//GEN-LAST:event_btnUsuarioActionPerformed
-
     private void btnPersonalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPersonalActionPerformed
         VentanaPersonal vp = new VentanaPersonal();
         ventanaPrincipal.abrirContenido(vp, 738, 572, ventanaPrincipal.getPanelContenido());
@@ -255,6 +230,11 @@ public class MenuJefePersonal extends javax.swing.JPanel {
         ventanaPrincipal.abrirContenido(va, 738, 572, ventanaPrincipal.getPanelContenido());
     }//GEN-LAST:event_btnAsistenciaActionPerformed
 
+    private void btnUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUsuarioActionPerformed
+        VentanaUsuario vu = new VentanaUsuario();
+        ventanaPrincipal.abrirContenido(vu, 738, 572, ventanaPrincipal.getPanelContenido());
+    }//GEN-LAST:event_btnUsuarioActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAsistencia;
@@ -263,7 +243,6 @@ public class MenuJefePersonal extends javax.swing.JPanel {
     private javax.swing.JButton btnPersonal;
     private javax.swing.JButton btnPrincipal;
     private javax.swing.JButton btnSalas;
-    private javax.swing.JButton btnTurVisitas;
     private javax.swing.JButton btnUsuario;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
