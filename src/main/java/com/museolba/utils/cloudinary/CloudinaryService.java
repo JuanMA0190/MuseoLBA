@@ -29,4 +29,10 @@ public class CloudinaryService {
         Map<?, ?> uploadResult = cloudinary.uploader().upload(file, ObjectUtils.emptyMap());
         return (String) uploadResult.get("url");
     }
+    
+    public String subirArchivo(String rutaLocal) throws Exception {
+        File file = new File(rutaLocal);
+        Map<?, ?> uploadResult = cloudinary.uploader().upload(file, ObjectUtils.emptyMap());
+        return (String) uploadResult.get("url");
+    }
 }

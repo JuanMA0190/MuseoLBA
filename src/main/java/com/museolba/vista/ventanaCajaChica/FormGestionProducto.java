@@ -1,25 +1,19 @@
 package com.museolba.vista.ventanaCajaChica;
 
-import com.museolba.controlador.controladorAsistencia.ControladorAsistenciaUsuario;
-import com.museolba.modelo.entidades.AsistenciaUsuario;
-import com.museolba.modelo.entidades.Usuario;
+import com.museolba.modelo.entidades.Producto;
 import com.museolba.utils.DialogoUtils;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
+import com.museolba.utils.UIValidacionUtils;
+
+
 
 
 public class FormGestionProducto extends javax.swing.JDialog {
+    private Producto producto = null;
     
-    private LocalDate fechaSeleccionada = null;
-    private ControladorAsistenciaUsuario controladorAsistencia = null;
-    
-    public FormGestionProducto(java.awt.Frame parent, boolean modal, Usuario usuario, LocalDate fechaSeleccionada) {
+    public FormGestionProducto(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        this.fechaSeleccionada = fechaSeleccionada;
-        this.controladorAsistencia = new ControladorAsistenciaUsuario();
+       
     }
 
     @SuppressWarnings("unchecked")
@@ -33,17 +27,13 @@ public class FormGestionProducto extends javax.swing.JDialog {
         lblTitulo2 = new javax.swing.JLabel();
         txtNombre = new javax.swing.JTextField();
         btnCerrar = new javax.swing.JButton();
-        txtHorarioManiana = new javax.swing.JTextField();
+        txtCantidad = new javax.swing.JTextField();
         lblTitulo3 = new javax.swing.JLabel();
         txtPrecio = new javax.swing.JTextField();
         btnGuardar = new javax.swing.JButton();
+        lblError = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowOpened(java.awt.event.WindowEvent evt) {
-                formWindowOpened(evt);
-            }
-        });
 
         jPanel1.setBackground(new java.awt.Color(204, 204, 204));
         jPanel1.setPreferredSize(new java.awt.Dimension(600, 487));
@@ -63,8 +53,6 @@ public class FormGestionProducto extends javax.swing.JDialog {
         lblTitulo2.setForeground(new java.awt.Color(102, 0, 102));
         lblTitulo2.setText("Cantidad");
 
-        txtNombre.setEditable(false);
-
         btnCerrar.setText("Cerrar");
         btnCerrar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnCerrar.addActionListener(new java.awt.event.ActionListener() {
@@ -73,13 +61,26 @@ public class FormGestionProducto extends javax.swing.JDialog {
             }
         });
 
-        txtHorarioManiana.setEditable(false);
+        txtCantidad.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtCantidadKeyPressed(evt);
+            }
+        });
 
         lblTitulo3.setFont(new java.awt.Font("DejaVu Serif", 0, 18)); // NOI18N
         lblTitulo3.setForeground(new java.awt.Color(102, 0, 102));
         lblTitulo3.setText("Precio Unitario");
 
-        txtPrecio.setEditable(false);
+        txtPrecio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPrecioActionPerformed(evt);
+            }
+        });
+        txtPrecio.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtPrecioKeyPressed(evt);
+            }
+        });
 
         btnGuardar.setText("Guardar");
         btnGuardar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -89,6 +90,8 @@ public class FormGestionProducto extends javax.swing.JDialog {
             }
         });
 
+        lblError.setForeground(new java.awt.Color(204, 0, 0));
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -97,45 +100,49 @@ public class FormGestionProducto extends javax.swing.JDialog {
                 .addGap(43, 43, 43)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblTitulo3, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtPrecio, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(txtHorarioManiana)
-                                .addComponent(lblTitulo2, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblTitulo2, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblTitulo3)
+                            .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblTitulo4, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 204, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(0, 270, Short.MAX_VALUE)
                                 .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(27, 27, 27)))
-                        .addComponent(btnCerrar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(81, 81, 81))))
+                                .addGap(27, 27, 27)
+                                .addComponent(btnCerrar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(81, 81, 81))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(lblTitulo4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lblError)
+                        .addGap(134, 134, 134))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(26, 26, 26)
-                .addComponent(lblTitulo4, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblTitulo4, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblError, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(17, 17, 17)
                 .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(32, 32, 32)
                 .addComponent(lblTitulo3, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(40, 40, 40)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblTitulo2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(37, 37, 37)
-                        .addComponent(txtHorarioManiana, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 103, Short.MAX_VALUE)
+                .addComponent(lblTitulo2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 104, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCerrar, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -183,70 +190,54 @@ public class FormGestionProducto extends javax.swing.JDialog {
         this.dispose();
     }//GEN-LAST:event_btnCerrarActionPerformed
 
-    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-         // Obtener las asistencias por número de legajo y fecha
-        List<AsistenciaUsuario> listaInfoAsistencia = controladorAsistencia.obtenerAsistenciasDetalladas(fechaSeleccionada);
-
-        // Verificar si hay datos
-        if (listaInfoAsistencia != null && !listaInfoAsistencia.isEmpty()) {
-            // Mostrar la fecha en el campo correspondiente
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            String fechaFormateada = fechaSeleccionada.format(formatter);
-            txtNombre.setText(fechaFormateada);
-
-            // Separar horarios en mañana y tarde
-            StringBuilder horariosManiana = new StringBuilder();
-            StringBuilder horariosTarde = new StringBuilder();
-
-            for (AsistenciaUsuario asistencia : listaInfoAsistencia) {
-                // Obtener el horario directamente desde el objeto AsistenciaUsuario
-                LocalTime horario = asistencia.getHorario();
-
-                if (horario.isBefore(LocalTime.NOON)) { // Horario de mañana
-                    horariosManiana.append(horario.toString()).append("\n");
-                } else { // Horario de tarde
-                    horariosTarde.append(horario.toString()).append("\n");
-                }
-            }
-
-            // Mostrar los horarios en los campos correspondientes
-            if (!horariosManiana.toString().trim().isEmpty()) {
-                txtHorarioManiana.setText(horariosManiana.toString().trim());
-            } else {
-                txtHorarioManiana.setText("---");
-            }
-
-            if (!horariosTarde.toString().trim().isEmpty()) {
-                txtPrecio.setText(horariosTarde.toString().trim());
-            } else {
-                txtPrecio.setText("---");
-            }
-        } else {
-            // Si no hay datos, limpiar los campos
-            txtNombre.setText("---");
-            txtHorarioManiana.setText("---");
-            txtPrecio.setText("---");
-            DialogoUtils.mostrarMensaje("No hay Información de Asistencia", 2, "Información no disponible");
-            this.dispose();
-        }
-        
-    }//GEN-LAST:event_formWindowOpened
-
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        // TODO add your handling code here:
+        if(!txtNombre.getText().trim().isEmpty() && !txtPrecio.getText().trim().isEmpty() && !txtCantidad.getText().trim().isEmpty()){
+            this.producto = new Producto();
+            
+            producto.setNombre(txtNombre.getText());
+            producto.setPrecioUnitario(Double.valueOf(txtPrecio.getText()));
+            producto.setCantidad(Integer.valueOf(txtCantidad.getText()));
+            
+            this.setProducto(producto);
+            this.dispose();
+        }else{
+            DialogoUtils.mostrarMensaje("No se aceptan campos vacíos", 1, "Atención");
+        }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
+    private void txtPrecioKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPrecioKeyPressed
+         UIValidacionUtils.validacionDigito(txtPrecio, lblError);
+    }//GEN-LAST:event_txtPrecioKeyPressed
+
+    private void txtCantidadKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCantidadKeyPressed
+        UIValidacionUtils.validacionDigito(txtCantidad, lblError);
+    }//GEN-LAST:event_txtCantidadKeyPressed
+
+    private void txtPrecioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPrecioActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPrecioActionPerformed
+    
+    public void setProducto(Producto producto){
+        this.producto = producto;
+    }
+    
+    
+    public Producto getProducto(){
+        return this.producto;
+    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCerrar;
     private javax.swing.JButton btnGuardar;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JLabel lblError;
     private javax.swing.JLabel lblTitulo1;
     private javax.swing.JLabel lblTitulo2;
     private javax.swing.JLabel lblTitulo3;
     private javax.swing.JLabel lblTitulo4;
-    private javax.swing.JTextField txtHorarioManiana;
+    private javax.swing.JTextField txtCantidad;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtPrecio;
     // End of variables declaration//GEN-END:variables

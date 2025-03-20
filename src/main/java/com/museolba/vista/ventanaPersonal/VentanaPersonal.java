@@ -28,10 +28,10 @@ public class VentanaPersonal extends javax.swing.JPanel {
     
     private void cargarTablaPersonal(){
         try {
-         List<Object[]> datosPersonal = controladorPersonal.obtenerDatosPersonal();
+            List<Object[]> datosPersonal = controladorPersonal.obtenerDatosPersonal();
             ComponentesUtils.cargarTabla(tblPersonal, datosPersonal, titulos, fila -> fila);
         } catch (NoResultException e) {
-         DialogoUtils.mostrarMensaje(e.getMessage(), 1, "Sin Resultados");
+            DialogoUtils.mostrarMensaje(e.getMessage(), 1, "Sin Resultados");
         }
     }
     

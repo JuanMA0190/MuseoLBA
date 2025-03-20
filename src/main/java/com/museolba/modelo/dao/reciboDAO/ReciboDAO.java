@@ -1,5 +1,6 @@
 package com.museolba.modelo.dao.reciboDAO;
 
+import com.museolba.modelo.entidades.Producto;
 import java.util.List;
 import com.museolba.modelo.entidades.Recibo;
 
@@ -16,6 +17,6 @@ public interface ReciboDAO {
     // Obtener el total gastado en recibos para una caja chica específica
     Double obtenerTotalGastadoPorCajaChica(Long cajaChicaId);
 
-    // Obtener recibos que contienen un producto específico
-    List<Recibo> obtenerRecibosConProducto(String nombreProducto);
+    
+    List<Producto> obtenerProductosPorRecibo(Long reciboId);
 }

@@ -25,6 +25,9 @@ public class Recibo {
     @Column(name = "nombre", nullable = false)
     private String nombre;
    
+    @Column(name = "responsable", nullable = false)
+    private Long responsable;
+    
     @Column(name = "precio_total", nullable = false)
     private Double precioTotal;
     
@@ -96,5 +99,23 @@ public class Recibo {
     public void setCajaChica(CajaChica cajaChica) {
         this.cajaChica = cajaChica;
     }    
+
+    public String getImagenUrl() {
+        return imagenUrl;
+    }
+
+    public void setImagenUrl(String imagenUrl) {
+        this.imagenUrl = imagenUrl;
+    }
+
+    public Long getResponsable() {
+        return responsable;
+    }
+
+    public void setResponsable(Long responsable) {
+        this.responsable = responsable;
+    }
+    
+    
     
 }

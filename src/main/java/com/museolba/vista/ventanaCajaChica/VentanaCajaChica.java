@@ -1,35 +1,40 @@
 package com.museolba.vista.ventanaCajaChica;
 
+import com.museolba.config.TiposReporte;
 import com.museolba.controlador.controladorCajaChica.ControladorCajaChica;
+import com.museolba.controlador.controladorCajaChica.ControladorRecibo;
 import com.museolba.modelo.entidades.CajaChica;
 import com.museolba.modelo.entidades.Recibo;
 import com.museolba.modelo.entidades.Usuario;
 import com.museolba.modelo.entidades.enums.RolUsuario;
 import com.museolba.utils.ComponentesUtils;
 import com.museolba.utils.DialogoUtils;
+import com.museolba.utils.FechaUtils;
 import com.museolba.utils.UIValidacionUtils;
 import com.museolba.vista.ventanaPrincipal.VentanaPrincipal;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Calendar;
 import java.util.List;
 import javax.persistence.NoResultException;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableModel;
 
 public class VentanaCajaChica extends javax.swing.JPanel {
     ControladorCajaChica controladorCajaChica = null;
+    ControladorRecibo controladorRecibo = null;
     Long usuarioNumLegajo = null;
     String[] titulos = {"Nombre", "Fecha"};
     LocalDate fechaActual = null;
     int mesActual = 0;
     int anioActual = 0;
-   
+    
+    
     public VentanaCajaChica(Usuario usuario) {
         
         initComponents();
         controladorCajaChica = new ControladorCajaChica();
+        controladorRecibo = new ControladorRecibo();
         this.usuarioNumLegajo = usuario.getnLegajo();
         
         fechaActual = LocalDate.now();
@@ -38,6 +43,8 @@ public class VentanaCajaChica extends javax.swing.JPanel {
         anioActual = fechaActual.getYear();
         
         panelFondoInical.setVisible(false);
+        
+        ComponentesUtils.cargarComboBox(cmbReporte, TiposReporte.class);
         
         // Ejecutar después de que el JPanel esté completamente inicializado
         SwingUtilities.invokeLater(() -> {
@@ -60,7 +67,6 @@ public class VentanaCajaChica extends javax.swing.JPanel {
         //Si el usuario es personal
         if (usuario.getRolUsuario() == RolUsuario.PERSONAL) {
             panelReporte.setVisible(false);
-            panelMail.setVisible(false);
             panelFondoInical.setVisible(false);
             btnAgregarRecibo.setEnabled(false);
         }
@@ -71,13 +77,14 @@ public class VentanaCajaChica extends javax.swing.JPanel {
     
     public void estamosEnElMesYAnioActual(int mes, int anio){
         if(mes != mesActual || anio != anioActual){
-            panelMail.setVisible(false);
             btnAgregarRecibo.setVisible(false);
             panelFondoInical.setVisible(false);
+            panelReporte.setVisible(false);
         }else{
-            panelMail.setVisible(true);
             btnAgregarRecibo.setVisible(true);
+            panelReporte.setVisible(true);
         }
+        
     }
         
     public void verificarYCrearCajaChicaParaMesActual() {
@@ -103,48 +110,42 @@ public class VentanaCajaChica extends javax.swing.JPanel {
         DialogoUtils.mostrarMensaje("Ingrese el fondo inicial para empezar a gestionar la Caja Chica", 1, "Atención");
         btnReporte.setEnabled(false);
         btnAgregarRecibo.setEnabled(false);
-        btnEnviarMail.setEnabled(false);
         panelFondoInical.setVisible(true);
     } else {
         btnReporte.setEnabled(true);
         btnAgregarRecibo.setEnabled(true);
-        btnEnviarMail.setEnabled(true);
         panelFondoInical.setVisible(false);
     }
 }
     
     private void cargarTablaCajaChica(int mesSeleccionado , int anioSeleccionado){
         try {
-            
+            // Obtener la caja chica para el mes y año seleccionados
             CajaChica cajaChica = controladorCajaChica.obtenerCajaChicaPorMes(mesSeleccionado, anioSeleccionado);
-
-            if (cajaChica != null) {
-                List<Recibo> todosLosRecibos = new ArrayList<>();
-
-                for (Recibo recibos : cajaChica.getRecibos()) {
-                    todosLosRecibos.addAll((Collection<? extends Recibo>) recibos);
-                }
-
-                // Cargar los recibos en la tabla
-                ComponentesUtils.cargarTabla(tblRecibo, todosLosRecibos, titulos, recibo -> {
-                    DateTimeFormatter formatterFecha = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
-                    Object[] fila = new Object[]{
-                        recibo.getNombre(),
-                        recibo.getFechaRegistro().format(formatterFecha)
-                    };
-                    return fila;
-                });
-            } else {
-                DialogoUtils.mostrarMensaje("No se encontró una caja chica para el mes seleccionado.", 1, "Sin Resultados");
+            List<Recibo> cajaChicaRecibo = controladorRecibo.obtenerRecibosPorCajaChica(cajaChica.getId());
+            
+            ComponentesUtils.TableDataMapper<Recibo> reciboMapper = recibo -> new Object[]{
+                recibo.getNombre(),
+                recibo.getFechaRegistro()
+             };
+            
+            try {
+                ComponentesUtils.cargarTabla(tblRecibo, cajaChicaRecibo, titulos, reciboMapper);
+            } catch (NoResultException e) {
+             // Mostrar un mensaje si no hay productos
+             DialogoUtils.mostrarMensaje("No hay productos para mostrar.", 1, "Sin Resultados");
             }
+           
         } catch (NoResultException e) {
             DialogoUtils.mostrarMensaje("La Caja Chica no tiene Recibos almacenados!", 1, "Atención!");
+            DefaultTableModel modelo = (DefaultTableModel) tblRecibo.getModel();
+            modelo.setRowCount(0);
         }
 
-        // 🔹 Agregar la verificación del fondo inicial aquí
+        // Verificar el fondo inicial
         verificarFondoInicial(mesSeleccionado, anioSeleccionado);
 
+        // Verificar si estamos en el mes y año actual
         estamosEnElMesYAnioActual(mesSeleccionado, anioSeleccionado);
          
     }
@@ -158,12 +159,11 @@ public class VentanaCajaChica extends javax.swing.JPanel {
         panelReporte = new javax.swing.JPanel();
         btnReporte = new javax.swing.JButton();
         cmbReporte = new javax.swing.JComboBox<>();
-        panelMail = new javax.swing.JPanel();
-        btnEnviarMail = new javax.swing.JButton();
         panelRecibo = new javax.swing.JPanel();
         btnAgregarRecibo = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblRecibo = new javax.swing.JTable();
+        btnVerRecibo = new javax.swing.JButton();
         panelBusqueda = new javax.swing.JPanel();
         lblTitulo1 = new javax.swing.JLabel();
         yearChooser = new com.toedter.calendar.JYearChooser();
@@ -189,6 +189,11 @@ public class VentanaCajaChica extends javax.swing.JPanel {
         btnReporte.setText("Reporte");
         btnReporte.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnReporte.setPreferredSize(new java.awt.Dimension(90, 38));
+        btnReporte.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReporteActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelReporteLayout = new javax.swing.GroupLayout(panelReporte);
         panelReporte.setLayout(panelReporteLayout);
@@ -208,35 +213,6 @@ public class VentanaCajaChica extends javax.swing.JPanel {
                 .addGroup(panelReporteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnReporte, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cmbReporte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        panelMail.setBackground(new java.awt.Color(204, 204, 204));
-        panelMail.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 0, 102), 1, true));
-
-        btnEnviarMail.setText("Enviar Mail");
-        btnEnviarMail.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnEnviarMail.setPreferredSize(new java.awt.Dimension(90, 38));
-        btnEnviarMail.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEnviarMailActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout panelMailLayout = new javax.swing.GroupLayout(panelMail);
-        panelMail.setLayout(panelMailLayout);
-        panelMailLayout.setHorizontalGroup(
-            panelMailLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelMailLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(btnEnviarMail, javax.swing.GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        panelMailLayout.setVerticalGroup(
-            panelMailLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelMailLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(btnEnviarMail, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -265,6 +241,15 @@ public class VentanaCajaChica extends javax.swing.JPanel {
         ));
         jScrollPane1.setViewportView(tblRecibo);
 
+        btnVerRecibo.setText("Ver Recibo");
+        btnVerRecibo.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnVerRecibo.setPreferredSize(new java.awt.Dimension(90, 38));
+        btnVerRecibo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVerReciboActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelReciboLayout = new javax.swing.GroupLayout(panelRecibo);
         panelRecibo.setLayout(panelReciboLayout);
         panelReciboLayout.setHorizontalGroup(
@@ -273,7 +258,9 @@ public class VentanaCajaChica extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 541, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnAgregarRecibo, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(panelReciboLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnAgregarRecibo, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnVerRecibo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
         panelReciboLayout.setVerticalGroup(
@@ -283,6 +270,8 @@ public class VentanaCajaChica extends javax.swing.JPanel {
                 .addGroup(panelReciboLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelReciboLayout.createSequentialGroup()
                         .addComponent(btnAgregarRecibo, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnVerRecibo, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 356, Short.MAX_VALUE))
                 .addContainerGap())
@@ -395,16 +384,13 @@ public class VentanaCajaChica extends javax.swing.JPanel {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(panelReporte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(panelMail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(panelBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(panelFondoInical, javax.swing.GroupLayout.PREFERRED_SIZE, 313, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(panelReporte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 634, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(panelRecibo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE)))
@@ -422,9 +408,7 @@ public class VentanaCajaChica extends javax.swing.JPanel {
                 .addGap(12, 12, 12)
                 .addComponent(panelRecibo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(panelReporte, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(panelMail, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(panelReporte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -440,20 +424,24 @@ public class VentanaCajaChica extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnEnviarMailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarMailActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnEnviarMailActionPerformed
-
     private void btnAgregarReciboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarReciboActionPerformed
-       VentanaPrincipal vP = (VentanaPrincipal) SwingUtilities.getWindowAncestor(this);
+       CajaChica cajaChica = controladorCajaChica.obtenerCajaChicaPorMes(monthChooser.getMonth()+1, yearChooser.getYear());
+        
+        VentanaPrincipal vP = (VentanaPrincipal) SwingUtilities.getWindowAncestor(this);
        if(vP != null){
-            FormGestionRecibo formRecibo = new FormGestionRecibo(vP, true, usuarioNumLegajo, false);
-            formRecibo.setLocationRelativeTo(vP);
+            FormGestionRecibo formRecibo = new FormGestionRecibo(vP, true, usuarioNumLegajo, cajaChica);
+            
             formRecibo.setVisible(true);
+            formRecibo.setLocationRelativeTo(vP);
+            
+            
+            
+            
             cargarTablaCajaChica(monthChooser.getMonth()+1, yearChooser.getYear());
         }
     }//GEN-LAST:event_btnAgregarReciboActionPerformed
 
+          //  cajaChica.setRecibos(controladorRecibo.obtenerRecibosPorCajaChica(cajaChica.getId()));
     private void monthChooserPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_monthChooserPropertyChange
         if ("month".equals(evt.getPropertyName())) {
             cargarTablaCajaChica(monthChooser.getMonth()+1, yearChooser.getYear());
@@ -509,12 +497,50 @@ public class VentanaCajaChica extends javax.swing.JPanel {
         UIValidacionUtils.validacionDigito(txtFondoInicial, lblAtencion);
     }//GEN-LAST:event_txtFondoInicialKeyReleased
 
+    private void btnVerReciboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerReciboActionPerformed
+       
+         if(tblRecibo.getRowCount()> 0){
+            if(tblRecibo.getSelectedRow()!=-1){
+                int filaSeleccionada = tblRecibo.getSelectedRow();
+                Recibo recibo = controladorRecibo.obtenerRecibo((long)filaSeleccionada+1);
+        
+                VentanaPrincipal vP = (VentanaPrincipal) SwingUtilities.getWindowAncestor(this);
+               if(vP != null){
+                    FormGestionRecibo formRecibo = new FormGestionRecibo(vP, true, recibo);
+
+                    formRecibo.setVisible(true);
+                    formRecibo.setLocationRelativeTo(vP);
+
+
+
+
+                    cargarTablaCajaChica(monthChooser.getMonth()+1, yearChooser.getYear());
+                }
+            }
+         }else{
+                DialogoUtils.mostrarMensaje("Debe seleccionar un recibo para Modificar!", 1, "Atención");
+         }
+        
+    }//GEN-LAST:event_btnVerReciboActionPerformed
+
+    private void btnReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReporteActionPerformed
+       
+        int mes =  mesActual;
+        int anio = anioActual;
+        String url = "reportes/caja_chica/ReporteCajaChica"+FechaUtils.obtenerMes(mes)+anio;
+            if(cmbReporte.getSelectedItem() == TiposReporte.PDF){
+                controladorCajaChica.generarReporteCajaChica(mes, anio, url+".pdf");
+            }else if(cmbReporte.getSelectedItem() == TiposReporte.EXCEL){
+                controladorCajaChica.generarReporteCajaChica(mes, anio, url+".xlsx");
+            }
+    }//GEN-LAST:event_btnReporteActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregarFondoInical1;
     private javax.swing.JButton btnAgregarRecibo;
-    private javax.swing.JButton btnEnviarMail;
     private javax.swing.JButton btnReporte;
+    private javax.swing.JButton btnVerRecibo;
     private javax.swing.JComboBox<String> cmbReporte;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
@@ -525,7 +551,6 @@ public class VentanaCajaChica extends javax.swing.JPanel {
     private com.toedter.calendar.JMonthChooser monthChooser;
     private javax.swing.JPanel panelBusqueda;
     private javax.swing.JPanel panelFondoInical;
-    private javax.swing.JPanel panelMail;
     private javax.swing.JPanel panelRecibo;
     private javax.swing.JPanel panelReporte;
     private javax.swing.JTable tblRecibo;

@@ -4,6 +4,7 @@ import com.museolba.modelo.dao.reciboDAO.ReciboDAOImpl;
 import com.museolba.modelo.entidades.Recibo;
 import com.museolba.modelo.jpaController.ReciboJpaController;
 import com.museolba.modelo.entidades.CajaChica;
+import com.museolba.modelo.entidades.Producto;
 import com.museolba.modelo.jpaController.CajaChicaJpaController;
 
 import java.util.List;
@@ -21,7 +22,7 @@ public class ControladorRecibo {
     
       // Métodos ABM (usando JpaController)
     public void crearRecibo(Recibo recibo) throws Exception {
-        reciboJpaController.create(recibo);
+        reciboJpaController.crearRecibo(recibo);
         actualizarTotalGastoCajaChica(recibo.getCajaChica().getId());
     }
 
@@ -64,10 +65,10 @@ public class ControladorRecibo {
         return reciboDAO.obtenerTotalGastadoPorCajaChica(cajaChicaId);
     }
 
-    public List<Recibo> obtenerRecibosConProducto(String nombreProducto) {
-        return reciboDAO.obtenerRecibosConProducto(nombreProducto);
+    public List<Producto> obtenerProductosPorRecibo(Long reciboId){
+        return reciboDAO.obtenerProductosPorRecibo(reciboId);
     }
-
+    
     // Método auxiliar para actualizar el totalGasto de CajaChica
     private void actualizarTotalGastoCajaChica(Long cajaChicaId) {
         Double totalGasto = reciboDAO.obtenerTotalGastadoPorCajaChica(cajaChicaId);

@@ -1,9 +1,11 @@
 package com.museolba.modelo.dao.reciboDAO;
 
+import com.museolba.modelo.entidades.Producto;
 import com.museolba.modelo.jpaController.PersistenceJpaController;
 import java.util.List;
 import javax.persistence.EntityManager;
 import com.museolba.modelo.entidades.Recibo;
+import java.util.ArrayList;
 import javax.persistence.TypedQuery;
 
 public class ReciboDAOImpl extends PersistenceJpaController implements ReciboDAO {
@@ -46,14 +48,19 @@ public class ReciboDAOImpl extends PersistenceJpaController implements ReciboDAO
             em.close();
         }
     }
-
-    @Override
-    public List<Recibo> obtenerRecibosConProducto(String nombreProducto) {
-        EntityManager em = getEmf().createEntityManager();
-        String jpql = "SELECT r FROM Recibo r JOIN r.productos p WHERE p.nombre = :nombreProducto";
-        TypedQuery<Recibo> query = em.createQuery(jpql, Recibo.class);
-        query.setParameter("nombreProducto", nombreProducto);
-        return query.getResultList();
-    }
     
+    public List<Producto> obtenerProductosPorRecibo(Long reciboId) {
+        EntityManager em = getEmf().createEntityManager();
+        try {
+            // Obtener el recibo por ID
+            Recibo recibo = em.find(Recibo.class, reciboId);
+            if (recibo != null) {
+                return recibo.getProductos(); // Devuelve los productos del recibo
+            }
+            return new ArrayList<>(); // Si no se encuentra el recibo, devolver una lista vacía
+        } finally {
+            em.close();
+        }
+    }
 }
+

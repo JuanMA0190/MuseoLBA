@@ -64,4 +64,5 @@ public class ComponentesUtils {
             System.out.println("Error al cargar el ícono: " + e.getMessage());
         }
     }
+    
 }
