@@ -1,9 +1,9 @@
 package com.museolba.config;
 
-import com.museolba.modelo.entidades.enums.EstadoPersonal;
-import com.museolba.modelo.entidades.HistorialUsuario;
-import com.museolba.modelo.entidades.enums.RolUsuario;
-import com.museolba.modelo.entidades.Usuario;
+import com.museolba.modelo.entidades.personal.EstadoPersonal;
+import com.museolba.modelo.entidades.usuario.HistorialUsuario;
+import com.museolba.modelo.entidades.usuario.RolUsuario;
+import com.museolba.modelo.entidades.usuario.Usuario;
 import com.museolba.utils.ContraseniaEncriptacionUtils;
 import java.time.LocalDateTime;
 import javax.persistence.EntityManager;

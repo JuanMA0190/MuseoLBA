@@ -1,8 +1,8 @@
 package com.museolba.vista.ventanaPersonal;
 
 import com.museolba.controlador.controladorUsuario.ControladorPersonal;
-import com.museolba.modelo.entidades.enums.EstadoPersonal;
-import com.museolba.modelo.entidades.Personal;
+import com.museolba.modelo.entidades.personal.EstadoPersonal;
+import com.museolba.modelo.entidades.personal.Personal;
 import com.museolba.utils.DialogoUtils;
 import com.museolba.utils.UIValidacionUtils;
 import com.museolba.vista.ventanaPrincipal.VentanaPrincipal;

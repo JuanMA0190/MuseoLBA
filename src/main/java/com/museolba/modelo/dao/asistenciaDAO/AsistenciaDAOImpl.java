@@ -1,6 +1,6 @@
 package com.museolba.modelo.dao.asistenciaDAO;
 
-import com.museolba.modelo.entidades.AsistenciaUsuario;
+import com.museolba.modelo.entidades.usuario.AsistenciaUsuario;
 import static com.museolba.modelo.jpaController.PersistenceJpaController.getEmf;
 import java.time.LocalDate;
 import java.time.YearMonth;

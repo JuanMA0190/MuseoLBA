@@ -1,11 +1,11 @@
 package com.museolba.controlador.controladorCajaChica;
 
 import com.museolba.modelo.dao.reciboDAO.ReciboDAOImpl;
-import com.museolba.modelo.entidades.Recibo;
-import com.museolba.modelo.jpaController.ReciboJpaController;
-import com.museolba.modelo.entidades.CajaChica;
-import com.museolba.modelo.entidades.Producto;
-import com.museolba.modelo.jpaController.CajaChicaJpaController;
+import com.museolba.modelo.entidades.cajaChica.Recibo;
+import com.museolba.modelo.jpaController.cajaChicaJpaController.ReciboJpaController;
+import com.museolba.modelo.entidades.cajaChica.CajaChica;
+import com.museolba.modelo.entidades.cajaChica.Producto;
+import com.museolba.modelo.jpaController.cajaChicaJpaController.CajaChicaJpaController;
 
 import java.util.List;
 

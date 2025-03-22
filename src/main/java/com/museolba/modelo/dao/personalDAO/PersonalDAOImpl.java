@@ -1,6 +1,6 @@
 package com.museolba.modelo.dao.personalDAO;
 
-import com.museolba.modelo.entidades.enums.EstadoPersonal;
+import com.museolba.modelo.entidades.personal.EstadoPersonal;
 import com.museolba.modelo.jpaController.PersistenceJpaController;
 import java.util.List;
 import javax.persistence.EntityManager;

@@ -2,9 +2,9 @@ package com.museolba.vista.ventanaUsuario;
 
 import com.museolba.controlador.controladorUsuario.ControladorHistorialUsuario;
 import com.museolba.controlador.controladorUsuario.ControladorUsuario;
-import com.museolba.modelo.entidades.enums.EstadoPersonal;
-import com.museolba.modelo.entidades.enums.RolUsuario;
-import com.museolba.modelo.entidades.Usuario;
+import com.museolba.modelo.entidades.personal.EstadoPersonal;
+import com.museolba.modelo.entidades.usuario.RolUsuario;
+import com.museolba.modelo.entidades.usuario.Usuario;
 import com.museolba.utils.ComponentesUtils;
 import com.museolba.utils.DialogoUtils;
 import com.museolba.vista.ventanaPrincipal.VentanaPrincipal;
@@ -49,7 +49,7 @@ public class VentanaUsuario extends javax.swing.JPanel {
                     }
                 }
                 return fila;
-            });
+            }, true);
        }catch(NoResultException e){
            DialogoUtils.mostrarMensaje(e.getMessage(), 2, "Error");
        }
@@ -304,7 +304,7 @@ public class VentanaUsuario extends javax.swing.JPanel {
                     }
                 }
                 return fila;
-            });
+            }, true);
             txtBuscar.setText("");
             btnCargarTodosDatos.setVisible(true);
         }catch (NoResultException e){

@@ -1,10 +1,9 @@
-package com.museolba.modelo.entidades.enums;
+package com.museolba.modelo.entidades.usuario;
 
 
 public enum RazonInactividad {
     NOVALID("----------------"),
     VACACIONES("Licencia Anual Reglamentaria"),
-    //ELIMINADO("Eliminado"),
     LICENCIA_ESTUDIO("Licencia por Estudio"),
     CERTIFICADO_MEDICO("Certificado Médico"),
     FRANCO_COMPESATORIO("Franco Compesatorio");

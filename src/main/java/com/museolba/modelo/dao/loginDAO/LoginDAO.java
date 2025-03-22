@@ -1,6 +1,6 @@
 package com.museolba.modelo.dao.loginDAO;
 
-import com.museolba.modelo.entidades.Usuario;
+import com.museolba.modelo.entidades.usuario.Usuario;
 
 
 public interface LoginDAO {

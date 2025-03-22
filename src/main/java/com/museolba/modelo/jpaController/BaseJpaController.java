@@ -1,7 +1,6 @@
 package com.museolba.modelo.jpaController;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import java.io.Serializable;

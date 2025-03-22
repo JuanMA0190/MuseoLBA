@@ -1,6 +1,6 @@
 package com.museolba.modelo.dao.asistenciaDAO;
 
-import com.museolba.modelo.entidades.AsistenciaUsuario;
+import com.museolba.modelo.entidades.usuario.AsistenciaUsuario;
 import java.time.LocalDate;
 import java.util.List;
 

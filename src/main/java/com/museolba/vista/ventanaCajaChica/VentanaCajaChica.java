@@ -3,17 +3,17 @@ package com.museolba.vista.ventanaCajaChica;
 import com.museolba.config.TiposReporte;
 import com.museolba.controlador.controladorCajaChica.ControladorCajaChica;
 import com.museolba.controlador.controladorCajaChica.ControladorRecibo;
-import com.museolba.modelo.entidades.CajaChica;
-import com.museolba.modelo.entidades.Recibo;
-import com.museolba.modelo.entidades.Usuario;
-import com.museolba.modelo.entidades.enums.RolUsuario;
+import com.museolba.modelo.entidades.cajaChica.CajaChica;
+import com.museolba.modelo.entidades.cajaChica.Recibo;
+import com.museolba.modelo.entidades.usuario.Usuario;
+import com.museolba.modelo.entidades.usuario.RolUsuario;
 import com.museolba.utils.ComponentesUtils;
 import com.museolba.utils.DialogoUtils;
 import com.museolba.utils.FechaUtils;
 import com.museolba.utils.UIValidacionUtils;
 import com.museolba.vista.ventanaPrincipal.VentanaPrincipal;
 import java.time.LocalDate;
-import java.util.Calendar;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import javax.persistence.NoResultException;
 import javax.swing.JOptionPane;
@@ -123,17 +123,20 @@ public class VentanaCajaChica extends javax.swing.JPanel {
             // Obtener la caja chica para el mes y año seleccionados
             CajaChica cajaChica = controladorCajaChica.obtenerCajaChicaPorMes(mesSeleccionado, anioSeleccionado);
             List<Recibo> cajaChicaRecibo = controladorRecibo.obtenerRecibosPorCajaChica(cajaChica.getId());
-            
+
+            DateTimeFormatter formatterFecha = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            DateTimeFormatter formatterHora = DateTimeFormatter.ofPattern("HH:mm:ss");
+
             ComponentesUtils.TableDataMapper<Recibo> reciboMapper = recibo -> new Object[]{
                 recibo.getNombre(),
-                recibo.getFechaRegistro()
-             };
+                recibo.getFechaRegistro().format(formatterFecha) + " " + recibo.getFechaRegistro().format(formatterHora)
+            };
             
             try {
-                ComponentesUtils.cargarTabla(tblRecibo, cajaChicaRecibo, titulos, reciboMapper);
+                ComponentesUtils.cargarTabla(tblRecibo, cajaChicaRecibo, titulos, reciboMapper, true);
             } catch (NoResultException e) {
              // Mostrar un mensaje si no hay productos
-             DialogoUtils.mostrarMensaje("No hay productos para mostrar.", 1, "Sin Resultados");
+             DialogoUtils.mostrarMensaje("La Caja Chica no tiene Recibos almacenados!", 1, "Atención!");
             }
            
         } catch (NoResultException e) {
@@ -462,8 +465,8 @@ public class VentanaCajaChica extends javax.swing.JPanel {
                 if(cajaChica != null){
                     int opcion = JOptionPane.showConfirmDialog(
                             null, 
-                            "¿Está seguro de que desea agregar el Fondo Inicial con la suma de $"+txtFondoInicial.getText()+"?", 
-                            "RECUERDE ESTA OPCIÓN NO SE PUEDE MODIFICAR", 
+                            "¿Está seguro de que desea agregar el Fondo Inicial con la suma de $"+txtFondoInicial.getText()+"?\nRECUERDE ESTA OPCIÓN NO SE PUEDE MODIFICAR", 
+                            "Atención!", 
                             JOptionPane.YES_NO_OPTION, 
                             JOptionPane.WARNING_MESSAGE
                     );
@@ -473,9 +476,9 @@ public class VentanaCajaChica extends javax.swing.JPanel {
 
                             DialogoUtils.mostrarMensaje("Se guardo exitosamente", 1, "Exito");
                             cargarTablaCajaChica(monthChooser.getMonth()+1, yearChooser.getYear());
-                        } else {
-                            DialogoUtils.mostrarMensaje("Se cancelo el guardado del fondo inicial", 1, "Atencion!");
-                        }
+                    } else {
+                        DialogoUtils.mostrarMensaje("Se cancelo el guardado del fondo inicial", 1, "Atencion!");
+                    }
 
 
                 }else{

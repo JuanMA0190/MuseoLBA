@@ -1,8 +1,8 @@
 package com.museolba.modelo.dao.usuarioDAO;
 
-import com.museolba.modelo.entidades.enums.EstadoPersonal;
-import com.museolba.modelo.entidades.HistorialUsuario;
-import com.museolba.modelo.entidades.enums.RolUsuario;
+import com.museolba.modelo.entidades.personal.EstadoPersonal;
+import com.museolba.modelo.entidades.usuario.HistorialUsuario;
+import com.museolba.modelo.entidades.usuario.RolUsuario;
 import com.museolba.modelo.jpaController.PersistenceJpaController;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -83,23 +83,25 @@ public class HistorialUsuarioDAOImpl extends PersistenceJpaController implements
         }
 
         TypedQuery<Object[]> query = em.createQuery(jpql, Object[].class);
-        //TENES QUE ARREGLAR ESTO:
-        if (filtro.equals("Estado")) {
-            try {
-                EstadoPersonal estado = EstadoPersonal.valueOf(termino.toUpperCase());
-                query.setParameter("termino", estado);
-            } catch (IllegalArgumentException e) {
-                throw new IllegalArgumentException("El estado ingresado no es válido: " + termino, e);
+        
+        switch (filtro) {
+            case "Estado" -> {
+                try {
+                    EstadoPersonal estado = EstadoPersonal.valueOf(termino.toUpperCase());
+                    query.setParameter("termino", estado);
+                } catch (IllegalArgumentException e) {
+                    throw new IllegalArgumentException("El estado ingresado no es válido: " + termino, e);
+                }
             }
-        } else if (filtro.equals("Rol")) {
-            try {
-                RolUsuario rol = obtenerRolUsuarioDesdeDescripcion(termino);
-                query.setParameter("termino", rol);
-            } catch (IllegalArgumentException e) {
-                throw new IllegalArgumentException("El rol ingresado no es válido: " + termino, e);
+            case "Rol" -> {
+                try {
+                    RolUsuario rol = obtenerRolUsuarioDesdeDescripcion(termino);
+                    query.setParameter("termino", rol);
+                } catch (IllegalArgumentException e) {
+                    throw new IllegalArgumentException("El rol ingresado no es válido: " + termino, e);
+                }
             }
-        } else {
-            query.setParameter("termino", "%" + termino.toLowerCase() + "%");
+            default -> query.setParameter("termino", "%" + termino.toLowerCase() + "%");
         }
 
         return query.getResultList();

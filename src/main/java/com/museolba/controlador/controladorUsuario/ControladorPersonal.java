@@ -1,8 +1,8 @@
 package com.museolba.controlador.controladorUsuario;
 
 import com.museolba.modelo.dao.personalDAO.PersonalDAOImpl;
-import com.museolba.modelo.entidades.Personal;
-import com.museolba.modelo.jpaController.PersonalJpaController;
+import com.museolba.modelo.entidades.personal.Personal;
+import com.museolba.modelo.jpaController.personalJpaController.PersonalJpaController;
 import java.util.List;
 import javax.persistence.NoResultException;
 

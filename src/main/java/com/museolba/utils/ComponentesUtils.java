@@ -20,14 +20,18 @@ public class ComponentesUtils {
         }
     }
     
-    
-    // Para tablas
+    //Tablas
     @FunctionalInterface
     public interface TableDataMapper<T> {
         Object[] map(T elemento);
     }
-    
-    public static <T> void cargarTabla(JTable tabla, List<T> lista, String[] titulos, TableDataMapper<T> mapper) {
+
+    public static <T> void cargarTabla(JTable tabla, List<T> lista, String[] titulos, TableDataMapper<T> mapper, boolean controlarExcepcion) {
+        
+        if (controlarExcepcion && (lista == null || lista.isEmpty())) {
+            throw new NoResultException("No se encontraron resultados para el filtro y término proporcionados.");
+        }
+
         DefaultTableModel modeloTabla = new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -38,7 +42,7 @@ public class ComponentesUtils {
         // Establecer los nombres de las columnas
         modeloTabla.setColumnIdentifiers(titulos);
 
-        // Verificar y llenar la tabla
+        // Llenar la tabla si hay datos
         if (lista != null) {
             for (T elemento : lista) {
                 Object[] fila = mapper.map(elemento);
@@ -46,16 +50,11 @@ public class ComponentesUtils {
             }
         }
 
+        // Asignar el modelo a la tabla
         tabla.setModel(modeloTabla);
-        
-        if (lista == null || lista.isEmpty()) {
-            throw new NoResultException("No se encontraron resultados para el filtro y término proporcionados.");
-            /*DialogoUtils.mostrarMensaje("No se encontraron resultados para el filtro y término proporcionados.", 
-                                     DialogoUtils.TIPO_INFO, "Sin Resultados");*/
-        }
     }
-    
-    
+
+    //Imagen para los iconos
     public static void cargarImagenIcono(Window ventana){
         try {
             Image icono = ImageIO.read(ComponentesUtils.class.getResource("/images/imageIcon.jpeg"));
@@ -64,5 +63,5 @@ public class ComponentesUtils {
             System.out.println("Error al cargar el ícono: " + e.getMessage());
         }
     }
-    
+
 }

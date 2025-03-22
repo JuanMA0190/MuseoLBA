@@ -1,9 +1,9 @@
 package com.museolba.controlador.controladorObra;
 
-import com.museolba.modelo.jpaController.ObraJpaController.ObraJpaController;
-import com.museolba.modelo.entidades.obras.Obra;
-import com.museolba.modelo.entidades.obras.Sala;
-import com.museolba.modelo.jpaController.ObraJpaController.SalaJpaController;
+import com.museolba.modelo.jpaController.obraJpaController.ObraJpaController;
+import com.museolba.modelo.entidades.obra.Obra;
+import com.museolba.modelo.entidades.obra.Sala;
+import com.museolba.modelo.jpaController.obraJpaController.SalaJpaController;
 import java.util.List;
 import javax.persistence.EntityNotFoundException;
 
@@ -20,7 +20,7 @@ public class ControladorObra {
     // Método para agregar una obra
     public void agregarObra(Obra obra, Sala sala) {
         obra.setSala(sala);  // Asignar la sala a la obra
-        obraJpaController.create(obra);  // Persistir la obra
+        obraJpaController.create(obra); 
     }
 
     public List<Sala> obtenerTodasLasSalas() {
@@ -50,7 +50,7 @@ public class ControladorObra {
     // Método para actualizar una obra
     public void actualizarObra(Obra obra) throws Exception {
         if (obra != null && obra.getNumInv() != null) {
-            obraJpaController.edit(obra, obra.getNumInv());  // Actualiza la obra
+            obraJpaController.edit(obra, obra.getNumInv());
         } else {
             throw new Exception("La obra no existe o no tiene un número de inventario válido");
         }

@@ -1,9 +1,12 @@
 package com.museolba.utils.reportes.asistencias;
 
+import com.museolba.modelo.entidades.usuario.AsistenciaUsuario;
+import com.museolba.modelo.entidades.usuario.HistorialUsuario;
+import com.museolba.modelo.entidades.usuario.Usuario;
 import com.museolba.controlador.controladorUsuario.ControladorHistorialUsuario;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import com.museolba.modelo.entidades.*;
+import com.museolba.modelo.entidades.usuario.*;
 import com.museolba.utils.DialogoUtils;
 import java.io.File;
 

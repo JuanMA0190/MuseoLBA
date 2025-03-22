@@ -1,6 +1,6 @@
 package com.museolba.modelo.dao.loginDAO;
 
-import com.museolba.modelo.entidades.Usuario;
+import com.museolba.modelo.entidades.usuario.Usuario;
 import com.museolba.modelo.jpaController.PersistenceJpaController;
 import com.museolba.utils.ContraseniaEncriptacionUtils;
 import javax.persistence.EntityManager;

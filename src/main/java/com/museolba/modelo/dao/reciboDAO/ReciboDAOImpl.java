@@ -1,10 +1,10 @@
 package com.museolba.modelo.dao.reciboDAO;
 
-import com.museolba.modelo.entidades.Producto;
+import com.museolba.modelo.entidades.cajaChica.Producto;
 import com.museolba.modelo.jpaController.PersistenceJpaController;
 import java.util.List;
 import javax.persistence.EntityManager;
-import com.museolba.modelo.entidades.Recibo;
+import com.museolba.modelo.entidades.cajaChica.Recibo;
 import java.util.ArrayList;
 import javax.persistence.TypedQuery;
 

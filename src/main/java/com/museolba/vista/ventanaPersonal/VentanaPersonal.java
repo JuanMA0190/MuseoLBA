@@ -1,8 +1,8 @@
 package com.museolba.vista.ventanaPersonal;
 
 import com.museolba.controlador.controladorUsuario.ControladorPersonal;
-import com.museolba.modelo.entidades.enums.EstadoPersonal;
-import com.museolba.modelo.entidades.Personal;
+import com.museolba.modelo.entidades.personal.EstadoPersonal;
+import com.museolba.modelo.entidades.personal.Personal;
 import com.museolba.utils.ComponentesUtils;
 import com.museolba.utils.DialogoUtils;
 import com.museolba.vista.ventanaPrincipal.VentanaPrincipal;
@@ -29,9 +29,9 @@ public class VentanaPersonal extends javax.swing.JPanel {
     private void cargarTablaPersonal(){
         try {
             List<Object[]> datosPersonal = controladorPersonal.obtenerDatosPersonal();
-            ComponentesUtils.cargarTabla(tblPersonal, datosPersonal, titulos, fila -> fila);
+            ComponentesUtils.cargarTabla(tblPersonal, datosPersonal, titulos, fila -> fila, true);
         } catch (NoResultException e) {
-            DialogoUtils.mostrarMensaje(e.getMessage(), 1, "Sin Resultados");
+            DialogoUtils.mostrarMensaje(e.getMessage(), 2, "Sin Resultados");
         }
     }
     
@@ -246,7 +246,7 @@ public class VentanaPersonal extends javax.swing.JPanel {
                 txtBuscar.setText(cmbOpcion.getSelectedItem().toString());
             
             List<Object[]> datosPersonal= controladorPersonal.obtenerDatosPersonalConTerminos((String) cmbFiltro.getSelectedItem(), txtBuscar.getText().trim());
-            ComponentesUtils.cargarTabla(tblPersonal, datosPersonal, titulos, fila -> fila);
+            ComponentesUtils.cargarTabla(tblPersonal, datosPersonal, titulos, fila -> fila, true);
             txtBuscar.setText("");
             btnCargarTodosDatos.setVisible(true);
         }catch(NoResultException e){

@@ -1,8 +1,7 @@
 package com.museolba.controlador.controladorAsistencia;
 
-import com.museolba.config.TiposReporte;
 import com.museolba.modelo.dao.asistenciaDAO.AsistenciaDAOImpl;
-import com.museolba.modelo.entidades.AsistenciaUsuario;
+import com.museolba.modelo.entidades.usuario.AsistenciaUsuario;
 import com.museolba.utils.reportes.asistencias.AsistenciaEXCELGenerador;
 import com.museolba.utils.reportes.asistencias.AsistenciaPDFGeneradorUtil;
 import java.time.LocalDate;
@@ -22,7 +21,6 @@ public class ControladorAsistenciaUsuario {
    /**
      * Genera un reporte de asistencia en PDF.
      *
-     * @param numLegajo Número de legajo del usuario (puede ser null para todos los usuarios).
      * @param mes       Mes del reporte.
      * @param anio      Año del reporte.
      * @param filePath  Ruta donde se guardará el PDF.

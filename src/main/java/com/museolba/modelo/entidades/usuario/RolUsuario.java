@@ -1,4 +1,4 @@
-package com.museolba.modelo.entidades.enums;
+package com.museolba.modelo.entidades.usuario;
 
 
 public enum RolUsuario {

@@ -1,9 +1,9 @@
 package com.museolba.controlador.controladorUsuario;
 
 import com.museolba.modelo.dao.usuarioDAO.HistorialUsuarioDAOImpl;
-import com.museolba.modelo.entidades.enums.EstadoPersonal;
-import com.museolba.modelo.entidades.HistorialUsuario;
-import com.museolba.modelo.jpaController.HistorialUsuarioJpaController;
+import com.museolba.modelo.entidades.personal.EstadoPersonal;
+import com.museolba.modelo.entidades.usuario.HistorialUsuario;
+import com.museolba.modelo.jpaController.usuarioJpaController.HistorialUsuarioJpaController;
 import java.time.LocalDateTime;
 import java.util.List;
 import javax.persistence.NoResultException;

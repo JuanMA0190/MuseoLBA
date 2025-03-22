@@ -1,4 +1,4 @@
-package com.museolba.modelo.entidades.obras;
+package com.museolba.modelo.entidades.obra;
 
 import java.util.List;
 import java.util.Objects;

@@ -1,4 +1,4 @@
-package com.museolba.modelo.entidades;
+package com.museolba.modelo.entidades.cajaChica;
 
 import javax.persistence.Embeddable;
 

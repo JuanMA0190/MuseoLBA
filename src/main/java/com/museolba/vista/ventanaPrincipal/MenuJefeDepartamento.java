@@ -7,6 +7,7 @@ import com.museolba.vista.ventanaCajaChica.VentanaCajaChica;
 import com.museolba.vista.ventanaObra.VentanaObra;
 import com.museolba.vista.ventanaPersonal.VentanaPersonal;
 import com.museolba.vista.ventanaSalas.VentanaSalas;
+import com.museolba.vista.ventanaUsuario.VentanaUsuario;
 
 
 public class MenuJefeDepartamento extends javax.swing.JPanel {
@@ -31,6 +32,7 @@ public class MenuJefeDepartamento extends javax.swing.JPanel {
         btnSalas = new javax.swing.JButton();
         btnCajaChica = new javax.swing.JButton();
         btnPersonal = new javax.swing.JButton();
+        btnUsuario = new javax.swing.JButton();
         panelImagen = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         lblTitulo = new javax.swing.JLabel();
@@ -66,7 +68,7 @@ public class MenuJefeDepartamento extends javax.swing.JPanel {
                 btnObrasActionPerformed(evt);
             }
         });
-        panelMenu1.add(btnObras, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 248, 47));
+        panelMenu1.add(btnObras, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 240, 248, 47));
 
         btnArtistas.setText("Artistas");
         btnArtistas.setBorder(null);
@@ -77,7 +79,7 @@ public class MenuJefeDepartamento extends javax.swing.JPanel {
                 btnArtistasActionPerformed(evt);
             }
         });
-        panelMenu1.add(btnArtistas, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 140, 248, 47));
+        panelMenu1.add(btnArtistas, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 300, 248, 47));
 
         btnAsistencia.setText("Asistencia");
         btnAsistencia.setBorder(null);
@@ -88,7 +90,7 @@ public class MenuJefeDepartamento extends javax.swing.JPanel {
                 btnAsistenciaActionPerformed(evt);
             }
         });
-        panelMenu1.add(btnAsistencia, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 210, 248, 47));
+        panelMenu1.add(btnAsistencia, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 180, 248, 47));
 
         btnSalas.setText("Salas");
         btnSalas.setBorder(null);
@@ -99,7 +101,7 @@ public class MenuJefeDepartamento extends javax.swing.JPanel {
                 btnSalasActionPerformed(evt);
             }
         });
-        panelMenu1.add(btnSalas, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 370, 248, 47));
+        panelMenu1.add(btnSalas, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 360, 248, 47));
 
         btnCajaChica.setText("Caja Chica");
         btnCajaChica.setBorder(null);
@@ -111,7 +113,7 @@ public class MenuJefeDepartamento extends javax.swing.JPanel {
                 btnCajaChicaActionPerformed(evt);
             }
         });
-        panelMenu1.add(btnCajaChica, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 440, 248, 47));
+        panelMenu1.add(btnCajaChica, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 420, 248, 47));
 
         btnPersonal.setText("Personal");
         btnPersonal.setBorder(null);
@@ -122,7 +124,18 @@ public class MenuJefeDepartamento extends javax.swing.JPanel {
                 btnPersonalActionPerformed(evt);
             }
         });
-        panelMenu1.add(btnPersonal, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 290, 248, 47));
+        panelMenu1.add(btnPersonal, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, 248, 47));
+
+        btnUsuario.setText("Usuarios");
+        btnUsuario.setBorder(null);
+        btnUsuario.setBorderPainted(false);
+        btnUsuario.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUsuarioActionPerformed(evt);
+            }
+        });
+        panelMenu1.add(btnUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, 250, 50));
 
         panelMenu.setViewportView(panelMenu1);
 
@@ -174,8 +187,8 @@ public class MenuJefeDepartamento extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnPrincipalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrincipalActionPerformed
-        VentanaActividades va = new VentanaActividades();
-        ventanaPrincipal.abrirContenido(va, 738, 572, ventanaPrincipal.getPanelContenido());
+        //VentanaActividades va = new VentanaActividades();
+        //ventanaPrincipal.abrirContenido(va, 738, 572, ventanaPrincipal.getPanelContenido());
     }//GEN-LAST:event_btnPrincipalActionPerformed
 
     private void btnObrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnObrasActionPerformed
@@ -208,6 +221,11 @@ public class MenuJefeDepartamento extends javax.swing.JPanel {
         ventanaPrincipal.abrirContenido(vp, 738, 572, ventanaPrincipal.getPanelContenido());
     }//GEN-LAST:event_btnPersonalActionPerformed
 
+    private void btnUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUsuarioActionPerformed
+        VentanaUsuario vu = new VentanaUsuario();
+        ventanaPrincipal.abrirContenido(vu, 738, 572, ventanaPrincipal.getPanelContenido());
+    }//GEN-LAST:event_btnUsuarioActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnArtistas;
@@ -217,6 +235,7 @@ public class MenuJefeDepartamento extends javax.swing.JPanel {
     private javax.swing.JButton btnPersonal;
     private javax.swing.JButton btnPrincipal;
     private javax.swing.JButton btnSalas;
+    private javax.swing.JButton btnUsuario;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel lblImagen;
     private javax.swing.JLabel lblTitulo;

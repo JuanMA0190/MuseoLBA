@@ -1,7 +1,7 @@
 package com.museolba.modelo.dao.usuarioDAO;
 
-import com.museolba.modelo.entidades.enums.EstadoPersonal;
-import com.museolba.modelo.entidades.enums.RolUsuario;
+import com.museolba.modelo.entidades.personal.EstadoPersonal;
+import com.museolba.modelo.entidades.usuario.RolUsuario;
 
 
 public interface UsuarioDAO {

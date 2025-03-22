@@ -1,12 +1,12 @@
-package com.museolba.utils.reportes.asistencias;
+package com.museolba.utils.reportes.cajaChica;
 
-import com.museolba.modelo.entidades.Recibo;
+import com.museolba.modelo.entidades.cajaChica.Recibo;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.time.format.DateTimeFormatter;
-import com.museolba.modelo.entidades.CajaChica;
+import com.museolba.modelo.entidades.cajaChica.CajaChica;
 import com.museolba.utils.DialogoUtils;
 import org.apache.poi.ss.util.CellRangeAddress;
 

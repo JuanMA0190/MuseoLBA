@@ -1,8 +1,8 @@
 package com.museolba.vista.ventanaAsistencia;
 
 import com.museolba.controlador.controladorAsistencia.ControladorAsistenciaUsuario;
-import com.museolba.modelo.entidades.AsistenciaUsuario;
-import com.museolba.modelo.entidades.Usuario;
+import com.museolba.modelo.entidades.usuario.AsistenciaUsuario;
+import com.museolba.modelo.entidades.usuario.Usuario;
 import com.museolba.utils.DialogoUtils;
 import java.time.LocalDate;
 import java.time.LocalTime;

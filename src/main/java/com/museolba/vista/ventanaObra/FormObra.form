@@ -104,27 +104,6 @@
                       <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
-                              <Group type="103" groupAlignment="1" attributes="0">
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Component id="cmbTipoObra" min="-2" pref="183" max="-2" attributes="0"/>
-                                      <EmptySpace pref="201" max="32767" attributes="0"/>
-                                      <Component id="cmbSala" min="-2" pref="183" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" alignment="1" attributes="0">
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="txtTitulo" min="-2" pref="183" max="-2" attributes="0"/>
-                                          <Component id="lblTitulo7" min="-2" pref="88" max="-2" attributes="0"/>
-                                      </Group>
-                                      <EmptySpace max="32767" attributes="0"/>
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="lblTitulo2" min="-2" pref="88" max="-2" attributes="0"/>
-                                          <Component id="txtMedida" min="-2" pref="183" max="-2" attributes="0"/>
-                                      </Group>
-                                  </Group>
-                              </Group>
-                              <EmptySpace min="-2" pref="81" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" attributes="0">
                               <Component id="btnGuardar" min="-2" pref="90" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="btnCancelar" min="-2" pref="90" max="-2" attributes="0"/>
@@ -134,30 +113,39 @@
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                                      <Component id="jScrollPane1" alignment="0" pref="0" max="32767" attributes="0"/>
-                                      <Component id="lblTitulo3" alignment="0" min="-2" pref="88" max="-2" attributes="0"/>
-                                      <Component id="txtArtista" alignment="0" pref="183" max="32767" attributes="0"/>
-                                      <Component id="lblTitulo4" alignment="0" min="-2" pref="123" max="-2" attributes="0"/>
-                                      <Component id="lblTitulo5" alignment="0" min="-2" pref="123" max="-2" attributes="0"/>
-                                  </Group>
+                                  <Component id="lblTitulo3" alignment="0" min="-2" pref="88" max="-2" attributes="0"/>
+                                  <Component id="txtArtista" alignment="0" min="-2" pref="183" max="-2" attributes="0"/>
+                                  <Component id="lblTitulo4" alignment="0" min="-2" pref="123" max="-2" attributes="0"/>
+                                  <Component id="lblTitulo5" alignment="0" min="-2" pref="123" max="-2" attributes="0"/>
                                   <Component id="btnGuardar1" alignment="0" min="-2" pref="90" max="-2" attributes="0"/>
+                                  <Component id="jScrollPane1" alignment="0" pref="252" max="32767" attributes="0"/>
+                              </Group>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" attributes="0">
+                                      <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
+                                      <Component id="lblUrl" min="-2" pref="373" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" alignment="1" attributes="0">
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="txtMedida" min="-2" pref="183" max="-2" attributes="0"/>
+                                          <Component id="lblImage" min="-2" pref="254" max="-2" attributes="0"/>
+                                          <Component id="lblTitulo2" alignment="0" min="-2" pref="88" max="-2" attributes="0"/>
+                                          <Component id="cmbSala" alignment="0" min="-2" pref="183" max="-2" attributes="0"/>
+                                          <Component id="lblTitulo6" alignment="0" min="-2" pref="123" max="-2" attributes="0"/>
+                                      </Group>
+                                      <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                          </Group>
+                          <Group type="102" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="txtTitulo" min="-2" pref="183" max="-2" attributes="0"/>
+                                  <Component id="lblTitulo7" min="-2" pref="88" max="-2" attributes="0"/>
+                                  <Component id="cmbTipoObra" alignment="0" min="-2" pref="183" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="32767" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" alignment="1" attributes="0">
-                                      <Component id="lblTitulo6" min="-2" pref="123" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="51" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" alignment="1" attributes="0">
-                                      <Component id="lblUrl" min="-2" pref="254" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" alignment="1" attributes="0">
-                                      <Component id="lblImage" min="-2" pref="254" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="136" max="-2" attributes="0"/>
-                                  </Group>
-                              </Group>
                           </Group>
                       </Group>
                   </Group>
@@ -181,9 +169,9 @@
                           <Component id="lblTitulo7" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="txtTitulo" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="txtMedida" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="txtMedida" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Component id="txtTitulo" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Group type="102" attributes="0">
@@ -365,8 +353,10 @@
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="0" red="0" type="rgb"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="URL"/>
               </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lblUrlMouseClicked"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="btnGuardar1">
               <Properties>

@@ -1,6 +1,7 @@
-package com.museolba.modelo.entidades;
+package com.museolba.modelo.entidades.usuario;
 
-import com.museolba.modelo.entidades.enums.EstadoPersonal;
+import com.museolba.modelo.entidades.usuario.Usuario;
+import com.museolba.modelo.entidades.personal.EstadoPersonal;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.time.LocalDateTime;

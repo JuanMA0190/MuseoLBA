@@ -1,6 +1,7 @@
-package com.museolba.modelo.jpaController;
+package com.museolba.modelo.jpaController.cajaChicaJpaController;
 
-import com.museolba.modelo.entidades.Recibo;
+import com.museolba.modelo.entidades.cajaChica.Recibo;
+import com.museolba.modelo.jpaController.BaseJpaController;
 import javax.persistence.EntityManager;
 
 public class ReciboJpaController extends BaseJpaController<Recibo, Long> {

@@ -1,5 +1,6 @@
-package com.museolba.modelo.entidades;
+package com.museolba.modelo.entidades.usuario;
 
+import com.museolba.modelo.entidades.usuario.Usuario;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import javax.persistence.Column;

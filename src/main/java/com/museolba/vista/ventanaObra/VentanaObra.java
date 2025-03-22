@@ -1,7 +1,7 @@
 package com.museolba.vista.ventanaObra;
 
 import com.museolba.controlador.controladorObra.ControladorObra;
-import com.museolba.modelo.entidades.obras.Obra;
+import com.museolba.modelo.entidades.obra.Obra;
 import com.museolba.utils.ComponentesUtils;
 import com.museolba.utils.ComponentesUtils.TableDataMapper;
 import com.museolba.utils.DialogoUtils;
@@ -46,7 +46,7 @@ public class VentanaObra extends javax.swing.JPanel {
             };
 
             // Cargar la tabla usando el método utilitario
-            ComponentesUtils.cargarTabla(tblObra, listaObra, titulos, obraMapper);
+            ComponentesUtils.cargarTabla(tblObra, listaObra, titulos, obraMapper, true);
         } catch (NoResultException e) {
             DialogoUtils.mostrarMensaje("Error al cargar la tabla: " + e.getMessage(), 2, "Error");
         }

@@ -1,7 +1,7 @@
 package com.museolba.vista.ventanaUsuario;
 
 import com.museolba.controlador.controladorUsuario.ControladorUsuario;
-import com.museolba.modelo.entidades.enums.RazonInactividad;
+import com.museolba.modelo.entidades.usuario.RazonInactividad;
 import com.museolba.utils.ComponentesUtils;
 import com.museolba.utils.DialogoUtils;
 

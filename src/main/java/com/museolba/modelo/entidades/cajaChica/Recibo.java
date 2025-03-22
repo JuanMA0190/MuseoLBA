@@ -1,4 +1,4 @@
-package com.museolba.modelo.entidades;
+package com.museolba.modelo.entidades.cajaChica;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

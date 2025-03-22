@@ -1,6 +1,6 @@
 package com.museolba.vista.ventanaCajaChica;
 
-import com.museolba.modelo.entidades.Producto;
+import com.museolba.modelo.entidades.cajaChica.Producto;
 import com.museolba.utils.DialogoUtils;
 import com.museolba.utils.UIValidacionUtils;
 

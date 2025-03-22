@@ -105,19 +105,19 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="btnObras" min="-2" pref="256" max="-2" attributes="0"/>
-                                  <Component id="btnPrincipal" alignment="0" min="-2" pref="256" max="-2" attributes="0"/>
+                                  <Component id="btnPrincipal" min="-2" pref="256" max="-2" attributes="0"/>
+                                  <Component id="btnUsuario" alignment="0" min="-2" pref="256" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace pref="28" max="32767" attributes="0"/>
                               <Component id="lblImagen" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="btnUsuario" alignment="0" min="-2" pref="256" max="-2" attributes="0"/>
                                   <Component id="btnPersonal" alignment="0" min="-2" pref="256" max="-2" attributes="0"/>
-                                  <Component id="btnAsistencia" alignment="0" min="-2" pref="256" max="-2" attributes="0"/>
                                   <Component id="btnSalas" alignment="0" min="-2" pref="256" max="-2" attributes="0"/>
                                   <Component id="btnCajaChica" alignment="0" min="-2" pref="256" max="-2" attributes="0"/>
+                                  <Component id="btnAsistencia" alignment="0" min="-2" pref="256" max="-2" attributes="0"/>
+                                  <Component id="btnObras" alignment="0" min="-2" pref="256" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
@@ -130,24 +130,24 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="lblImagen" min="-2" pref="104" max="-2" attributes="0"/>
-                          <Group type="102" attributes="0">
+                          <Component id="lblImagen" alignment="0" min="-2" pref="104" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
                               <Component id="btnPrincipal" min="-2" pref="47" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="btnObras" min="-2" pref="47" max="-2" attributes="0"/>
+                              <Component id="btnUsuario" min="-2" pref="47" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="btnUsuario" min="-2" pref="47" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="btnPersonal" min="-2" pref="47" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="btnAsistencia" min="-2" pref="47" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="btnObras" min="-2" pref="47" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="btnSalas" min="-2" pref="47" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="btnCajaChica" min="-2" pref="47" max="-2" attributes="0"/>
-                      <EmptySpace pref="57" max="32767" attributes="0"/>
+                      <EmptySpace pref="63" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>

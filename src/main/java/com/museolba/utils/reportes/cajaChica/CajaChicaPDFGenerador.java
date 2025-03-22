@@ -1,10 +1,10 @@
-package com.museolba.utils.reportes.asistencias;
+package com.museolba.utils.reportes.cajaChica;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
-import com.museolba.modelo.entidades.CajaChica;
-import com.museolba.modelo.entidades.Recibo;
+import com.museolba.modelo.entidades.cajaChica.CajaChica;
+import com.museolba.modelo.entidades.cajaChica.Recibo;
 import com.museolba.utils.DialogoUtils;
 import java.io.File;
 import java.io.FileOutputStream;

@@ -1,6 +1,7 @@
-package com.museolba.modelo.jpaController;
+package com.museolba.modelo.jpaController.usuarioJpaController;
 
-import com.museolba.modelo.entidades.AsistenciaUsuario;
+import com.museolba.modelo.entidades.usuario.AsistenciaUsuario;
+import com.museolba.modelo.jpaController.BaseJpaController;
 
 
 public class AsistenciaUsuarioJpaController extends BaseJpaController<AsistenciaUsuario, Long> {

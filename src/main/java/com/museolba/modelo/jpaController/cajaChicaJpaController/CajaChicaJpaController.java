@@ -1,6 +1,7 @@
-package com.museolba.modelo.jpaController;
+package com.museolba.modelo.jpaController.cajaChicaJpaController;
 
-import com.museolba.modelo.entidades.CajaChica;
+import com.museolba.modelo.entidades.cajaChica.CajaChica;
+import com.museolba.modelo.jpaController.BaseJpaController;
 import javax.persistence.EntityManager;
 
 public class CajaChicaJpaController extends BaseJpaController<CajaChica, Long> {

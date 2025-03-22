@@ -2,8 +2,8 @@ package com.museolba.vista.ventanaAsistencia;
 
 import com.museolba.config.TiposReporte;
 import com.museolba.controlador.controladorAsistencia.ControladorAsistenciaUsuario;
-import com.museolba.modelo.entidades.Usuario;
-import com.museolba.modelo.entidades.enums.RolUsuario;
+import com.museolba.modelo.entidades.usuario.Usuario;
+import com.museolba.modelo.entidades.usuario.RolUsuario;
 import com.museolba.utils.ComponentesUtils;
 import com.museolba.utils.FechaUtils;
 import com.museolba.vista.ventanaPrincipal.VentanaPrincipal;

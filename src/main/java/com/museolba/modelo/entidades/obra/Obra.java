@@ -1,6 +1,5 @@
-package com.museolba.modelo.entidades.obras;
+package com.museolba.modelo.entidades.obra;
 
-import com.museolba.modelo.entidades.enums.TipoObra;
 import java.time.LocalDateTime;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;

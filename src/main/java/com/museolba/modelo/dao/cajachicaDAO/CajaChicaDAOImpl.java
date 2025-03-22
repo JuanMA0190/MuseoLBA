@@ -3,7 +3,7 @@ package com.museolba.modelo.dao.cajachicaDAO;
 import com.museolba.modelo.jpaController.PersistenceJpaController;
 import java.util.List;
 import javax.persistence.EntityManager;
-import com.museolba.modelo.entidades.CajaChica;
+import com.museolba.modelo.entidades.cajaChica.CajaChica;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import javax.persistence.TypedQuery;

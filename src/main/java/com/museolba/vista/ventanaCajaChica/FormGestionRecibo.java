@@ -1,10 +1,11 @@
 package com.museolba.vista.ventanaCajaChica;
 
 import com.museolba.controlador.controladorCajaChica.ControladorRecibo;
-import com.museolba.modelo.entidades.CajaChica;
-import com.museolba.modelo.entidades.Producto;
-import com.museolba.modelo.entidades.Recibo;
+import com.museolba.modelo.entidades.cajaChica.CajaChica;
+import com.museolba.modelo.entidades.cajaChica.Producto;
+import com.museolba.modelo.entidades.cajaChica.Recibo;
 import com.museolba.utils.ComponentesUtils;
+import com.museolba.utils.CopiarTextoURLUtils;
 import com.museolba.utils.DialogoUtils;
 import com.museolba.utils.cloudinary.CloudinaryService;
 import com.museolba.vista.ventanaPrincipal.VentanaPrincipal;
@@ -14,11 +15,13 @@ import javax.swing.JFileChooser;
 import java.io.File;
 import java.net.URL;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.imageio.ImageIO;
 import javax.persistence.NoResultException;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 
@@ -54,11 +57,16 @@ public class FormGestionRecibo extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         
+        DateTimeFormatter formatterFecha = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        DateTimeFormatter formatterHora = DateTimeFormatter.ofPattern("HH:mm:ss");
+
+        
         controladorRecibo = new ControladorRecibo();
         
         txtNombre.setText(recibo.getNombre());
         txtResponsable.setText(String.valueOf(recibo.getResponsable()));
-        txtFecha.setText(String.valueOf(recibo.getFechaRegistro()));
+        
+        txtFecha.setText(String.valueOf(recibo.getFechaRegistro().format(formatterFecha)+" "+recibo.getFechaRegistro().format(formatterHora)));
         txtPrecioTotal.setText(String.valueOf(recibo.getPrecioTotal()));
 
         lblUrl.setText(recibo.getImagenUrl());
@@ -105,9 +113,9 @@ public class FormGestionRecibo extends javax.swing.JDialog {
         
         // Cargar la tabla con los productos
         try {
-            ComponentesUtils.cargarTabla(tblProductos, productos, titulos, productoMapper);
+            ComponentesUtils.cargarTabla(tblProductos, productos, titulos, productoMapper, true);
         } catch (NoResultException e) {
-            DialogoUtils.mostrarMensaje(e.getMessage(), 1, "Sin Resultados");
+            DialogoUtils.mostrarMensaje("No se encontraron productos en este recibo!", 1, "Atención");
         }
     }
     
@@ -124,16 +132,8 @@ public class FormGestionRecibo extends javax.swing.JDialog {
             producto.getPrecioUnitario(),
             producto.getCantidad()
         };
-
-        // Cargar la tabla con los productos
-        try {
-            ComponentesUtils.cargarTabla(tblProductos, productosNR, titulos, productoMapper);
-        } catch (NoResultException e) {
-         // Mostrar un mensaje si no hay productos
-         DialogoUtils.mostrarMensaje("No hay productos para mostrar.", 1, "Sin Resultados");
-        }
         
-
+        ComponentesUtils.cargarTabla(tblProductos, productosNR, titulos, productoMapper, false);
     }
     
     
@@ -270,6 +270,11 @@ public class FormGestionRecibo extends javax.swing.JDialog {
         });
 
         lblUrl.setForeground(new java.awt.Color(0, 0, 153));
+        lblUrl.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblUrlMouseClicked(evt);
+            }
+        });
 
         lblImage.setForeground(new java.awt.Color(102, 102, 102));
 
@@ -304,22 +309,20 @@ public class FormGestionRecibo extends javax.swing.JDialog {
         panelInfoLayout.setHorizontalGroup(
             panelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelInfoLayout.createSequentialGroup()
-                .addContainerGap(14, Short.MAX_VALUE)
+                .addContainerGap(20, Short.MAX_VALUE)
                 .addGroup(panelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(lblTitulo4, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(panelInfoLayout.createSequentialGroup()
-                            .addGap(6, 6, 6)
-                            .addGroup(panelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(lblTitulo6, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(lblTitulo6, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblTitulo4, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelInfoLayout.createSequentialGroup()
                         .addComponent(lblTitulo8, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txtResponsable, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(60, 60, 60))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(lblTitulo7, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(txtPrecioTotal, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtPrecioTotal, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtResponsable, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
         panelInfoLayout.setVerticalGroup(
@@ -331,9 +334,9 @@ public class FormGestionRecibo extends javax.swing.JDialog {
                 .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lblTitulo6, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(txtResponsable, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(txtResponsable, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(lblTitulo8, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -341,7 +344,7 @@ public class FormGestionRecibo extends javax.swing.JDialog {
                 .addComponent(lblTitulo7, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(txtPrecioTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(35, Short.MAX_VALUE))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -374,22 +377,20 @@ public class FormGestionRecibo extends javax.swing.JDialog {
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(panelInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(8, 8, 8)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(panelInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(8, 8, 8)
-                                .addComponent(lblImage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblUrl)
-                        .addGap(6, 6, 6))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(39, 39, 39)
-                        .addComponent(btnImagenRecibo, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                .addComponent(btnImagenRecibo, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(lblImage, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblUrl)
+                .addGap(6, 6, 6)
                 .addComponent(panelProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -453,11 +454,9 @@ public class FormGestionRecibo extends javax.swing.JDialog {
     }//GEN-LAST:event_btnEliminarProductoActionPerformed
 
     public double calcularPrecioTotal(List<Producto> productos) {
-    double precioTotal = 0.0;
+        double precioTotal = 0.0;
 
-        // Recorrer la lista de productos
         for (Producto producto : productos) {
-            // Multiplicar precioUnitario por cantidad y sumar al total
             precioTotal += producto.getPrecioUnitario() * producto.getCantidad();
         }
 
@@ -486,7 +485,7 @@ public class FormGestionRecibo extends javax.swing.JDialog {
     }//GEN-LAST:event_btnAgregarProductoActionPerformed
 
     private void btnImagenReciboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImagenReciboActionPerformed
-        
+
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Seleccionar imagen");
 
@@ -523,60 +522,79 @@ public class FormGestionRecibo extends javax.swing.JDialog {
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         try {
-        // Validaciones iniciales
-        if (productosNR == null || productosNR.isEmpty()) {
-            DialogoUtils.mostrarMensaje("Lista de productos vacía!", 2, "ERROR");
-            return;
-        }
+            // Validaciones iniciales
+            if (productosNR == null || productosNR.isEmpty()) {
+                DialogoUtils.mostrarMensaje("Lista de productos vacía!", 2, "ERROR");
+                return;
+            }
 
-        if (urlImage == null || urlImage.isEmpty()) {
-            DialogoUtils.mostrarMensaje("Debe seleccionar una imagen!", 2, "ERROR");
-            return;
-        }
+            if (urlImage == null || urlImage.isEmpty()) {
+                DialogoUtils.mostrarMensaje("Debe seleccionar una imagen!", 2, "ERROR");
+                return;
+            }
 
-        if (numbLegajo == null || cajaChica == null) {
-            DialogoUtils.mostrarMensaje("Datos inválidos, verifique la información!", 2, "ERROR");
-            return;
-        }
+            if (numbLegajo == null || cajaChica == null) {
+                DialogoUtils.mostrarMensaje("Datos inválidos, verifique la información!", 2, "ERROR");
+                return;
+            }
 
-        Recibo recibo = new Recibo();
+            int opcion = JOptionPane.showConfirmDialog(
+                null, 
+                "¿Está seguro de que desea GUARDAR el RECIBO con los datos ingresado ?\nRECUERDE ESTA ACCIÓN NO SE PUEDE MODIFICAR", 
+                "ATENCIÓN!", 
+                JOptionPane.YES_NO_OPTION, 
+                JOptionPane.WARNING_MESSAGE
+            );
+
+            if (opcion == JOptionPane.YES_OPTION) {
+
+                 Recibo recibo = new Recibo();
+
+                // Subir imagen a la nube
+                String urlCloud;
+                try {
+                    urlCloud = cloud.subirImagen(urlImage);
+                    recibo.setImagenUrl(urlCloud);
+                } catch (Exception ex) {
+                    DialogoUtils.mostrarMensaje("Error al subir la imagen: " + ex.getMessage(), 2, "ERROR");
+                    return;
+                }
+
+                // Calcular precio total
+                Double precioTotal = calcularPrecioTotal(productosNR);
+                LocalDateTime fecha = LocalDateTime.now();
+
+                // Setear valores al recibo
+                recibo.setResponsable(numbLegajo);
+                recibo.setProductos(productosNR);
+                recibo.setFechaRegistro(fecha);
+                recibo.setPrecioTotal(precioTotal);
+                recibo.setCajaChica(cajaChica);
+
+                // Agregar recibo a caja chica
+                cajaChica.agregarRecibo(recibo);
+
+                try {
+                    controladorRecibo.crearRecibo(recibo);
+                    DialogoUtils.mostrarMensaje("Se agregó correctamente el recibo!", 1, "ÉXITO");
+                    this.dispose();
+                } catch (Exception ex) {
+                    DialogoUtils.mostrarMensaje("Error al guardar el recibo: " + ex.getMessage(), 2, "ERROR");
+                }
+
+            } else {
+                DialogoUtils.mostrarMensaje("Se cancelo el guardado del RECIBO", 1, "Atencion!");
+            }
         
-        // Subir imagen a la nube
-        String urlCloud;
-        try {
-            urlCloud = cloud.subirImagen(urlImage);
-            recibo.setImagenUrl(urlCloud);
-        } catch (Exception ex) {
-            DialogoUtils.mostrarMensaje("Error al subir la imagen: " + ex.getMessage(), 2, "ERROR");
-            return;
+        } catch (Exception e) {
+            DialogoUtils.mostrarMensaje("Error inesperado: " + e.getMessage(), 2, "ERROR");
         }
-
-        // Calcular precio total
-        Double precioTotal = calcularPrecioTotal(productosNR);
-        LocalDateTime fecha = LocalDateTime.now();
-
-        // Setear valores al recibo
-        recibo.setResponsable(numbLegajo);
-        recibo.setProductos(productosNR);
-        recibo.setFechaRegistro(fecha);
-        recibo.setPrecioTotal(precioTotal);
-        recibo.setCajaChica(cajaChica);
-
-        // Agregar recibo a caja chica
-        cajaChica.agregarRecibo(recibo);
-
-        // Guardar recibo en la base de datos
-        try {
-            controladorRecibo.crearRecibo(recibo);
-            DialogoUtils.mostrarMensaje("Se agregó correctamente el recibo!", 2, "ÉXITO");
-            this.dispose(); // Cerrar el formulario solo si todo salió bien
-        } catch (Exception ex) {
-            DialogoUtils.mostrarMensaje("Error al guardar el recibo: " + ex.getMessage(), 2, "ERROR");
-        }
-    } catch (Exception e) {
-        DialogoUtils.mostrarMensaje("Error inesperado: " + e.getMessage(), 2, "ERROR");
-    }
     }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void lblUrlMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblUrlMouseClicked
+        String url = lblUrl.getText();
+        CopiarTextoURLUtils.copiarTexto(url);
+    }//GEN-LAST:event_lblUrlMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

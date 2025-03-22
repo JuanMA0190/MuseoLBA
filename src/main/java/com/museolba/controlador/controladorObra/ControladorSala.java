@@ -1,8 +1,8 @@
 package com.museolba.controlador.controladorObra;
 
-import com.museolba.modelo.entidades.obras.Obra;
-import com.museolba.modelo.entidades.obras.Sala;
-import com.museolba.modelo.jpaController.ObraJpaController.SalaJpaController;
+import com.museolba.modelo.entidades.obra.Obra;
+import com.museolba.modelo.entidades.obra.Sala;
+import com.museolba.modelo.jpaController.obraJpaController.SalaJpaController;
 import java.util.List;
 import javax.persistence.EntityNotFoundException;
 

@@ -1,7 +1,7 @@
 package com.museolba.modelo.dao.cajachicaDAO;
 
 import java.util.List;
-import com.museolba.modelo.entidades.CajaChica;
+import com.museolba.modelo.entidades.cajaChica.CajaChica;
 
 public interface CajaChicaDAO {
     // Obtener caja chica por mes

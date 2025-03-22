@@ -8,7 +8,6 @@ public class ContraseniaEncriptacionUtils {
     
      /**
      * Encripta una contraseña usando BCrypt
-     * @param plainPassword La contraseña en texto plano
      * @return La contraseña encriptada (hash)
      */
     public static String hashContrasenia(String contraseniaPlano) {
@@ -17,8 +16,6 @@ public class ContraseniaEncriptacionUtils {
     
     /**
      * Verifica si una contraseña en texto plano coincide con un hash
-     * @param plainPassword La contraseña en texto plano a verificar
-     * @param hashedPassword El hash de la contraseña almacenada
      * @return true si coinciden, false en caso contrario
      */
     public static boolean checkContrasenia(String contraseniaPlano, String hashedContrasenia) {

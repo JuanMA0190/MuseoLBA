@@ -2,7 +2,7 @@ package com.museolba.vista.ventanaPrincipal;
 
 import com.museolba.vista.ventanaPrincipal.estrategia.RolStrategy;
 import com.museolba.vista.ventanaPrincipal.estrategia.RolStrategyFactory;
-import com.museolba.modelo.entidades.Usuario;
+import com.museolba.modelo.entidades.usuario.Usuario;
 import com.museolba.utils.ComponentesUtils;
 import com.museolba.vista.ventanaActividades.VentanaActividades;
 import com.museolba.vista.ventanaLogin.VentanaLogin;
@@ -74,8 +74,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }
    
      private void initContent(){
-        VentanaActividades va = new VentanaActividades();
-        abrirContenido(va, 738, 572, panelContenido);
+        //VentanaActividades va = new VentanaActividades();
+        //abrirContenido(va, 738, 572, panelContenido);
     }
     
     @SuppressWarnings("unchecked")

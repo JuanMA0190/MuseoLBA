@@ -1,7 +1,8 @@
-package com.museolba.modelo.jpaController;
+package com.museolba.modelo.jpaController.usuarioJpaController;
 
-import com.museolba.modelo.entidades.HistorialUsuario;
-import com.museolba.modelo.entidades.Usuario;
+import com.museolba.modelo.entidades.usuario.HistorialUsuario;
+import com.museolba.modelo.entidades.usuario.Usuario;
+import com.museolba.modelo.jpaController.BaseJpaController;
 import com.museolba.utils.ContraseniaEncriptacionUtils;
 import java.time.LocalDateTime;
 import javax.persistence.EntityManager;
