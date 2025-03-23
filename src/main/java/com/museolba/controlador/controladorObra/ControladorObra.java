@@ -1,22 +1,22 @@
 package com.museolba.controlador.controladorObra;
 
-import com.museolba.modelo.jpaController.obraJpaController.ObraJpaController;
+import com.museolba.modelo.dao.obraDAO.ObraDAOImpl;
 import com.museolba.modelo.entidades.obra.Obra;
 import com.museolba.modelo.entidades.obra.Sala;
-import com.museolba.modelo.jpaController.obraJpaController.SalaJpaController;
+import com.museolba.modelo.dao.obraDAO.SalaDAOImpl;
 import java.util.List;
 import javax.persistence.EntityNotFoundException;
 
 
 public class ControladorObra {
-     private final ObraJpaController obraJpaController;
-    private final SalaJpaController salaJpaController;
+     private final ObraDAOImpl obraJpaController;
+    private final SalaDAOImpl salaJpaController;
 
     public ControladorObra() {
-        this.obraJpaController = new ObraJpaController();
-        this.salaJpaController = new SalaJpaController();
+        this.obraJpaController = new ObraDAOImpl();
+        this.salaJpaController = new SalaDAOImpl();
     }
-
+    /*
     // Método para agregar una obra
     public void agregarObra(Obra obra, Sala sala) {
         obra.setSala(sala);  // Asignar la sala a la obra
@@ -62,6 +62,6 @@ public class ControladorObra {
     
     public List<Obra> findObrasByTerminoArtista(String termino){
         return obraJpaController.findObrasByTerminoArtista(termino);
-    }
+    }*/
     
 }

@@ -11,16 +11,14 @@ import javax.persistence.NoResultException;
 
 
 public class VentanaSalas extends javax.swing.JPanel {
-    String titulos[] = {"Titulo", "Artista", "Tipo Obra", "Fecha Registro", "Sala"};
-    ControladorObra controladorObra = null;
+    
    
     public VentanaSalas() {
-        initComponents();
-        controladorObra = new ControladorObra();
-        cargarTabla();
+      
     }
     
     private void cargarTabla(){
+        /*
         try {
             // Obtener la lista de obras desde el controlador
             List<Obra> listaObra = controladorObra.todasObras();
@@ -44,7 +42,7 @@ public class VentanaSalas extends javax.swing.JPanel {
             ComponentesUtils.cargarTabla(tblPersonal, listaObra, titulos, obraMapper, true);
         } catch (NoResultException e) {
             DialogoUtils.mostrarMensaje("Error al cargar la tabla: " + e.getMessage(), 2, "Error");
-        }
+        }*/
     }
 
     /**
@@ -167,7 +165,7 @@ public class VentanaSalas extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        try {
+        /*try {
             // Obtener la lista de obras desde el controlador
             List<Obra> listaObra = controladorObra.buscarObrasPorArtista(txtBuscar.getText());
 
@@ -190,7 +188,7 @@ public class VentanaSalas extends javax.swing.JPanel {
             ComponentesUtils.cargarTabla(tblPersonal, listaObra, titulos, obraMapper, true);
         } catch (NoResultException e) {
             DialogoUtils.mostrarMensaje("Error al cargar la tabla: " + e.getMessage(), 2, "Error");
-        }
+        }*/
     }//GEN-LAST:event_jButton1ActionPerformed
 
 

@@ -1,21 +1,19 @@
-package com.museolba.modelo.jpaController.obraJpaController;
+package com.museolba.modelo.dao.obraDAO;
 
 import com.museolba.modelo.entidades.obra.Obra;
 import com.museolba.modelo.entidades.obra.Sala;
-import com.museolba.modelo.jpaController.BaseJpaController;
+import com.museolba.modelo.jpaController.PersistenceJpaController;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.NonUniqueResultException;
 
 
-public class SalaJpaController extends BaseJpaController<Sala, Long> {
-    public SalaJpaController() {
-        super(Sala.class);
-    }
-
+public class SalaDAOImpl extends PersistenceJpaController implements SalaDAO{
+   
     // Método para buscar salas por nombre
+    @Override
     public List<Sala> findSalasByNombre(String nombre) {
-        EntityManager em = getEntityManager();
+        EntityManager em = getEmf().createEntityManager();
         try {
             return em.createQuery("SELECT s FROM Sala s WHERE s.nombre LIKE :nombre", Sala.class)
                       .setParameter("nombre", "%" + nombre + "%")
@@ -26,8 +24,9 @@ public class SalaJpaController extends BaseJpaController<Sala, Long> {
     }
 
     // Método para obtener todas las obras en una sala
+    @Override
     public List<Obra> getObrasBySala(Long salaId) {
-        EntityManager em = getEntityManager();
+        EntityManager em = getEmf().createEntityManager();
         try {
             return em.createQuery("SELECT o FROM Obra o WHERE o.sala.id = :salaId", Obra.class)
                       .setParameter("salaId", salaId)
@@ -39,8 +38,9 @@ public class SalaJpaController extends BaseJpaController<Sala, Long> {
     
     
     // Método para buscar una sala por nombre
+    @Override
     public Sala encontrarSalaByNombre(String nombre) {
-         EntityManager em = getEntityManager();
+        EntityManager em = getEmf().createEntityManager();
         try {
             List<Sala> salas = em.createQuery("SELECT s FROM Sala s WHERE s.nombre = :nombre", Sala.class)
                                  .setParameter("nombre", nombre)

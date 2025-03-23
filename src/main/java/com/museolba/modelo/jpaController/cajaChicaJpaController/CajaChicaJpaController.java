@@ -2,6 +2,7 @@ package com.museolba.modelo.jpaController.cajaChicaJpaController;
 
 import com.museolba.modelo.entidades.cajaChica.CajaChica;
 import com.museolba.modelo.jpaController.BaseJpaController;
+import java.time.LocalDateTime;
 import javax.persistence.EntityManager;
 
 public class CajaChicaJpaController extends BaseJpaController<CajaChica, Long> {
@@ -47,4 +48,5 @@ public class CajaChicaJpaController extends BaseJpaController<CajaChica, Long> {
             em.close();
         }
     }
+    
 }

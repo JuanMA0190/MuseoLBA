@@ -29,9 +29,7 @@ public class CajaChica {
     
     @Column(name = "mes_caja_chica")
     private LocalDate mes;//mes por numero
-    
-    @Column(name = "fecha_reporte")
-    private LocalDateTime fechaReporte;
+   
     
     @OneToMany(mappedBy = "cajaChica", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Recibo> recibos;
@@ -40,11 +38,10 @@ public class CajaChica {
         this.recibos = new ArrayList<>();
     }
 
-    public CajaChica(Double fondoInicial, Double totalGasto, LocalDate mes, LocalDateTime fechaReporte) {
+    public CajaChica(Double fondoInicial, Double totalGasto, LocalDate mes) {
         this.fondoInicial = fondoInicial;
         this.totalGasto = totalGasto;
         this.mes = mes;
-        this.fechaReporte = fechaReporte;
         this.recibos = new ArrayList<>();
     }
 
@@ -74,14 +71,6 @@ public class CajaChica {
 
     public void setMes(LocalDate mes) {
         this.mes = mes;
-    }
-
-    public LocalDateTime getFechaReporte() {
-        return fechaReporte;
-    }
-
-    public void setFechaReporte(LocalDateTime fechaReporte) {
-        this.fechaReporte = fechaReporte;
     }
 
     public List<Recibo> getRecibos() {

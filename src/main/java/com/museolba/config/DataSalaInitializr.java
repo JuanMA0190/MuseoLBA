@@ -41,6 +41,10 @@ public class DataSalaInitializr {
                 Sala galeria = new Sala();
                 galeria.setNombre("Galería");
                 em.persist(galeria);
+                
+                Sala entregado = new Sala();
+                entregado.setNombre("Entregado al Artista");
+                em.persist(entregado);
 
                 em.getTransaction().commit();
 

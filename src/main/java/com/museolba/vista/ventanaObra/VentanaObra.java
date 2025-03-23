@@ -14,18 +14,16 @@ import javax.swing.SwingUtilities;
 
 
 public class VentanaObra extends javax.swing.JPanel {
-    String titulos[] = {"Titulo", "Artista", "Tipo Obra", "Fecha Registro", "Sala"};
-    ControladorObra controladorObra = null;
+   
    
     public VentanaObra() {
         initComponents();
-        this.controladorObra = new ControladorObra();
-        cargarTabla();
-        
+       
         
     }
         
     private void cargarTabla(){
+        /*
         try {
             // Obtener la lista de obras desde el controlador
             List<Obra> listaObra = controladorObra.todasObras();
@@ -49,7 +47,7 @@ public class VentanaObra extends javax.swing.JPanel {
             ComponentesUtils.cargarTabla(tblObra, listaObra, titulos, obraMapper, true);
         } catch (NoResultException e) {
             DialogoUtils.mostrarMensaje("Error al cargar la tabla: " + e.getMessage(), 2, "Error");
-        }
+        }*/
 
     }
 
@@ -161,6 +159,7 @@ public class VentanaObra extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
+        /*
         VentanaPrincipal vP = (VentanaPrincipal) SwingUtilities.getWindowAncestor(this);
        if(vP != null){
             FormObra formRecibo = new FormObra(vP, true, false, null);
@@ -169,10 +168,11 @@ public class VentanaObra extends javax.swing.JPanel {
             formRecibo.setLocationRelativeTo(vP);
             
             cargarTabla();
-        }
+        }*/
     }//GEN-LAST:event_btnRegistrarActionPerformed
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
+       /*
         if(tblObra.getRowCount()> 0){
             if(tblObra.getSelectedRow()!=-1){
                 int filaSeleccionada = tblObra.getSelectedRow();
@@ -191,18 +191,18 @@ public class VentanaObra extends javax.swing.JPanel {
                     cargarTabla();
                 }
             }
-        }    
+        }   */ 
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void btnModificar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificar1ActionPerformed
-        if(tblObra.getRowCount()> 0){
+       /* if(tblObra.getRowCount()> 0){
             if(tblObra.getSelectedRow()!=-1){
                 int filaSeleccionada = tblObra.getSelectedRow();
                 Obra obra = controladorObra.buscarObraPorId((long)filaSeleccionada+1);
                 controladorObra.eliminarObra(obra.getNumInv());
                 cargarTabla();
             }
-        }    
+        } */   
     }//GEN-LAST:event_btnModificar1ActionPerformed
 
 

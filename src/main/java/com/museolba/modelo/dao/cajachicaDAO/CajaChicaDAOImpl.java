@@ -30,8 +30,28 @@ public class CajaChicaDAOImpl extends PersistenceJpaController implements CajaCh
             em.close();
         }
     }
+    
+    @Override
+public CajaChica obtenerCajaChicaPorMesReporte(int mes, int anio) {
+    EntityManager em = getEmf().createEntityManager();
+    try {
+        String jpql = "SELECT c FROM CajaChica c LEFT JOIN FETCH c.recibos " +
+                      "WHERE FUNCTION('MONTH', c.mes) = :mes AND FUNCTION('YEAR', c.mes) = :anio";
 
+        TypedQuery<CajaChica> query = em.createQuery(jpql, CajaChica.class);
+        query.setParameter("mes", mes);
+        query.setParameter("anio", anio);
+        query.setHint("javax.persistence.cache.storeMode", "REFRESH");//forzar actulización
 
+        List<CajaChica> resultados = query.getResultList();
+        return resultados.isEmpty() ? null : resultados.get(0);
+    } finally {
+        em.close();
+    }
+}
+
+    
+    
     @Override
     public Double obtenerTotalGastadoEnMes(int mes) {
         EntityManager em = getEmf().createEntityManager();

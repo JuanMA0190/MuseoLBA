@@ -10,6 +10,7 @@
     <class>com.museolba.modelo.entidades.usuario.AsistenciaUsuario</class>
     <class>com.museolba.modelo.entidades.cajaChica.Recibo</class>
     <class>com.museolba.modelo.entidades.cajaChica.CajaChica</class>
+    <class>com.museolba.modelo.entidades.obra.Artista</class>
     <properties>
       <!-- Configuración básica de conexión -->
       <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>

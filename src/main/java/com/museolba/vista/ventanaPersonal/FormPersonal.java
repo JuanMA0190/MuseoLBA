@@ -335,6 +335,14 @@ public class FormPersonal extends javax.swing.JDialog {
             DialogoUtils.mostrarMensaje("Por favor, complete todos los campos.", 1, "Validación");
             return;
         }
+        
+        if (!UIValidacionUtils.validarCampoDNI(txtDni)) {
+            return;
+        }
+
+        if (!UIValidacionUtils.validarCampoTelefono(txtTelefono)) {
+            return;
+        }
 
         try {
             Personal personal = new Personal();

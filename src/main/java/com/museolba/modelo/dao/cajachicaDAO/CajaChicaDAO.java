@@ -6,7 +6,8 @@ import com.museolba.modelo.entidades.cajaChica.CajaChica;
 public interface CajaChicaDAO {
     // Obtener caja chica por mes
     CajaChica obtenerCajaChicaPorMes(int mes, int anio);
-
+    
+     public CajaChica obtenerCajaChicaPorMesReporte(int mes, int anio);
     // Obtener el total gastado en un mes específico
     Double obtenerTotalGastadoEnMes(int mes);
 

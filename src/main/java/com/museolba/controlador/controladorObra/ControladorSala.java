@@ -2,17 +2,18 @@ package com.museolba.controlador.controladorObra;
 
 import com.museolba.modelo.entidades.obra.Obra;
 import com.museolba.modelo.entidades.obra.Sala;
-import com.museolba.modelo.jpaController.obraJpaController.SalaJpaController;
+import com.museolba.modelo.dao.obraDAO.SalaDAOImpl;
 import java.util.List;
 import javax.persistence.EntityNotFoundException;
 
 
 public class ControladorSala {
-    private final SalaJpaController salaJpaController;
+    private final SalaDAOImpl salaJpaController;
 
     public ControladorSala() {
-        this.salaJpaController = new SalaJpaController();
+        this.salaJpaController = new SalaDAOImpl();
     }
+    /*
 
     public Sala encontrarSalaByNombre(String nombre){
         return salaJpaController.encontrarSalaByNombre(nombre);
@@ -42,5 +43,5 @@ public class ControladorSala {
     // Método para actualizar una sala
     public void actualizarSala(Sala sala) throws Exception {
         salaJpaController.edit(sala, sala.getId());
-    }
+    }*/
 }

@@ -37,7 +37,11 @@ public class ControladorCajaChica {
     public CajaChica obtenerCajaChicaPorMes(int mes, int anio) {
         return cajachicaDAO.obtenerCajaChicaPorMes(mes, anio);
     }
-
+    
+    public CajaChica obtenerCajaChicaPorMesReporte(int mes, int anio) {
+        return cajachicaDAO.obtenerCajaChicaPorMesReporte(mes, anio);
+    }
+    
     public Double obtenerTotalGastadoEnMes(int mes) {
         return cajachicaDAO.obtenerTotalGastadoEnMes(mes);
     }
@@ -62,14 +66,13 @@ public class ControladorCajaChica {
      * @param anio      Año del reporte.
      * @param filePath  Ruta donde se guardará el PDF.
      */
-    public void generarReporteCajaChica(int mes, int anio, String filePath) {
-      // Obtener las asistencias del mes y año especificados
-      CajaChica cajaChica = cajachicaDAO.obtenerCajaChicaPorMes(mes, anio);
-
+    public void generarReporteCajaChica(int mes, int anio, String filePath, CajaChica cajaChica) {
+    
       if(filePath.contains(".pdf")){
           // Generar el PDF
           CajaChicaPDFGenerador pdfGenerator = new CajaChicaPDFGenerador();
           pdfGenerator.generarReporteCajaChica(filePath, cajaChica);
+          
       }else if(filePath.endsWith(".xlsx")){
           //Generar el excel
           CajaChicaExcelGenerador excelGenerator = new CajaChicaExcelGenerador();

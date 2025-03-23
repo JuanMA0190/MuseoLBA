@@ -8,6 +8,7 @@ import java.io.FileOutputStream;
 import java.time.format.DateTimeFormatter;
 import com.museolba.modelo.entidades.cajaChica.CajaChica;
 import com.museolba.utils.DialogoUtils;
+import java.time.YearMonth;
 import org.apache.poi.ss.util.CellRangeAddress;
 
 
@@ -39,6 +40,7 @@ public class CajaChicaExcelGenerador {
             CellStyle headerStyle = crearEstiloEncabezado(workbook);
             CellStyle dataStyle = crearEstiloDatos(workbook);
             CellStyle titleStyle = crearEstiloTitulo(workbook);
+            CellStyle centeredStyle = crearEstiloCentrado(workbook);
 
             // Agregar el título
             Row titleRow = sheet.createRow(0);
@@ -65,8 +67,11 @@ public class CajaChicaExcelGenerador {
             Row totalGastosRow = sheet.createRow(rowNum++);
             crearTotalGastos(totalGastosRow, sheet, totalGastos, dataStyle);
 
-            Row saldoSobranteRow = sheet.createRow(rowNum);
+            Row saldoSobranteRow = sheet.createRow(rowNum++);
             crearSaldoSobrante(saldoSobranteRow, sheet, cajaChica.getFondoInicial() - totalGastos, dataStyle);
+
+            // Agregar firmas
+            agregarFirmas(sheet, rowNum);
 
             // Ajustar anchos de columnas
             ajustarAnchosColumnas(sheet);
@@ -250,5 +255,54 @@ public class CajaChicaExcelGenerador {
         String[] nombresMeses = {"Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
                 "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"};
         return nombresMeses[mes - 1];
+    }
+    
+     /**
+     * Agrega las firmas al final del reporte.
+     *
+     * @param sheet    Hoja de trabajo.
+     * @param rowNum   Número de fila donde se agregarán las firmas.
+     * @param style    Estilo de las celdas.
+     * @param mes      Mes correspondiente.
+     * @param anio     Año correspondiente.
+     */
+    private void agregarFirmas(Sheet sheet, int rowNum) {
+        // Crear fila para las líneas de firma
+        Row firmaLineaRow = sheet.createRow(rowNum++);
+
+        // Firma izquierda
+        Cell firmaIzq = firmaLineaRow.createCell(0);
+        firmaIzq.setCellValue("_________________________");
+        sheet.addMergedRegion(new CellRangeAddress(rowNum - 1, rowNum - 1, 0, 2)); // Fusionar celdas A9:C9
+
+        // Firma derecha
+        Cell firmaDer = firmaLineaRow.createCell(3); // Comenzar desde la columna D
+        firmaDer.setCellValue("_________________________");
+        sheet.addMergedRegion(new CellRangeAddress(rowNum - 1, rowNum - 1, 3, 5)); // Fusionar celdas D9:F9
+
+        // Crear fila para los textos de firma
+        Row textoFirmaRow = sheet.createRow(rowNum++);
+
+        // Texto firma izquierda
+        Cell textoIzq = textoFirmaRow.createCell(0);
+        textoIzq.setCellValue("Jefe de Departamento de Museo");
+        sheet.addMergedRegion(new CellRangeAddress(rowNum - 1, rowNum - 1, 0, 2)); // Fusionar celdas A10:C10
+
+        // Texto firma derecha
+        Cell textoDer = textoFirmaRow.createCell(3); // Comenzar desde la columna D
+        textoDer.setCellValue("Jefe de Personal de Museo");
+        sheet.addMergedRegion(new CellRangeAddress(rowNum - 1, rowNum - 1, 3, 5)); // Fusionar celdas D10:F10
+    }
+    
+     /**
+     * Crea un estilo centrado para las celdas.
+     *
+     * @param workbook Libro de trabajo.
+     * @return Estilo centrado.
+     */
+    private CellStyle crearEstiloCentrado(Workbook workbook) {
+        CellStyle style = workbook.createCellStyle();
+        style.setAlignment(HorizontalAlignment.CENTER);
+        return style;
     }
 }

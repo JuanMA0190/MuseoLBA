@@ -22,70 +22,21 @@ import javax.swing.JFileChooser;
 
 
 public class FormObra extends javax.swing.JDialog {
-   String urlImage = "";
-   ControladorObra controladorObra = null;
-    ControladorSala controladorSala = null;
     CloudinaryService cloud = new CloudinaryService();
-    Obra obra = null;
+   
    
     
     
     public FormObra(java.awt.Frame parent, boolean modal, boolean editable, Obra obra) {
         super(parent, modal);
         initComponents();
-        controladorObra = new ControladorObra();
-        controladorSala = new ControladorSala();
-        
-        this.obra = obra;
-        
-        ComponentesUtils.cargarComboBox(cmbTipoObra, TipoObra.class);
-        cargarSalasEnComboBox();
-        if (obra != null){
-            if(editable){
-                txtArtista.setText(obra.getArtista());
-
-                cmbSala.setSelectedItem(obra.getSala());
-
-                cmbTipoObra.setSelectedItem(obra.getTipoObra());
-
-
-                txtDescripcion.setText(obra.getDescripcion());
-                txtMedida.setText(obra.getMedida());
-                txtTitulo.setText(obra.getTitulo());
-                lblUrl.setText(obra.getImagenUrl());
-            
-                try{
-                    URL url = new URL(obra.getImagenUrl());
-                    BufferedImage image = ImageIO.read(url);
-
-                    ImageIcon icon = new ImageIcon(image);
-                    Image imagenRedimensionada = icon.getImage().getScaledInstance(
-                       lblImage.getWidth(), // Ancho del label
-                       lblImage.getHeight(), // Alto del label
-                       Image.SCALE_SMOOTH // Algoritmo de escalado suave
-                   );
-
-                    ImageIcon iconoRedimensionado = new ImageIcon(imagenRedimensionada);
-
-
-                    lblImage.setIcon(iconoRedimensionado);
-                }catch(Exception e){
-                    lblImage.setText("Error al cargar la imágen");
-                }
-
-                btnGuardar.setEnabled(false);
-                btnCargarImg.setEnabled(false);
-                btnGuardar1.setEnabled(true);
-            }
-        }
-        
-        
-        
+       
         
         
     }
    
     private void cargarSalasEnComboBox() {
+        /*
          // Obtener la lista de salas desde el controlador
         List<Sala> salas = controladorObra.obtenerTodasLasSalas();
 
@@ -95,7 +46,7 @@ public class FormObra extends javax.swing.JDialog {
         // Agregar las salas al JComboBox
         for (Sala sala : salas) {
             cmbSala.addItem(sala);
-        }
+        }*/
     }
     
     
@@ -337,52 +288,11 @@ public class FormObra extends javax.swing.JDialog {
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        // Validar campos vacíos
-        if (urlImage.isEmpty() || txtArtista.getText().isEmpty() || 
-            txtDescripcion.getText().isEmpty() || txtMedida.getText().isEmpty() || 
-            txtTitulo.getText().isEmpty()) {
-            DialogoUtils.mostrarMensaje("No se permiten campos vacíos", 1, "Atención");
-            return;
-        }
-
-        // Crear la obra
-        Obra obra = new Obra();
-        obra.setArtista(txtArtista.getText());
-        obra.setDescripcion(txtDescripcion.getText());
-        obra.setFechaEntrada(LocalDateTime.now());
         
-        // Subir imagen a la nube
-        String urlCloud;
-        try {
-            urlCloud = cloud.subirImagen(urlImage);
-            obra.setImagenUrl(urlCloud);
-        } catch (Exception ex) {
-            DialogoUtils.mostrarMensaje("Error al subir la imagen: " + ex.getMessage(), 2, "ERROR");
-            return;
-        }
-   
-        obra.setMedida(txtMedida.getText());
-        obra.setTitulo(txtTitulo.getText());
-
-        // Obtener la sala seleccionada del JComboBox
-        Sala salaSeleccionada = (Sala) cmbSala.getSelectedItem();
-
-        // Asignar el tipo de obra
-        obra.setTipoObra((TipoObra) cmbTipoObra.getSelectedItem());
-
-        // Llamar al controlador para agregar la obra
-        try {
-            controladorObra.agregarObra(obra, salaSeleccionada);
-            DialogoUtils.mostrarMensaje("Obra cargada correctamente", 1, "Éxito");
-            this.dispose();
-        } catch (Exception e) {
-            e.printStackTrace();
-            DialogoUtils.mostrarMensaje("Error al guardar la obra: " + e.getMessage(), 2, "Error");
-        }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnCargarImgActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCargarImgActionPerformed
-        JFileChooser fileChooser = new JFileChooser();
+        /*JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Seleccionar imagen");
 
         // Filtrar solo imágenes (opcional)
@@ -413,49 +323,12 @@ public class FormObra extends javax.swing.JDialog {
             lblImage.setIcon(iconoRedimensionado);
         } else {
             System.out.println("No se seleccionó ninguna imagen.");
-        }
+        }*/
     }//GEN-LAST:event_btnCargarImgActionPerformed
 
     private void btnGuardar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardar1ActionPerformed
-         // Validar campos vacíos
-        if ( txtArtista.getText().isEmpty() || 
-            txtDescripcion.getText().isEmpty() || txtMedida.getText().isEmpty() || 
-            txtTitulo.getText().isEmpty()) {
-
-            DialogoUtils.mostrarMensaje("No se permiten campos vacíos", 1, "Atención");
-            return;
-        }
-
-        try {
-            // Obtener la obra actual por su número de inventario (debe tener un campo visible para obtenerlo)
-            Long idObra = Long.valueOf(obra.getNumInv());  // Asegúrate de tener un campo con el ID de la obra
-            Obra obraExistente = controladorObra.buscarObraPorId(idObra);
-
-            if (obraExistente == null) {
-                DialogoUtils.mostrarMensaje("La obra no existe.", 2, "Error");
-                return;
-            }
-
-            // Asignar nuevos valores a la obra
-            obraExistente.setArtista(txtArtista.getText());
-            obraExistente.setDescripcion(txtDescripcion.getText());
-            obraExistente.setMedida(txtMedida.getText());
-            obraExistente.setTitulo(txtTitulo.getText());
-
-            // Obtener la sala seleccionada del JComboBox
-            Sala salaSeleccionada = (Sala) cmbSala.getSelectedItem();
-            obraExistente.setSala(salaSeleccionada);
-
-            // Asignar el tipo de obra
-            obraExistente.setTipoObra((TipoObra) cmbTipoObra.getSelectedItem());
-
-            // Actualizar la obra
-            controladorObra.actualizarObra(obraExistente);
-            DialogoUtils.mostrarMensaje("¡Datos actualizados correctamente!", 1, "Éxito");
-            this.dispose();  // Cerrar la ventana
-        } catch (Exception e) {
-            DialogoUtils.mostrarMensaje("Ocurrió un error al actualizar los datos: " + e.getMessage(), 2, "Error");
-        }
+  
+      
     }//GEN-LAST:event_btnGuardar1ActionPerformed
 
     private void lblUrlMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblUrlMouseClicked

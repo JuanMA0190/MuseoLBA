@@ -45,4 +45,22 @@ public class UIValidacionUtils {
             return false;
         }
     }   
+    
+    /**
+     * Método para validar un campo de correo electrónico.
+     *
+     * @param campoEmail El campo de texto que contiene el correo electrónico.
+     * @return true si el correo es válido, false si no lo es.
+     */
+    public static boolean validarCampoEmail(JTextField campoEmail) {
+        String email = campoEmail.getText().trim();
+        if (ValidacionUtils.validarEmail(email)) {
+            return true;
+        } else {
+            DialogoUtils.mostrarMensaje("El correo electrónico no tiene un formato válido.",
+                    DialogoUtils.TIPO_ERROR, "Validación Correo Electrónico");
+            campoEmail.requestFocus();
+            return false;
+        }
+    }
 }

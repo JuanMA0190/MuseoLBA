@@ -8,7 +8,6 @@ import com.museolba.modelo.entidades.personal.Personal;
 import com.museolba.modelo.entidades.usuario.RolUsuario;
 import com.museolba.modelo.entidades.usuario.Usuario;
 import com.museolba.utils.ComponentesUtils;
-import com.museolba.utils.ContraseniaEncriptacionUtils;
 import com.museolba.utils.DialogoUtils;
 import java.time.LocalDateTime;
 

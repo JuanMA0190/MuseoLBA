@@ -13,6 +13,7 @@ import com.museolba.utils.FechaUtils;
 import com.museolba.utils.UIValidacionUtils;
 import com.museolba.vista.ventanaPrincipal.VentanaPrincipal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import javax.persistence.NoResultException;
@@ -94,7 +95,7 @@ public class VentanaCajaChica extends javax.swing.JPanel {
            // Verificar si ya existe una CajaChica para el mes actual
             if (!controladorCajaChica.existeCajaChicaParaMes(mesActual, anioActual)) {
                 // Crear una nueva CajaChica con valores iniciales
-                CajaChica nuevaCajaChica = new CajaChica(0.0, 0.0, fechaActual.withDayOfMonth(1), null );
+                CajaChica nuevaCajaChica = new CajaChica(0.0, 0.0, fechaActual.withDayOfMonth(1));
 
                 // Guardar la nueva CajaChica en la base de datos
                 controladorCajaChica.crearCajaChica(nuevaCajaChica);
@@ -434,12 +435,9 @@ public class VentanaCajaChica extends javax.swing.JPanel {
        if(vP != null){
             FormGestionRecibo formRecibo = new FormGestionRecibo(vP, true, usuarioNumLegajo, cajaChica);
             
-            formRecibo.setVisible(true);
             formRecibo.setLocationRelativeTo(vP);
-            
-            
-            
-            
+            formRecibo.setVisible(true);
+
             cargarTablaCajaChica(monthChooser.getMonth()+1, yearChooser.getYear());
         }
     }//GEN-LAST:event_btnAgregarReciboActionPerformed
@@ -511,12 +509,9 @@ public class VentanaCajaChica extends javax.swing.JPanel {
                if(vP != null){
                     FormGestionRecibo formRecibo = new FormGestionRecibo(vP, true, recibo);
 
-                    formRecibo.setVisible(true);
                     formRecibo.setLocationRelativeTo(vP);
-
-
-
-
+                    formRecibo.setVisible(true);
+                    
                     cargarTablaCajaChica(monthChooser.getMonth()+1, yearChooser.getYear());
                 }
             }
@@ -530,12 +525,17 @@ public class VentanaCajaChica extends javax.swing.JPanel {
        
         int mes =  mesActual;
         int anio = anioActual;
+        CajaChica cajaChica = controladorCajaChica.obtenerCajaChicaPorMesReporte(mes, anio);
         String url = "reportes/caja_chica/ReporteCajaChica"+FechaUtils.obtenerMes(mes)+anio;
-            if(cmbReporte.getSelectedItem() == TiposReporte.PDF){
-                controladorCajaChica.generarReporteCajaChica(mes, anio, url+".pdf");
-            }else if(cmbReporte.getSelectedItem() == TiposReporte.EXCEL){
-                controladorCajaChica.generarReporteCajaChica(mes, anio, url+".xlsx");
-            }
+
+        if(cmbReporte.getSelectedItem() == TiposReporte.PDF){
+        controladorCajaChica.generarReporteCajaChica(mes, anio, url+".pdf",cajaChica);
+
+        }else if(cmbReporte.getSelectedItem() == TiposReporte.EXCEL){
+            controladorCajaChica.generarReporteCajaChica(mes, anio, url+".xlsx",cajaChica);
+        }
+       
+        
     }//GEN-LAST:event_btnReporteActionPerformed
 
 
