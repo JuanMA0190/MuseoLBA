@@ -9,4 +9,5 @@ import java.util.Optional;
 public interface SalaDAO {
      public List<Sala> obtenerTodasLasSalas();
      public Optional<Sala> buscarSalaPorNombre(String nombre); 
+     public List<Sala> obtenerTodasLasSalasConObras();
 }

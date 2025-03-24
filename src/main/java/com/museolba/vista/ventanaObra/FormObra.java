@@ -87,7 +87,6 @@ public class FormObra extends javax.swing.JDialog {
             lblUrl.setText(obra.getImagenUrl());
             
         }
-        
     }
    
     private void cargarSalasEnComboBox() {

@@ -22,4 +22,8 @@ public class ControladorSala {
     public Optional<Sala> buscarSalaPorNombre(String nombre){
         return salaDAO.buscarSalaPorNombre(nombre);
     } 
+    
+    public List<Sala> obtenerTodasLasSalasConObras(){
+        return salaDAO.obtenerTodasLasSalasConObras();
+    }
 }

@@ -27,9 +27,9 @@ public class SalaDAOImpl extends PersistenceJpaController implements SalaDAO{
             TypedQuery<Sala> query = em.createQuery("SELECT s FROM Sala s", Sala.class);
             salas = query.getResultList();
         } catch (Exception e) {
-            e.printStackTrace(); // Manejo de excepciones (puedes personalizarlo)
+            e.printStackTrace(); 
         } finally {
-            em.close(); // Cierra el EntityManager
+            em.close(); 
         }
 
         return salas;
@@ -52,12 +52,22 @@ public class SalaDAOImpl extends PersistenceJpaController implements SalaDAO{
             query.setParameter("nombre", nombre);
             sala = Optional.ofNullable(query.getSingleResult());
         } catch (Exception e) {
-            e.printStackTrace(); // Manejo de excepciones (puedes personalizarlo)
+            e.printStackTrace(); 
         } finally {
-            em.close(); // Cierra el EntityManager
+            em.close();
         }
 
         return sala;
+    }
+    
+    @Override
+    public List<Sala> obtenerTodasLasSalasConObras() {
+        EntityManager em = getEmf().createEntityManager();
+        try {
+            return em.createQuery("SELECT s FROM Sala s LEFT JOIN FETCH s.obras", Sala.class).getResultList();
+        } finally {
+            em.close();
+        }
     }
 
 }

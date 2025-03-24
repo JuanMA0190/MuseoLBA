@@ -27,20 +27,19 @@ public class VentanaArtista extends javax.swing.JPanel {
         try {
             List<Artista> listaObra = controladorArtista.traerTodosLosArtistas();
 
-            ComponentesUtils.TableDataMapper<Artista> artistaMapper = artista -> {
-                return new Object[]{
+            // Cargar la tabla usando el método utilitario
+            ComponentesUtils.cargarTabla(tblArtista, listaObra, titulos, artista -> new Object[]{
                     artista.getId(),       
                     artista.getNombre(),      
                     artista.getCorreo(),        
                     artista.getnTelefono() 
-                };
-            };
-
-            // Cargar la tabla usando el método utilitario
-            ComponentesUtils.cargarTabla(tblArtista, listaObra, titulos, artistaMapper, true);
+            
+            }, true);
+            
         } catch (NoResultException e) {
             DialogoUtils.mostrarMensaje("Error al cargar la tabla: " + e.getMessage(), 2, "Error");
         }
+       
     }
 
     @SuppressWarnings("unchecked")
