@@ -1,9 +1,9 @@
 package com.museolba.vista.ventanaSalas;
 
 import com.museolba.controlador.controladorObra.ControladorObra;
-import com.museolba.controlador.controladorObra.ControladorSala;
+import com.museolba.controlador.controladorSala.ControladorSala;
 import com.museolba.modelo.entidades.obra.Obra;
-import com.museolba.modelo.entidades.obra.Sala;
+import com.museolba.modelo.entidades.sala.Sala;
 import com.museolba.utils.ComponentesUtils;
 import com.museolba.utils.DialogoUtils;
 import com.museolba.vista.ventanaObra.FormObra;

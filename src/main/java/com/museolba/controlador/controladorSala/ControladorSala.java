@@ -1,8 +1,8 @@
-package com.museolba.controlador.controladorObra;
+package com.museolba.controlador.controladorSala;
 
 import com.museolba.modelo.entidades.obra.Obra;
-import com.museolba.modelo.entidades.obra.Sala;
-import com.museolba.modelo.dao.obraDAO.SalaDAOImpl;
+import com.museolba.modelo.entidades.sala.Sala;
+import com.museolba.modelo.dao.salaDAO.SalaDAOImpl;
 import java.util.List;
 import java.util.Optional;
 import javax.persistence.EntityNotFoundException;

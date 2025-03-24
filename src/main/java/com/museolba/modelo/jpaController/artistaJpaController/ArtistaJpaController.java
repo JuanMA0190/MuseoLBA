@@ -1,6 +1,6 @@
-package com.museolba.modelo.jpaController.obraJpaController;
+package com.museolba.modelo.jpaController.artistaJpaController;
 
-import com.museolba.modelo.entidades.obra.Artista;
+import com.museolba.modelo.entidades.artista.Artista;
 import com.museolba.modelo.jpaController.BaseJpaController;
 import java.util.Optional;
 import javax.persistence.EntityManager;

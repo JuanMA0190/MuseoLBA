@@ -1,7 +1,7 @@
 package com.museolba.vista.ventanaArtista;
 
-import com.museolba.controlador.controladorObra.ControladorArtista;
-import com.museolba.modelo.entidades.obra.Artista;
+import com.museolba.controlador.controladorArtista.ControladorArtista;
+import com.museolba.modelo.entidades.artista.Artista;
 import com.museolba.modelo.entidades.obra.Obra;
 import com.museolba.utils.DialogoUtils;
 import com.museolba.utils.UIValidacionUtils;

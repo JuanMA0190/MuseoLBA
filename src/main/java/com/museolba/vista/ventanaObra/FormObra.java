@@ -1,15 +1,15 @@
 package com.museolba.vista.ventanaObra;
 
 
-import com.museolba.controlador.controladorObra.ControladorArtista;
+import com.museolba.controlador.controladorArtista.ControladorArtista;
 import com.museolba.controlador.controladorObra.ControladorObra;
-import com.museolba.controlador.controladorObra.ControladorSala;
-import com.museolba.modelo.entidades.obra.Artista;
+import com.museolba.controlador.controladorSala.ControladorSala;
+import com.museolba.modelo.entidades.artista.Artista;
 import com.museolba.modelo.entidades.obra.EstadoExposicion;
 import com.museolba.modelo.entidades.obra.EstadoObra;
 import com.museolba.modelo.entidades.obra.TipoObra;
 import com.museolba.modelo.entidades.obra.Obra;
-import com.museolba.modelo.entidades.obra.Sala;
+import com.museolba.modelo.entidades.sala.Sala;
 import com.museolba.utils.ComponentesUtils;
 import com.museolba.utils.CopiarTextoURLUtils;
 import com.museolba.utils.DialogoUtils;

@@ -1,6 +1,6 @@
 package com.museolba.vista.ventanaPrincipal;
 
-import com.museolba.vista.ventanaActividades.VentanaActividades;
+
 import com.museolba.vista.ventanaArtista.VentanaArtista;
 import com.museolba.vista.ventanaAsistencia.VentanaAsistencia;
 import com.museolba.vista.ventanaCajaChica.VentanaCajaChica;
@@ -192,7 +192,7 @@ public class MenuJefeDepartamento extends javax.swing.JPanel {
     }//GEN-LAST:event_btnPrincipalActionPerformed
 
     private void btnObrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnObrasActionPerformed
-        VentanaObra vo = new VentanaObra();
+        VentanaObra vo = new VentanaObra(ventanaPrincipal.getUsuarioOnline());
         ventanaPrincipal.abrirContenido(vo, 738, 572, ventanaPrincipal.getPanelContenido());
     }//GEN-LAST:event_btnObrasActionPerformed
 

@@ -1,8 +1,8 @@
-package com.museolba.controlador.controladorObra;
+package com.museolba.controlador.controladorArtista;
 
-import com.museolba.modelo.entidades.obra.Artista;
-import com.museolba.modelo.dao.obraDAO.ArtistaDAOImpl;
-import com.museolba.modelo.jpaController.obraJpaController.ArtistaJpaController;
+import com.museolba.modelo.entidades.artista.Artista;
+import com.museolba.modelo.dao.artistaDAO.ArtistaDAOImpl;
+import com.museolba.modelo.jpaController.artistaJpaController.ArtistaJpaController;
 import java.util.List;
 import java.util.Optional;
 

@@ -1,6 +1,6 @@
 package com.museolba.config;
 
-import com.museolba.modelo.entidades.obra.Sala;
+import com.museolba.modelo.entidades.sala.Sala;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;

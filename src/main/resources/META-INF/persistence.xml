@@ -3,14 +3,14 @@
   <persistence-unit name="museolbaPU" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <class>com.museolba.modelo.entidades.obra.Obra</class>
-    <class>com.museolba.modelo.entidades.obra.Sala</class>
     <class>com.museolba.modelo.entidades.usuario.Usuario</class>
     <class>com.museolba.modelo.entidades.usuario.HistorialUsuario</class>
     <class>com.museolba.modelo.entidades.personal.Personal</class>
     <class>com.museolba.modelo.entidades.usuario.AsistenciaUsuario</class>
     <class>com.museolba.modelo.entidades.cajaChica.Recibo</class>
     <class>com.museolba.modelo.entidades.cajaChica.CajaChica</class>
-    <class>com.museolba.modelo.entidades.obra.Artista</class>
+    <class>com.museolba.modelo.entidades.artista.Artista</class>
+    <class>com.museolba.modelo.entidades.sala.Sala</class>
     <properties>
       <!-- Configuración básica de conexión -->
       <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>

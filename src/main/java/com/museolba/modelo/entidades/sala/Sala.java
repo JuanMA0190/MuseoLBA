@@ -1,5 +1,6 @@
-package com.museolba.modelo.entidades.obra;
+package com.museolba.modelo.entidades.sala;
 
+import com.museolba.modelo.entidades.obra.Obra;
 import java.util.List;
 import java.util.Objects;
 import javax.persistence.CascadeType;

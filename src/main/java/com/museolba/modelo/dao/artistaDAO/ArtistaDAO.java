@@ -1,6 +1,6 @@
-package com.museolba.modelo.dao.obraDAO;
+package com.museolba.modelo.dao.artistaDAO;
 
-import com.museolba.modelo.entidades.obra.Artista;
+import com.museolba.modelo.entidades.artista.Artista;
 import java.util.List;
 
 

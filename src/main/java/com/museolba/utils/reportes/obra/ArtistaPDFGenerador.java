@@ -7,7 +7,7 @@ import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
-import com.museolba.modelo.entidades.obra.Artista;
+import com.museolba.modelo.entidades.artista.Artista;
 import com.museolba.modelo.entidades.obra.Obra;
 import java.io.File;
 import java.io.FileOutputStream;

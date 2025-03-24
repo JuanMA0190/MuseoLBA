@@ -1,7 +1,7 @@
-package com.museolba.modelo.dao.obraDAO;
+package com.museolba.modelo.dao.salaDAO;
 
 import com.museolba.modelo.entidades.obra.Obra;
-import com.museolba.modelo.entidades.obra.Sala;
+import com.museolba.modelo.entidades.sala.Sala;
 import com.museolba.modelo.jpaController.PersistenceJpaController;
 import java.util.List;
 import java.util.Optional;

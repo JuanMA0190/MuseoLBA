@@ -1,5 +1,7 @@
 package com.museolba.modelo.entidades.obra;
 
+import com.museolba.modelo.entidades.sala.Sala;
+import com.museolba.modelo.entidades.artista.Artista;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;

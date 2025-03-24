@@ -5,6 +5,8 @@ import com.museolba.modelo.entidades.obra.EstadoExposicion;
 import com.museolba.modelo.entidades.obra.EstadoObra;
 import com.museolba.modelo.entidades.obra.Obra;
 import com.museolba.modelo.entidades.obra.TipoObra;
+import com.museolba.modelo.entidades.usuario.RolUsuario;
+import com.museolba.modelo.entidades.usuario.Usuario;
 import com.museolba.utils.ComponentesUtils;
 import com.museolba.utils.ComponentesUtils.TableDataMapper;
 import com.museolba.utils.DialogoUtils;
@@ -23,13 +25,19 @@ public class VentanaObra extends javax.swing.JPanel {
    ControladorObra controladorObra = null;
    String[] titulos = {"Num. Inv.", "Titulo", "Artista", "Tipo", "Fecha", "Sala", "Estado", "Exposicion"};
    
-    public VentanaObra() {
+    public VentanaObra(Usuario usuario) {
         initComponents();
         controladorObra = new ControladorObra();
         cargarComboBoxFiltro();
         cargarTabla(); 
         btnCargarDatosIniciales.setVisible(false);
         cmbOpcion.setEnabled(false);
+        
+        if(usuario.getRolUsuario()==RolUsuario.PERSONAL){
+            btnRegistrar.setVisible(false);
+            btnModificar.setVisible(false);
+            btnReporte.setVisible(false);
+        }
     }
     
     private void cargarComboBoxFiltro() {
