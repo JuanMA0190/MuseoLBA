@@ -4,11 +4,10 @@ import com.museolba.controlador.controladorObra.ControladorArtista;
 import com.museolba.modelo.entidades.obra.Artista;
 import com.museolba.utils.ComponentesUtils;
 import com.museolba.utils.DialogoUtils;
+import com.museolba.utils.reportes.obra.ArtistaPDFGenerador;
 import com.museolba.vista.ventanaPrincipal.VentanaPrincipal;
 import java.util.List;
 import java.util.Optional;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.persistence.NoResultException;
 import javax.swing.SwingUtilities;
 
@@ -21,6 +20,7 @@ public class VentanaArtista extends javax.swing.JPanel {
         initComponents();
         controladorArtista = new ControladorArtista();
         cargarTabla();
+        btnCargarDatosNuevamente.setVisible(false);
     }
     
     private void cargarTabla(){
@@ -58,6 +58,7 @@ public class VentanaArtista extends javax.swing.JPanel {
         btnRegistrar = new javax.swing.JButton();
         btnModificar = new javax.swing.JButton();
         btnReporte = new javax.swing.JButton();
+        btnCargarDatosNuevamente = new javax.swing.JButton();
 
         setMinimumSize(new java.awt.Dimension(738, 572));
         setPreferredSize(new java.awt.Dimension(738, 572));
@@ -154,6 +155,13 @@ public class VentanaArtista extends javax.swing.JPanel {
             }
         });
 
+        btnCargarDatosNuevamente.setText("Cargar Todos Los Datos");
+        btnCargarDatosNuevamente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCargarDatosNuevamenteActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -163,8 +171,10 @@ public class VentanaArtista extends javax.swing.JPanel {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(103, 103, 103)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnCargarDatosNuevamente, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(39, 39, 39)
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 15, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -181,7 +191,9 @@ public class VentanaArtista extends javax.swing.JPanel {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(27, 27, 27)
+                        .addComponent(btnCargarDatosNuevamente, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -226,7 +238,7 @@ public class VentanaArtista extends javax.swing.JPanel {
                     Optional<Artista> artistaOptional = controladorArtista.buscarArtistaPorId(idArtista);
                     Artista artista = artistaOptional.orElse(null); 
 
-                    if (artistaOptional.isPresent() && artista != null){
+                    if (artistaOptional.isPresent() && artista != null && vP != null){
                         FormArtista formArtista = new FormArtista(vP, true, true, artista);
                         
                         formArtista.setLocationRelativeTo(vP);
@@ -272,18 +284,57 @@ public class VentanaArtista extends javax.swing.JPanel {
 
             // Cargar la tabla usando el método utilitario
             ComponentesUtils.cargarTabla(tblArtista, listaObra, titulos, artistaMapper, true);
+
+            btnCargarDatosNuevamente.setVisible(true);
         } catch (Exception ex) {
             DialogoUtils.mostrarMensaje("Error al buscar artistas: " + ex.getMessage(), 2, "Error");
         }
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReporteActionPerformed
-        // TODO add your handling code here:
+         try{
+        
+            if(tblArtista.getRowCount()> 0){
+                if(tblArtista.getSelectedRow()!=-1){
+                    int filaSeleccionada = tblArtista.getSelectedRow();
+                    long idArtista = (long) tblArtista.getValueAt(filaSeleccionada, 0);
+                    Optional<Artista> artistaOptional = controladorArtista.buscarArtistaPorId(idArtista);
+                    Artista artista = artistaOptional.orElse(null); 
+
+                    if (artistaOptional.isPresent() && artista != null){
+                        
+                        try{
+                            String url = "reportes/Obras/Obras_Por_Artista/ReporteObras.pdf";
+                            ArtistaPDFGenerador.generarReporte(artista, artista.getObras(), url);
+                            DialogoUtils.mostrarMensaje("Reporte generado correctamente en: "+url, 1, "Atención!");
+                        }catch(Exception e){
+                            DialogoUtils.mostrarMensaje("Error, no se pudo generar reporte: "+e.getMessage(), 2, "Error!");
+                        }
+                        
+                    }else{
+                        DialogoUtils.mostrarMensaje("No se encontró el artista seleccionado ", 1, "Atención!");
+                    }
+                }else{
+                    DialogoUtils.mostrarMensaje("Debe seleccionar un artista para generar el reporte!", 1, "Atención");
+                }
+            }
+        }catch(Exception e){
+            DialogoUtils.mostrarMensaje("No se encontró el artista seleccionado ", 1, "Atención!");
+        }
+        
+        
+       
     }//GEN-LAST:event_btnReporteActionPerformed
+
+    private void btnCargarDatosNuevamenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCargarDatosNuevamenteActionPerformed
+        cargarTabla();
+        btnCargarDatosNuevamente.setVisible(false);
+    }//GEN-LAST:event_btnCargarDatosNuevamenteActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;
+    private javax.swing.JButton btnCargarDatosNuevamente;
     private javax.swing.JButton btnModificar;
     private javax.swing.JButton btnRegistrar;
     private javax.swing.JButton btnReporte;

@@ -55,6 +55,20 @@ public class Sala {
         this.obras = obras;
     }
     
+    public void agregarObra(Obra obra) {
+        if (obra != null) {
+            this.obras.add(obra); // Agrega la obra a la lista de obras de la sala
+            obra.setSala(this); // Establece la sala en la obra
+        }
+    }
+
+    public void eliminarObra(Obra obra) {
+        if (obra != null) {
+            this.obras.remove(obra); // Elimina la obra de la lista de obras de la sala
+            obra.setSala(null); // Elimina la referencia a la sala en la obra
+        }
+    }
+    
     @Override
     public String toString() {
         return this.nombre;

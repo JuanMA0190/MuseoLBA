@@ -60,14 +60,14 @@ public class Obra {
 
     public Obra() {
     }
-
-    public Obra(TipoObra tipoObra, String titulo, Artista artista, Double altura, Double ancho, LocalDateTime fechaEntrada, String descripcion, Sala sala, String imagenUrl, EstadoObra estadoObra, EstadoExposicion estadoExpo) {
+    
+    public Obra(Long numInv, String titulo, Artista artista, TipoObra tipoObra, String descripcion, Double ancho, Double altura, EstadoObra estadoObra, String imagenUrl, EstadoExposicion estadoExpo, Sala sala) {
+        this.numInv = numInv;
         this.tipoObra = tipoObra;
         this.titulo = titulo;
         this.artista = artista;
         this.altura = altura;
         this.ancho = ancho;
-        this.fechaEntrada = fechaEntrada;
         this.descripcion = descripcion;
         this.sala = sala;
         this.imagenUrl = imagenUrl;
@@ -101,10 +101,6 @@ public class Obra {
 
     public Artista getArtista() {
         return artista;
-    }
-
-    public void setArtista(Artista artista) {
-        this.artista = artista;
     }
 
     public Double getAltura() {
@@ -143,10 +139,6 @@ public class Obra {
         return sala;
     }
 
-    public void setSala(Sala sala) {
-        this.sala = sala;
-    }
-
     public String getImagenUrl() {
         return imagenUrl;
     }
@@ -171,7 +163,29 @@ public class Obra {
         this.estadoExpo = estadoExpo;
     }
     
-    
+    public void setSala(Sala sala) {
+        if (this.sala != null) {
+            // Elimina la obra de la lista de obras de la sala actual
+            this.sala.getObras().remove(this);
+        }
+        this.sala = sala;
+        if (sala != null) {
+            // Agrega la obra a la lista de obras de la nueva sala
+            sala.getObras().add(this);
+        }
+    }
+
+    public void setArtista(Artista artista) {
+        if (this.artista != null) {
+            // Elimina la obra de la lista de obras del artista actual
+            this.artista.getObras().remove(this);
+        }
+        this.artista = artista;
+        if (artista != null) {
+            // Agrega la obra a la lista de obras del nuevo artista
+            artista.getObras().add(this);
+        }
+    }
 
    
 }

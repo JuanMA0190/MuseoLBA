@@ -4,64 +4,43 @@ import com.museolba.modelo.dao.obraDAO.ObraDAOImpl;
 import com.museolba.modelo.entidades.obra.Obra;
 import com.museolba.modelo.entidades.obra.Sala;
 import com.museolba.modelo.dao.obraDAO.SalaDAOImpl;
+import com.museolba.modelo.entidades.obra.EstadoExposicion;
+import com.museolba.modelo.jpaController.obraJpaController.ObraJpaController;
 import java.util.List;
-import javax.persistence.EntityNotFoundException;
+import java.util.Optional;
 
 
 public class ControladorObra {
-     private final ObraDAOImpl obraJpaController;
-    private final SalaDAOImpl salaJpaController;
-
+    private final ObraDAOImpl obraDAO;
+    private final ObraJpaController obraJpaController;
+    
     public ControladorObra() {
-        this.obraJpaController = new ObraDAOImpl();
-        this.salaJpaController = new SalaDAOImpl();
+        this.obraDAO = new ObraDAOImpl();
+        this.obraJpaController = new ObraJpaController();
     }
-    /*
-    // Método para agregar una obra
-    public void agregarObra(Obra obra, Sala sala) {
-        obra.setSala(sala);  // Asignar la sala a la obra
-        obraJpaController.create(obra); 
-    }
-
-    public List<Sala> obtenerTodasLasSalas() {
-        return salaJpaController.findAll();
-    }
-
-    // Método para buscar una obra por ID
-    public Obra buscarObraPorId(Long id) {
-        return obraJpaController.find(id);
-    }
-
-    // Método para buscar obras por artista
-    public List<Obra> buscarObrasPorArtista(String artista) {
-        return obraJpaController.findObrasByArtista(artista);
-    }
-
-    // Método para buscar obras por sala
-    public List<Obra> buscarObrasPorSala(Long salaId) {
-        return obraJpaController.findObrasBySala(salaId);
-    }
-
-    // Método para eliminar una obra
-    public void eliminarObra(Long id) throws EntityNotFoundException {
-        obraJpaController.destroy(id);
-    }
-
-    // Método para actualizar una obra
-    public void actualizarObra(Obra obra) throws Exception {
-        if (obra != null && obra.getNumInv() != null) {
-            obraJpaController.edit(obra, obra.getNumInv());
-        } else {
-            throw new Exception("La obra no existe o no tiene un número de inventario válido");
+   
+    public void crearObra(Obra obra) throws Exception{
+        if(obra.getSala().getNombre().equals("Entregado al Artista")){
+            throw new IllegalStateException("Seleccione una sala válida!");
         }
+        
+        obraJpaController.crearObra(obra);
     }
     
-    public List<Obra> todasObras() {
-        return obraJpaController.findAllObras();
+    public void editarObra(Obra obra) throws Exception{
+        obraJpaController.editarObra(obra);
     }
     
-    public List<Obra> findObrasByTerminoArtista(String termino){
-        return obraJpaController.findObrasByTerminoArtista(termino);
-    }*/
     
+    public List<Obra> obtenerTodasLasObras(){
+        return obraDAO.obtenerTodasLasObras();
+    }
+    
+    public Optional<Obra> obtenerObraPorId(Long id){
+        return obraJpaController.obtenerObraPorId(id);
+    }
+    
+    public Optional<Obra> obtenerObraPorIdConRelaciones(Long id) {
+        return obraDAO.obtenerObraPorIdConRelaciones(id);
+    }
 }

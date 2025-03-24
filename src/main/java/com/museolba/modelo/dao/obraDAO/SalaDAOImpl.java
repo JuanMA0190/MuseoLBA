@@ -4,58 +4,60 @@ import com.museolba.modelo.entidades.obra.Obra;
 import com.museolba.modelo.entidades.obra.Sala;
 import com.museolba.modelo.jpaController.PersistenceJpaController;
 import java.util.List;
+import java.util.Optional;
 import javax.persistence.EntityManager;
 import javax.persistence.NonUniqueResultException;
+import javax.persistence.TypedQuery;
 
 
 public class SalaDAOImpl extends PersistenceJpaController implements SalaDAO{
    
-    // Método para buscar salas por nombre
+    /**
+     * Obtiene todas las salas registradas en la base de datos.
+     *
+     * @return Una lista de todas las salas.
+     */
     @Override
-    public List<Sala> findSalasByNombre(String nombre) {
+    public List<Sala> obtenerTodasLasSalas() {
         EntityManager em = getEmf().createEntityManager();
-        try {
-            return em.createQuery("SELECT s FROM Sala s WHERE s.nombre LIKE :nombre", Sala.class)
-                      .setParameter("nombre", "%" + nombre + "%")
-                      .getResultList();
-        } finally {
-            em.close();
-        }
-    }
+        List<Sala> salas = null;
 
-    // Método para obtener todas las obras en una sala
-    @Override
-    public List<Obra> getObrasBySala(Long salaId) {
-        EntityManager em = getEmf().createEntityManager();
         try {
-            return em.createQuery("SELECT o FROM Obra o WHERE o.sala.id = :salaId", Obra.class)
-                      .setParameter("salaId", salaId)
-                      .getResultList();
+            // Crea una consulta para obtener todas las salas
+            TypedQuery<Sala> query = em.createQuery("SELECT s FROM Sala s", Sala.class);
+            salas = query.getResultList();
+        } catch (Exception e) {
+            e.printStackTrace(); // Manejo de excepciones (puedes personalizarlo)
         } finally {
-            em.close();
+            em.close(); // Cierra el EntityManager
         }
+
+        return salas;
     }
     
-    
-    // Método para buscar una sala por nombre
-    @Override
-    public Sala encontrarSalaByNombre(String nombre) {
+    /**
+     * Busca una sala por su nombre en la base de datos.
+     *
+     * @param nombre El nombre de la sala a buscar.
+     * @return Un Optional que contiene la sala si se encuentra, o vacío si no.
+     */
+    public Optional<Sala> buscarSalaPorNombre(String nombre) {
         EntityManager em = getEmf().createEntityManager();
-        try {
-            List<Sala> salas = em.createQuery("SELECT s FROM Sala s WHERE s.nombre = :nombre", Sala.class)
-                                 .setParameter("nombre", nombre)
-                                 .getResultList();
+        Optional<Sala> sala = Optional.empty();
 
-            if (salas.isEmpty()) {
-                return null; // No se encontró ninguna sala
-            } else if (salas.size() == 1) {
-                return salas.get(0); // Devuelve la única sala encontrada
-            } else {
-                // Si hay más de una sala, lanza una excepción o maneja el caso
-                throw new NonUniqueResultException("Se encontraron múltiples salas con el nombre: " + nombre);
-            }
+        try {
+            // Crea una consulta para buscar la sala por su nombre
+            TypedQuery<Sala> query = em.createQuery(
+                "SELECT s FROM Sala s WHERE s.nombre = :nombre", Sala.class);
+            query.setParameter("nombre", nombre);
+            sala = Optional.ofNullable(query.getSingleResult());
+        } catch (Exception e) {
+            e.printStackTrace(); // Manejo de excepciones (puedes personalizarlo)
         } finally {
-            em.close();
+            em.close(); // Cierra el EntityManager
         }
+
+        return sala;
     }
+
 }

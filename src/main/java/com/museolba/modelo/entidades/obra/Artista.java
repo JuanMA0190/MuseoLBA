@@ -2,6 +2,7 @@ package com.museolba.modelo.entidades.obra;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -82,9 +83,36 @@ public class Artista {
         this.obras = obras;
     }
     
+    public void agregarObra(Obra obra) {
+        if (obra != null) {
+            this.obras.add(obra); // Agrega la obra a la lista de obras de la sala
+            obra.setArtista(this); // Establece la sala en la obra
+        }
+    }
+
+    public void eliminarObra(Obra obra) {
+        if (obra != null) {
+            this.obras.remove(obra); // Elimina la obra de la lista de obras del artista
+            obra.setArtista(null); // Elimina la referencia al artista en la obra
+        }
+    }
     
+    @Override
+    public String toString() {
+        return id + " - " + nombre;
+    }
     
-    
-    
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Artista artista = (Artista) obj;
+        return Objects.equals(id, artista.id); // Compara por ID
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id); // Usa el ID para el hashCode
+    }
     
 }

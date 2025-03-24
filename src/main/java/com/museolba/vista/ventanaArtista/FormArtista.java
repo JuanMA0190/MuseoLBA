@@ -2,19 +2,22 @@ package com.museolba.vista.ventanaArtista;
 
 import com.museolba.controlador.controladorObra.ControladorArtista;
 import com.museolba.modelo.entidades.obra.Artista;
+import com.museolba.modelo.entidades.obra.Obra;
 import com.museolba.utils.DialogoUtils;
 import com.museolba.utils.UIValidacionUtils;
+import java.util.List;
 
 public class FormArtista extends javax.swing.JDialog {
     
-    ControladorArtista controladorArtista = null;
-    Artista artista = null;
+    private ControladorArtista controladorArtista = null;
+    private Artista artista = null;
     
     public FormArtista(java.awt.Frame parent, boolean modal, boolean editable, Artista artista) {
         super(parent, modal);
         initComponents();
         
-        controladorArtista = new ControladorArtista();
+        this.controladorArtista = new ControladorArtista();
+        this.artista = artista;
         
         if(editable && artista != null){
             txtNombre.setText(artista.getNombre());
@@ -23,6 +26,11 @@ public class FormArtista extends javax.swing.JDialog {
             
             btnModificar.setEnabled(true);
             btnGuardar.setEnabled(false);
+            //ELIMINAR LUEGO
+            List<Obra> obras = artista.getObras();
+            for(Obra obra : obras){
+                System.out.println(obra);
+            }
         }
         
     }

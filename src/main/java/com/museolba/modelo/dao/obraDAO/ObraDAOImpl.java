@@ -3,60 +3,54 @@ package com.museolba.modelo.dao.obraDAO;
 import com.museolba.modelo.entidades.obra.Obra;
 import com.museolba.modelo.jpaController.PersistenceJpaController;
 import java.util.List;
+import java.util.Optional;
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 
 public class ObraDAOImpl extends PersistenceJpaController implements ObraDAO{
 
-    // Método para buscar obras por sala
+    /**
+     * Obtiene todas las obras registradas en la base de datos.
+     *
+     * @return Una lista de todas las obras.
+     */
     @Override
-    public List<Obra> findObrasBySala(Long salaId) {
+    public List<Obra> obtenerTodasLasObras() {
         EntityManager em = getEmf().createEntityManager();
-        try {
-            return em.createQuery("SELECT o FROM Obra o WHERE o.sala.id = :salaId", Obra.class)
-                      .setParameter("salaId", salaId)
-                      .getResultList();
-        } finally {
-            em.close();
-        }
-    }
+        List<Obra> obras = null;
 
-    // Método para buscar todas las obras
-    @Override
-    public List<Obra> findAllObras() {
-        EntityManager em = getEmf().createEntityManager();
         try {
-            return em.createQuery("SELECT o FROM Obra o", Obra.class)
-                      .getResultList();
+            // Crea una consulta para obtener todas las salas
+            TypedQuery<Obra> query = em.createQuery("SELECT o FROM Obra o", Obra.class);
+            obras = query.getResultList();
+        } catch (Exception e) {
+            e.printStackTrace(); // Manejo de excepciones (puedes personalizarlo)
         } finally {
-            em.close();
+            em.close(); // Cierra el EntityManager
         }
-    }
 
-    // Método para buscar obras por nombre (opcional)
-    @Override
-    public List<Obra> findObrasByNombre(String nombre) {
-        EntityManager em = getEmf().createEntityManager();
-        try {
-            return em.createQuery("SELECT o FROM Obra o WHERE o.nombre LIKE :nombre", Obra.class)
-                      .setParameter("nombre", "%" + nombre + "%")
-                      .getResultList();
-        } finally {
-            em.close();
-        }
+        return obras;
     }
     
-    @Override
-    public List<Obra> findObrasByTerminoArtista(String termino) {
+    public Optional<Obra> obtenerObraPorIdConRelaciones(Long id) {
         EntityManager em = getEmf().createEntityManager();
+        Optional<Obra> obra = Optional.empty();
+
         try {
-            return em.createQuery(
-                "SELECT o FROM Obra o WHERE LOWER(o.artista) LIKE LOWER(:termino)", Obra.class)
-                .setParameter("termino", "%" + termino + "%")
-                .getResultList();
+            TypedQuery<Obra> query = em.createQuery(
+                "SELECT o FROM Obra o " +
+                "LEFT JOIN FETCH o.artista " +
+                "LEFT JOIN FETCH o.sala " +
+                "WHERE o.numInv = :id", Obra.class);
+            query.setParameter("id", id);
+            obra = Optional.ofNullable(query.getSingleResult());
+        } catch (Exception e) {
+            e.printStackTrace();
         } finally {
             em.close();
         }
-    }
-    
+
+    return obra;
+}
     
 }
