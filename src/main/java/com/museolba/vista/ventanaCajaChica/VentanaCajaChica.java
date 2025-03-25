@@ -280,7 +280,7 @@ public class VentanaCajaChica extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnVerRecibo, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 359, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 350, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -351,8 +351,6 @@ public class VentanaCajaChica extends javax.swing.JPanel {
         lblTitulo2.setForeground(new java.awt.Color(102, 0, 102));
         lblTitulo2.setText("Fondo Inicial");
 
-        lblAtencion.setForeground(new java.awt.Color(255, 102, 102));
-
         javax.swing.GroupLayout panelFondoInicalLayout = new javax.swing.GroupLayout(panelFondoInical);
         panelFondoInical.setLayout(panelFondoInicalLayout);
         panelFondoInicalLayout.setHorizontalGroup(
@@ -367,8 +365,6 @@ public class VentanaCajaChica extends javax.swing.JPanel {
                         .addComponent(btnAgregarFondoInical1, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(panelFondoInicalLayout.createSequentialGroup()
                         .addComponent(lblTitulo2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblAtencion)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -376,15 +372,15 @@ public class VentanaCajaChica extends javax.swing.JPanel {
             panelFondoInicalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelFondoInicalLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(panelFondoInicalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblTitulo2, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblAtencion))
+                .addComponent(lblTitulo2, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panelFondoInicalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtFondoInicial, javax.swing.GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE)
-                    .addComponent(btnAgregarFondoInical1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtFondoInicial)
+                    .addComponent(btnAgregarFondoInical1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
+
+        lblAtencion.setForeground(new java.awt.Color(255, 102, 102));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -393,20 +389,25 @@ public class VentanaCajaChica extends javax.swing.JPanel {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(panelBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(panelFondoInical, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(panelReporte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 634, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(panelRecibo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(panelRecibo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(lblTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(panelBusqueda, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(panelFondoInical, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblAtencion))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblAtencion))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(panelFondoInical, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -501,26 +502,37 @@ public class VentanaCajaChica extends javax.swing.JPanel {
     }//GEN-LAST:event_txtFondoInicialKeyReleased
 
     private void btnVerReciboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerReciboActionPerformed
-       
-         if(tblRecibo.getRowCount()> 0){
-            if(tblRecibo.getSelectedRow()!=-1){
-                int filaSeleccionada = tblRecibo.getSelectedRow();
-                Recibo recibo = controladorRecibo.obtenerRecibo((long)filaSeleccionada+1);
-        
-                VentanaPrincipal vP = (VentanaPrincipal) SwingUtilities.getWindowAncestor(this);
-               if(vP != null){
-                    FormGestionRecibo formRecibo = new FormGestionRecibo(vP, true, recibo);
+        if(tblRecibo.getRowCount() > 0) {
+          if(tblRecibo.getSelectedRow() != -1) {
+              // Obtener el modelo de la tabla
+              DefaultTableModel modelo = (DefaultTableModel) tblRecibo.getModel();
 
-                    formRecibo.setLocationRelativeTo(vP);
-                    formRecibo.setVisible(true);
-                    
-                    cargarTablaCajaChica(monthChooser.getMonth()+1, yearChooser.getYear());
-                }
-            }
-         }else{
-                DialogoUtils.mostrarMensaje("Debe seleccionar un recibo para Modificar!", 1, "Atención");
-         }
-        
+              // Obtener la fila seleccionada
+              int filaSeleccionada = tblRecibo.getSelectedRow();
+
+              // Obtener el nombre del recibo (que está en la primera columna según tu mapper)
+              String nombreRecibo = (String) modelo.getValueAt(filaSeleccionada, 0);
+
+              // Obtener el recibo por su nombre (o mejor, por su ID si lo tienes en la tabla)
+              Recibo recibo = controladorRecibo.obtenerReciboPorNombre(nombreRecibo);
+
+              if(recibo != null) {
+                  VentanaPrincipal vP = (VentanaPrincipal) SwingUtilities.getWindowAncestor(this);
+                  if(vP != null) {
+                      FormGestionRecibo formRecibo = new FormGestionRecibo(vP, true, recibo);
+                      formRecibo.setLocationRelativeTo(vP);
+                      formRecibo.setVisible(true);
+                      cargarTablaCajaChica(monthChooser.getMonth()+1, yearChooser.getYear());
+                  }
+              } else {
+                  DialogoUtils.mostrarMensaje("No se encontró el recibo seleccionado", 2, "Error");
+              }
+          } else {
+              DialogoUtils.mostrarMensaje("Debe seleccionar un recibo para ver!", 1, "Atención");
+          }
+      } else {
+          DialogoUtils.mostrarMensaje("No hay recibos para mostrar", 1, "Atención");
+      }        
     }//GEN-LAST:event_btnVerReciboActionPerformed
 
     private void btnReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReporteActionPerformed

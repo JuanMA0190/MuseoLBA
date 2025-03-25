@@ -83,4 +83,13 @@ public class ControladorRecibo {
         }
     }
     
+    
+    public Recibo obtenerReciboPorNombre(String nombre){
+        return reciboDAO.obtenerPorNombre(nombre);
+    }
+    
+    public Recibo obtenerReciboPorNombreIgnoreCase(String nombre){
+        return reciboDAO.obtenerPorNombreIgnoreCase(nombre);
+    }
+    
 }

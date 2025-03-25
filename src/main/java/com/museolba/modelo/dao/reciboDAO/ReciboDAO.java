@@ -15,4 +15,7 @@ public interface ReciboDAO {
     Double obtenerTotalGastadoPorCajaChica(Long cajaChicaId);
     
     List<Producto> obtenerProductosPorRecibo(Long reciboId);
+    
+    Recibo obtenerPorNombre(String nombre);
+    Recibo obtenerPorNombreIgnoreCase(String nombre);
 }

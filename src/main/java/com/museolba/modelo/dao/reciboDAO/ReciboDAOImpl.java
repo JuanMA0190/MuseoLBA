@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import com.museolba.modelo.entidades.cajaChica.Recibo;
 import java.util.ArrayList;
+import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 
 public class ReciboDAOImpl extends PersistenceJpaController implements ReciboDAO {
@@ -60,6 +61,44 @@ public class ReciboDAOImpl extends PersistenceJpaController implements ReciboDAO
             return new ArrayList<>(); // Si no se encuentra el recibo, devolver una lista vacía
         } finally {
             em.close();
+        }
+    }
+    
+    /**
+     * Obtiene un Recibo por su nombre exacto
+     * @param nombre Nombre del recibo a buscar
+     * @return El Recibo encontrado o null si no existe
+     */
+    @Override
+    public Recibo obtenerPorNombre(String nombre) {
+        EntityManager em = getEmf().createEntityManager();
+        try {
+            String jpql = "SELECT r FROM Recibo r WHERE r.nombre = :nombre";
+            TypedQuery<Recibo> query = em.createQuery(jpql, Recibo.class);
+            query.setParameter("nombre", nombre);
+            
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
+    /**
+     * Obtiene un Recibo por su nombre (búsqueda insensible a mayúsculas/minúsculas)
+     * @param nombre Nombre del recibo a buscar
+     * @return El Recibo encontrado o null si no existe
+     */
+    @Override
+    public Recibo obtenerPorNombreIgnoreCase(String nombre) {
+        EntityManager em = getEmf().createEntityManager();
+        try {
+            String jpql = "SELECT r FROM Recibo r WHERE LOWER(r.nombre) = LOWER(:nombre)";
+            TypedQuery<Recibo> query = em.createQuery(jpql, Recibo.class);
+            query.setParameter("nombre", nombre);
+            
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
         }
     }
 }
