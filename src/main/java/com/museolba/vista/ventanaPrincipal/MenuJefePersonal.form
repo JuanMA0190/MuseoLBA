@@ -157,6 +157,9 @@
             </Component>
             <Component class="javax.swing.JButton" name="btnActividades">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/iconos/turno-de-noche.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Actividades"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="null"/>
@@ -172,6 +175,9 @@
             </Component>
             <Component class="javax.swing.JButton" name="btnObras">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/iconos/obras.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Obras"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="null"/>
@@ -187,6 +193,9 @@
             </Component>
             <Component class="javax.swing.JButton" name="btnUsuario">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/iconos/agregar-usuario.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Usuarios"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="null"/>
@@ -202,6 +211,9 @@
             </Component>
             <Component class="javax.swing.JButton" name="btnPersonal">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/iconos/personal.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Personal"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="null"/>
@@ -217,6 +229,9 @@
             </Component>
             <Component class="javax.swing.JButton" name="btnSalas">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/iconos/pasillo.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Salas"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="null"/>
@@ -232,6 +247,9 @@
             </Component>
             <Component class="javax.swing.JButton" name="btnCajaChica">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/iconos/caja.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Caja Chica"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="null"/>
@@ -247,6 +265,9 @@
             </Component>
             <Component class="javax.swing.JButton" name="btnAsistencia">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/iconos/asistencia.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Asistencia"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="null"/>

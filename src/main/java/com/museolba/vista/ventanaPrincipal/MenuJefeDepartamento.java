@@ -49,6 +49,7 @@ public class MenuJefeDepartamento extends javax.swing.JPanel {
         panelMenu1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
         panelMenu1.add(lblImagen, new org.netbeans.lib.awtextra.AbsoluteConstraints(266, 6, -1, 104));
 
+        btnActividades.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/turno-de-noche.png"))); // NOI18N
         btnActividades.setText("Actividades");
         btnActividades.setBorder(null);
         btnActividades.setBorderPainted(false);
@@ -60,6 +61,7 @@ public class MenuJefeDepartamento extends javax.swing.JPanel {
         });
         panelMenu1.add(btnActividades, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 248, 47));
 
+        btnObras.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/obras.png"))); // NOI18N
         btnObras.setText("Obras");
         btnObras.setBorder(null);
         btnObras.setBorderPainted(false);
@@ -71,6 +73,7 @@ public class MenuJefeDepartamento extends javax.swing.JPanel {
         });
         panelMenu1.add(btnObras, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 250, 248, 47));
 
+        btnArtistas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/artistas.png"))); // NOI18N
         btnArtistas.setText("Artistas");
         btnArtistas.setBorder(null);
         btnArtistas.setBorderPainted(false);
@@ -82,6 +85,7 @@ public class MenuJefeDepartamento extends javax.swing.JPanel {
         });
         panelMenu1.add(btnArtistas, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 310, 248, 47));
 
+        btnAsistencia.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/asistencia.png"))); // NOI18N
         btnAsistencia.setText("Asistencia");
         btnAsistencia.setBorder(null);
         btnAsistencia.setBorderPainted(false);
@@ -93,6 +97,7 @@ public class MenuJefeDepartamento extends javax.swing.JPanel {
         });
         panelMenu1.add(btnAsistencia, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 190, 248, 47));
 
+        btnSalas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/pasillo.png"))); // NOI18N
         btnSalas.setText("Salas");
         btnSalas.setBorder(null);
         btnSalas.setBorderPainted(false);
@@ -104,6 +109,7 @@ public class MenuJefeDepartamento extends javax.swing.JPanel {
         });
         panelMenu1.add(btnSalas, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 370, 248, 47));
 
+        btnCajaChica.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/caja.png"))); // NOI18N
         btnCajaChica.setText("Caja Chica");
         btnCajaChica.setBorder(null);
         btnCajaChica.setBorderPainted(false);
@@ -116,6 +122,7 @@ public class MenuJefeDepartamento extends javax.swing.JPanel {
         });
         panelMenu1.add(btnCajaChica, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 430, 248, 47));
 
+        btnPersonal.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/personal.png"))); // NOI18N
         btnPersonal.setText("Personal");
         btnPersonal.setBorder(null);
         btnPersonal.setBorderPainted(false);
@@ -127,6 +134,7 @@ public class MenuJefeDepartamento extends javax.swing.JPanel {
         });
         panelMenu1.add(btnPersonal, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 130, 248, 47));
 
+        btnUsuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/agregar-usuario.png"))); // NOI18N
         btnUsuario.setText("Usuarios");
         btnUsuario.setBorder(null);
         btnUsuario.setBorderPainted(false);
@@ -188,7 +196,7 @@ public class MenuJefeDepartamento extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnActividadesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActividadesActionPerformed
-        VentanaActividades va = new VentanaActividades();
+        VentanaActividades va = new VentanaActividades(ventanaPrincipal.getUsuarioOnline());
         ventanaPrincipal.abrirContenido(va, 738, 572, ventanaPrincipal.getPanelContenido());
     }//GEN-LAST:event_btnActividadesActionPerformed
 

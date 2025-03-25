@@ -4,6 +4,8 @@ import com.museolba.controlador.controladorTurno.controladorTurnoArtista.Control
 import com.museolba.controlador.controladorTurno.controladorTurnoGuia.ControladorTurnoGuia;
 import com.museolba.modelo.entidades.turnos.turnoArtista.TurnoArtista;
 import com.museolba.modelo.entidades.turnos.turnoGuia.TurnoGuia;
+import com.museolba.modelo.entidades.usuario.RolUsuario;
+import com.museolba.modelo.entidades.usuario.Usuario;
 import com.museolba.utils.ComponentesUtils;
 import java.util.List;
 import com.museolba.utils.DialogoUtils;
@@ -20,11 +22,17 @@ public class VentanaActividades extends javax.swing.JPanel {
     private ControladorTurnoGuia controladorTurnoGuia = null;
     private ControladorTurnoArtista controladorTurnoArtista = null;
     
-    public VentanaActividades() {
+    public VentanaActividades(Usuario usuario) {
         initComponents();
         
         this.controladorTurnoArtista = new ControladorTurnoArtista();
         this.controladorTurnoGuia = new ControladorTurnoGuia();
+        
+         if (usuario.getRolUsuario() == RolUsuario.PERSONAL) {
+             btnAgregar.setVisible(false);
+             btnEliminar.setVisible(false);
+             btnModificar.setVisible(false);
+         }
         
         cargarComboBoxTurnos();
         agregarListenerComboBox();
@@ -164,6 +172,7 @@ public class VentanaActividades extends javax.swing.JPanel {
                 .addContainerGap(19, Short.MAX_VALUE))
         );
 
+        btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/eliminar.png"))); // NOI18N
         btnEliminar.setText("Eliminar");
         btnEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -171,6 +180,7 @@ public class VentanaActividades extends javax.swing.JPanel {
             }
         });
 
+        btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/boton-agregar.png"))); // NOI18N
         btnAgregar.setText("Agregar");
         btnAgregar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -178,6 +188,7 @@ public class VentanaActividades extends javax.swing.JPanel {
             }
         });
 
+        btnModificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/modificar.png"))); // NOI18N
         btnModificar.setText("Modificar");
         btnModificar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -201,12 +212,12 @@ public class VentanaActividades extends javax.swing.JPanel {
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelContenidoLayout.createSequentialGroup()
-                        .addGap(0, 402, Short.MAX_VALUE)
-                        .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnAgregar)
+                        .addGap(8, 8, 8)
+                        .addComponent(btnModificar)
+                        .addGap(7, 7, 7)
+                        .addComponent(btnEliminar)))
                 .addContainerGap())
         );
         panelContenidoLayout.setVerticalGroup(

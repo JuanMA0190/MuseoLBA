@@ -9,6 +9,7 @@ import com.museolba.vista.ventanaPrincipal.VentanaPrincipal;
 import java.awt.event.KeyEvent;
 
 
+
 public class VentanaLogin extends javax.swing.JFrame {
     
     ControladorLogin controladorLogin = null;
@@ -18,6 +19,7 @@ public class VentanaLogin extends javax.swing.JFrame {
         controladorLogin = new ControladorLogin();
         initComponents();
         ComponentesUtils.cargarImagenIcono(this);
+       
     }
     
     private void ingresar(){
@@ -120,6 +122,7 @@ public class VentanaLogin extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(102, 0, 102));
         jLabel2.setText("Contraseña");
 
+        btnIngresar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/ingresar.png"))); // NOI18N
         btnIngresar.setText("Ingresar");
         btnIngresar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -145,7 +148,7 @@ public class VentanaLogin extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
+                .addGap(0, 180, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel1)
@@ -164,8 +167,8 @@ public class VentanaLogin extends javax.swing.JFrame {
                         .addComponent(jLabel2)
                         .addGap(244, 244, 244))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(btnIngresar, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(259, 259, 259))))
+                        .addComponent(btnIngresar)
+                        .addGap(241, 241, 241))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

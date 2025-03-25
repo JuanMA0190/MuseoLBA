@@ -39,6 +39,7 @@ public class MenuPersonal extends javax.swing.JPanel {
         lblTitulo.setFont(new java.awt.Font("DejaVu Serif", 0, 18)); // NOI18N
         lblTitulo.setText("Museo Lucas Braulio Areco");
 
+        btnActividades.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/turno-de-noche.png"))); // NOI18N
         btnActividades.setText("Actividades");
         btnActividades.setBorder(null);
         btnActividades.setBorderPainted(false);
@@ -49,6 +50,7 @@ public class MenuPersonal extends javax.swing.JPanel {
             }
         });
 
+        btnObras.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/obras.png"))); // NOI18N
         btnObras.setText("Obras");
         btnObras.setBorder(null);
         btnObras.setBorderPainted(false);
@@ -59,6 +61,7 @@ public class MenuPersonal extends javax.swing.JPanel {
             }
         });
 
+        btnSalas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/pasillo.png"))); // NOI18N
         btnSalas.setText("Salas");
         btnSalas.setBorder(null);
         btnSalas.setBorderPainted(false);
@@ -69,6 +72,7 @@ public class MenuPersonal extends javax.swing.JPanel {
             }
         });
 
+        btnCajaChica.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/caja.png"))); // NOI18N
         btnCajaChica.setText("Caja Chica");
         btnCajaChica.setBorder(null);
         btnCajaChica.setBorderPainted(false);
@@ -81,6 +85,7 @@ public class MenuPersonal extends javax.swing.JPanel {
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/imgPrinc.jpg"))); // NOI18N
 
+        btnAsistencia.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/asistencia.png"))); // NOI18N
         btnAsistencia.setText("Asistencia");
         btnAsistencia.setBorder(null);
         btnAsistencia.setBorderPainted(false);
@@ -143,7 +148,7 @@ public class MenuPersonal extends javax.swing.JPanel {
                 .addComponent(btnSalas, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnCajaChica, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(59, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -154,13 +159,13 @@ public class MenuPersonal extends javax.swing.JPanel {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelMenu, javax.swing.GroupLayout.DEFAULT_SIZE, 581, Short.MAX_VALUE)
+            .addComponent(panelMenu, javax.swing.GroupLayout.DEFAULT_SIZE, 528, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnActividadesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActividadesActionPerformed
-        VentanaActividades va = new VentanaActividades();
-        ventanaPrincipal.abrirContenido(va, 738, 572, ventanaPrincipal.getPanelContenido());//MODIFIQUEAQUI
+        VentanaActividades va = new VentanaActividades(ventanaPrincipal.getUsuarioOnline());
+        ventanaPrincipal.abrirContenido(va, 738, 572, ventanaPrincipal.getPanelContenido());
     }//GEN-LAST:event_btnActividadesActionPerformed
 
     private void btnObrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnObrasActionPerformed

@@ -64,6 +64,7 @@ public class VentanaAsistencia extends javax.swing.JPanel {
         panelReporte.setBackground(new java.awt.Color(204, 204, 204));
         panelReporte.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 0, 102), 1, true));
 
+        btnReporte.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/reportes.png"))); // NOI18N
         btnReporte.setText("Reporte");
         btnReporte.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnReporte.setPreferredSize(new java.awt.Dimension(90, 38));
@@ -80,8 +81,8 @@ public class VentanaAsistencia extends javax.swing.JPanel {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelReporteLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(cmbReporte, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
-                .addComponent(btnReporte, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+                .addComponent(btnReporte, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         panelReporteLayout.setVerticalGroup(

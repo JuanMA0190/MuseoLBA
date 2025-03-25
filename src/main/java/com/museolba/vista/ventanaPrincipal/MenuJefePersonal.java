@@ -45,6 +45,7 @@ public class MenuJefePersonal extends javax.swing.JPanel {
         panelMenu.setBackground(new java.awt.Color(102, 0, 102));
         panelMenu.setPreferredSize(new java.awt.Dimension(290, 431));
 
+        btnActividades.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/turno-de-noche.png"))); // NOI18N
         btnActividades.setText("Actividades");
         btnActividades.setBorder(null);
         btnActividades.setBorderPainted(false);
@@ -55,6 +56,7 @@ public class MenuJefePersonal extends javax.swing.JPanel {
             }
         });
 
+        btnObras.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/obras.png"))); // NOI18N
         btnObras.setText("Obras");
         btnObras.setBorder(null);
         btnObras.setBorderPainted(false);
@@ -65,6 +67,7 @@ public class MenuJefePersonal extends javax.swing.JPanel {
             }
         });
 
+        btnUsuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/agregar-usuario.png"))); // NOI18N
         btnUsuario.setText("Usuarios");
         btnUsuario.setBorder(null);
         btnUsuario.setBorderPainted(false);
@@ -75,6 +78,7 @@ public class MenuJefePersonal extends javax.swing.JPanel {
             }
         });
 
+        btnPersonal.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/personal.png"))); // NOI18N
         btnPersonal.setText("Personal");
         btnPersonal.setBorder(null);
         btnPersonal.setBorderPainted(false);
@@ -85,6 +89,7 @@ public class MenuJefePersonal extends javax.swing.JPanel {
             }
         });
 
+        btnSalas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/pasillo.png"))); // NOI18N
         btnSalas.setText("Salas");
         btnSalas.setBorder(null);
         btnSalas.setBorderPainted(false);
@@ -95,6 +100,7 @@ public class MenuJefePersonal extends javax.swing.JPanel {
             }
         });
 
+        btnCajaChica.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/caja.png"))); // NOI18N
         btnCajaChica.setText("Caja Chica");
         btnCajaChica.setBorder(null);
         btnCajaChica.setBorderPainted(false);
@@ -105,6 +111,7 @@ public class MenuJefePersonal extends javax.swing.JPanel {
             }
         });
 
+        btnAsistencia.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/asistencia.png"))); // NOI18N
         btnAsistencia.setText("Asistencia");
         btnAsistencia.setBorder(null);
         btnAsistencia.setBorderPainted(false);
@@ -201,7 +208,7 @@ public class MenuJefePersonal extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnActividadesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActividadesActionPerformed
-        VentanaActividades va = new VentanaActividades();
+        VentanaActividades va = new VentanaActividades(ventanaPrincipal.getUsuarioOnline());
         ventanaPrincipal.abrirContenido(va, 738, 572, ventanaPrincipal.getPanelContenido());
     }//GEN-LAST:event_btnActividadesActionPerformed
 

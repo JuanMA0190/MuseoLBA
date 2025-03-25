@@ -106,30 +106,26 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="1" attributes="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="lblTitulo6" min="-2" pref="123" max="-2" attributes="0"/>
-                                  <Component id="lblTitulo4" min="-2" pref="123" max="-2" attributes="0"/>
-                                  <Component id="txtNombreUsuario" pref="183" max="32767" attributes="0"/>
-                                  <Component id="cmbRol" alignment="0" pref="183" max="32767" attributes="0"/>
-                                  <Component id="lblTitulo2" alignment="0" min="-2" pref="118" max="-2" attributes="0"/>
-                                  <Component id="txtContrasenia" max="32767" attributes="0"/>
-                              </Group>
-                              <EmptySpace pref="204" max="32767" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="1" attributes="0">
-                              <EmptySpace max="32767" attributes="0"/>
-                              <Component id="btnGuardar" min="-2" pref="90" max="-2" attributes="0"/>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="lblTitulo6" min="-2" pref="123" max="-2" attributes="0"/>
+                          <Component id="lblTitulo4" min="-2" pref="123" max="-2" attributes="0"/>
+                          <Component id="txtNombreUsuario" pref="183" max="32767" attributes="0"/>
+                          <Component id="cmbRol" alignment="0" pref="183" max="32767" attributes="0"/>
+                          <Component id="lblTitulo2" alignment="0" min="-2" pref="118" max="-2" attributes="0"/>
+                          <Component id="txtContrasenia" max="32767" attributes="0"/>
                       </Group>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace pref="301" max="32767" attributes="0"/>
+                      <Component id="btnGuardar" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="btnFinalizar" min="-2" max="-2" attributes="0"/>
                           <Component id="lblError" min="-2" max="-2" attributes="0"/>
-                          <Component id="btnCancelar" min="-2" pref="90" max="-2" attributes="0"/>
-                          <Component id="btnFinalizar" min="-2" pref="90" max="-2" attributes="0"/>
+                          <Component id="btnCancelar" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="81" max="-2" attributes="0"/>
                   </Group>
@@ -153,7 +149,7 @@
                       <Component id="lblTitulo6" min="-2" pref="25" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="cmbRol" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="93" max="32767" attributes="0"/>
+                      <EmptySpace pref="101" max="32767" attributes="0"/>
                       <Component id="btnFinalizar" min="-2" pref="38" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
@@ -203,6 +199,9 @@
             </Component>
             <Component class="javax.swing.JButton" name="btnFinalizar">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/iconos/modificar.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Finalizar"/>
                 <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
                   <Color id="Cursor de Mano"/>
@@ -224,6 +223,9 @@
             </Component>
             <Component class="javax.swing.JButton" name="btnCancelar">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/iconos/cancelar.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Cancelar"/>
                 <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
                   <Color id="Cursor de Mano"/>
@@ -244,6 +246,9 @@
             </Component>
             <Component class="javax.swing.JButton" name="btnGuardar">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/iconos/guardar.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Guardar"/>
                 <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
                   <Color id="Cursor de Mano"/>

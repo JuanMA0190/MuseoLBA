@@ -164,6 +164,7 @@ public class FormObra extends javax.swing.JDialog {
         lblTitulo5.setForeground(new java.awt.Color(102, 0, 102));
         lblTitulo5.setText("Descripción");
 
+        btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/cancelar.png"))); // NOI18N
         btnCancelar.setText("Cancelar");
         btnCancelar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
@@ -172,6 +173,7 @@ public class FormObra extends javax.swing.JDialog {
             }
         });
 
+        btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/guardar.png"))); // NOI18N
         btnGuardar.setText("Guardar");
         btnGuardar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
@@ -195,6 +197,7 @@ public class FormObra extends javax.swing.JDialog {
         lblImage.setBackground(new java.awt.Color(255, 0, 51));
         lblImage.setForeground(new java.awt.Color(255, 0, 51));
 
+        btnCargarImg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/subir-imagen.png"))); // NOI18N
         btnCargarImg.setText("Cargar Img");
         btnCargarImg.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnCargarImg.addActionListener(new java.awt.event.ActionListener() {
@@ -210,6 +213,7 @@ public class FormObra extends javax.swing.JDialog {
             }
         });
 
+        btnModificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/modificar.png"))); // NOI18N
         btnModificar.setText("Modificar");
         btnModificar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnModificar.setEnabled(false);
@@ -308,7 +312,7 @@ public class FormObra extends javax.swing.JDialog {
                                         .addComponent(lblTitulo5, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(cmbEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(lblTitulo10, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(btnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(btnModificar))
                                     .addGap(0, 0, Short.MAX_VALUE)))
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -332,11 +336,11 @@ public class FormObra extends javax.swing.JDialog {
                                 .addComponent(lblImage, javax.swing.GroupLayout.PREFERRED_SIZE, 311, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addContainerGap())
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnGuardar)
+                        .addGap(4, 4, 4)
+                        .addComponent(btnCancelar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnCargarImg, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnCargarImg)
                         .addGap(39, 39, 39))))
         );
         jPanel2Layout.setVerticalGroup(
