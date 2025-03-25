@@ -2,9 +2,6 @@ package com.museolba.controlador.controladorObra;
 
 import com.museolba.modelo.dao.obraDAO.ObraDAOImpl;
 import com.museolba.modelo.entidades.obra.Obra;
-import com.museolba.modelo.entidades.sala.Sala;
-import com.museolba.modelo.dao.salaDAO.SalaDAOImpl;
-import com.museolba.modelo.entidades.obra.EstadoExposicion;
 import com.museolba.modelo.jpaController.obraJpaController.ObraJpaController;
 import java.util.List;
 import java.util.Optional;

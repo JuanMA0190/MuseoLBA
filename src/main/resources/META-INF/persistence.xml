@@ -11,6 +11,9 @@
     <class>com.museolba.modelo.entidades.cajaChica.CajaChica</class>
     <class>com.museolba.modelo.entidades.artista.Artista</class>
     <class>com.museolba.modelo.entidades.sala.Sala</class>
+    <class>com.museolba.modelo.entidades.turnos.turnoGuia.TurnoGuia</class>
+    <class>com.museolba.modelo.entidades.turnos.turnoArtista.TurnoArtista</class>
+    <class>com.museolba.modelo.entidades.turnos.Turno</class>
     <properties>
       <!-- Configuración básica de conexión -->
       <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>

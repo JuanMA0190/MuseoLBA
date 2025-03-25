@@ -4,6 +4,7 @@ import com.museolba.vista.ventanaActividades.VentanaActividades;
 import com.museolba.vista.ventanaAsistencia.VentanaAsistencia;
 import com.museolba.vista.ventanaCajaChica.VentanaCajaChica;
 import com.museolba.vista.ventanaObra.VentanaObra;
+import com.museolba.vista.ventanaSalas.VentanaSalas;
 
 
 public class MenuPersonal extends javax.swing.JPanel {
@@ -23,9 +24,8 @@ public class MenuPersonal extends javax.swing.JPanel {
         panelMenu = new javax.swing.JPanel();
         lblImagen = new javax.swing.JLabel();
         lblTitulo = new javax.swing.JLabel();
-        btnPrincipal = new javax.swing.JButton();
+        btnActividades = new javax.swing.JButton();
         btnObras = new javax.swing.JButton();
-        btnTurVisitas = new javax.swing.JButton();
         btnSalas = new javax.swing.JButton();
         btnCajaChica = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
@@ -39,13 +39,13 @@ public class MenuPersonal extends javax.swing.JPanel {
         lblTitulo.setFont(new java.awt.Font("DejaVu Serif", 0, 18)); // NOI18N
         lblTitulo.setText("Museo Lucas Braulio Areco");
 
-        btnPrincipal.setText("Principal");
-        btnPrincipal.setBorder(null);
-        btnPrincipal.setBorderPainted(false);
-        btnPrincipal.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnPrincipal.addActionListener(new java.awt.event.ActionListener() {
+        btnActividades.setText("Actividades");
+        btnActividades.setBorder(null);
+        btnActividades.setBorderPainted(false);
+        btnActividades.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnActividades.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnPrincipalActionPerformed(evt);
+                btnActividadesActionPerformed(evt);
             }
         });
 
@@ -56,16 +56,6 @@ public class MenuPersonal extends javax.swing.JPanel {
         btnObras.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnObrasActionPerformed(evt);
-            }
-        });
-
-        btnTurVisitas.setText("Turnos Visitas");
-        btnTurVisitas.setBorder(null);
-        btnTurVisitas.setBorderPainted(false);
-        btnTurVisitas.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnTurVisitas.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnTurVisitasActionPerformed(evt);
             }
         });
 
@@ -108,35 +98,29 @@ public class MenuPersonal extends javax.swing.JPanel {
             .addGroup(panelMenuLayout.createSequentialGroup()
                 .addGroup(panelMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelMenuLayout.createSequentialGroup()
-                        .addGroup(panelMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(panelMenuLayout.createSequentialGroup()
-                                .addGap(48, 48, 48)
-                                .addComponent(lblImagen)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel1))
-                            .addGroup(panelMenuLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(lblTitulo))
-                            .addGroup(panelMenuLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(btnPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(panelMenuLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(btnSalas, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(panelMenuLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(btnTurVisitas, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(panelMenuLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(btnObras, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(panelMenuLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(btnAsistencia, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 2, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelMenuLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGap(48, 48, 48)
+                        .addComponent(lblImagen)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel1))
+                    .addGroup(panelMenuLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(lblTitulo))
+                    .addGroup(panelMenuLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(btnActividades, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panelMenuLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(btnSalas, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panelMenuLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(btnObras, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panelMenuLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(btnAsistencia, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panelMenuLayout.createSequentialGroup()
+                        .addContainerGap()
                         .addComponent(btnCajaChica, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                .addContainerGap(8, Short.MAX_VALUE))
         );
         panelMenuLayout.setVerticalGroup(
             panelMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -150,18 +134,16 @@ public class MenuPersonal extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(btnPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnActividades, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnAsistencia, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnObras, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnSalas, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnTurVisitas, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(btnCajaChica, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(59, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -176,24 +158,19 @@ public class MenuPersonal extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnPrincipalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrincipalActionPerformed
-        //VentanaActividades va = new VentanaActividades();
-        //ventanaPrincipal.abrirContenido(va, 738, 572, ventanaPrincipal.getPanelContenido());//MODIFIQUEAQUI
-    }//GEN-LAST:event_btnPrincipalActionPerformed
+    private void btnActividadesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActividadesActionPerformed
+        VentanaActividades va = new VentanaActividades();
+        ventanaPrincipal.abrirContenido(va, 738, 572, ventanaPrincipal.getPanelContenido());//MODIFIQUEAQUI
+    }//GEN-LAST:event_btnActividadesActionPerformed
 
     private void btnObrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnObrasActionPerformed
         VentanaObra vo = new VentanaObra(ventanaPrincipal.getUsuarioOnline());
         ventanaPrincipal.abrirContenido(vo, 738, 572, ventanaPrincipal.getPanelContenido());
     }//GEN-LAST:event_btnObrasActionPerformed
 
-    private void btnTurVisitasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTurVisitasActionPerformed
-        // VentanaTurnoVisita vtv = new VentanaTurnoVisita();
-        // abrirContenido(vtv);
-    }//GEN-LAST:event_btnTurVisitasActionPerformed
-
     private void btnSalasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalasActionPerformed
-        // VentanaSalas vs = new VentanaSalas();
-        // abrirContenido(vs);
+        VentanaSalas vs = new VentanaSalas();
+        ventanaPrincipal.abrirContenido(vs, 738, 572, ventanaPrincipal.getPanelContenido());
     }//GEN-LAST:event_btnSalasActionPerformed
 
     private void btnCajaChicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCajaChicaActionPerformed
@@ -208,12 +185,11 @@ public class MenuPersonal extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnActividades;
     private javax.swing.JButton btnAsistencia;
     private javax.swing.JButton btnCajaChica;
     private javax.swing.JButton btnObras;
-    private javax.swing.JButton btnPrincipal;
     private javax.swing.JButton btnSalas;
-    private javax.swing.JButton btnTurVisitas;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel lblImagen;
     private javax.swing.JLabel lblTitulo;
