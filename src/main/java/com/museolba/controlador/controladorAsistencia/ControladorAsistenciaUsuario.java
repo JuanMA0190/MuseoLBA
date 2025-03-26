@@ -2,6 +2,7 @@ package com.museolba.controlador.controladorAsistencia;
 
 import com.museolba.modelo.dao.asistenciaDAO.AsistenciaDAOImpl;
 import com.museolba.modelo.entidades.usuario.AsistenciaUsuario;
+import com.museolba.modelo.entidades.usuario.Usuario;
 import com.museolba.utils.reportes.asistencias.AsistenciaEXCELGenerador;
 import com.museolba.utils.reportes.asistencias.AsistenciaPDFGeneradorUtil;
 import java.time.LocalDate;
@@ -14,8 +15,8 @@ public class ControladorAsistenciaUsuario {
         this.asistenciaDAO = new AsistenciaDAOImpl();
     }
     
-    public List<AsistenciaUsuario> obtenerAsistenciasDetalladas( LocalDate fecha) {
-        return asistenciaDAO.obtenerAsistenciaConDetalles(fecha);
+    public List<AsistenciaUsuario> obtenerAsistenciasDetalladas( LocalDate fecha, Usuario numLegajo) {
+        return asistenciaDAO.obtenerAsistenciaConDetalles(fecha, numLegajo);
     }
     
    /**

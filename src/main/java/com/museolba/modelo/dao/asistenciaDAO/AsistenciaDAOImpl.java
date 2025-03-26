@@ -1,6 +1,7 @@
 package com.museolba.modelo.dao.asistenciaDAO;
 
 import com.museolba.modelo.entidades.usuario.AsistenciaUsuario;
+import com.museolba.modelo.entidades.usuario.Usuario;
 import static com.museolba.modelo.jpaController.PersistenceJpaController.getEmf;
 import java.time.LocalDate;
 import java.time.YearMonth;
@@ -11,16 +12,17 @@ import javax.persistence.TypedQuery;
 public class AsistenciaDAOImpl implements AsistenciaDAO {
 
     @Override
-    public List<AsistenciaUsuario> obtenerAsistenciaConDetalles(LocalDate fecha) { 
+    public List<AsistenciaUsuario> obtenerAsistenciaConDetalles(LocalDate fecha, Usuario numLegajo) { 
         EntityManager em = getEmf().createEntityManager();
         try {
             // Consulta JPQL para obtener la entidad AsistenciaUsuario completa
             String jpql = "SELECT au " +  // Selecciona la entidad completa
                           "FROM AsistenciaUsuario au " +
-                          "WHERE au.fecha = :fecha";
+                          "WHERE au.fecha = :fecha AND au.usuario = :numLeajo";
 
             TypedQuery<AsistenciaUsuario> query = em.createQuery(jpql, AsistenciaUsuario.class);
             query.setParameter("fecha", fecha);
+            query.setParameter("numLeajo", numLegajo);
 
             return query.getResultList();
         } finally {

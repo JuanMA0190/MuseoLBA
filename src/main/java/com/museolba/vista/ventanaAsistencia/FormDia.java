@@ -14,12 +14,16 @@ public class FormDia extends javax.swing.JDialog {
     
     private LocalDate fechaSeleccionada = null;
     private ControladorAsistenciaUsuario controladorAsistencia = null;
+    private Long numLegajoUsuario = null;
+    private Usuario usuario = null;
     
     public FormDia(java.awt.Frame parent, boolean modal, Usuario usuario, LocalDate fechaSeleccionada) {
         super(parent, modal);
         initComponents();
         this.fechaSeleccionada = fechaSeleccionada;
         this.controladorAsistencia = new ControladorAsistenciaUsuario();
+        //this.numLegajoUsuario = usuario.getnLegajo();
+        this.usuario = usuario;
     }
 
     @SuppressWarnings("unchecked")
@@ -174,7 +178,7 @@ public class FormDia extends javax.swing.JDialog {
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
          // Obtener las asistencias por número de legajo y fecha
-        List<AsistenciaUsuario> listaInfoAsistencia = controladorAsistencia.obtenerAsistenciasDetalladas(fechaSeleccionada);
+        List<AsistenciaUsuario> listaInfoAsistencia = controladorAsistencia.obtenerAsistenciasDetalladas(fechaSeleccionada, usuario);
 
         // Verificar si hay datos
         if (listaInfoAsistencia != null && !listaInfoAsistencia.isEmpty()) {
